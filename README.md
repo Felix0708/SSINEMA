@@ -16,6 +16,7 @@
 1. git pull origin develop
 
 2. git checkout -b feature/FE_login 또는 git checkout -b feature/BE_movieApi
+
     (작업을 시작하고, 완료가 된다면)
     
 3. git add .
@@ -27,7 +28,9 @@
     (gitlab 으로 이동해서)
 
 6. gitlab에서 create merge
+
     (delete source 체크되어있는지 확인)
+    
     (merge 방향이 맞는지 확인 ( ex) feature/FE_login into develop) )
     
 7. git checkout develop 
