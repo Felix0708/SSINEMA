@@ -1,32 +1,55 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <a href="/">
+        <img src="../img_folder/movie-black.png" alt="logo">
+      </a>
+      <router-link class="link" :to="{ name: 'Login' }">
+        <div class="loginText">로그인</div>
+      </router-link>
     </div>
     <router-view/>
   </div>
 </template>
 
-<style>
+<style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  color: black
 }
-
 #nav {
-  padding: 30px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  top: 0px;
+  display: flex;
+  background-color: black;
+  justify-content: space-between;
+  height: auto;
+  max-height: 70px;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+img {
+  margin-left: 3px;
+  width: auto; 
+  height: auto;
+  max-width: 80px;
+  max-height: 700px;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.link {
+  margin: auto 10px;
+  color: black;
+  text-decoration: none;
+  width: 75px;
+  height: 30px;
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 20px;
 }
+
+.link .loginText {
+  margin-top: 2px;
+  text-align: center;
+}
+
 </style>
