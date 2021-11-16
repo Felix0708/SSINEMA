@@ -3,7 +3,7 @@ from django.conf import settings
 
 # Create your models here.
 class Genre(models.Model):
-    id = models.IntegerField()
+    genre_id = models.IntegerField()
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -13,8 +13,8 @@ class Movie(models.Model):
     title = models.CharField(max_length=100)
     actor = models.CharField(max_length=100)
     release_date = models.DateField()
-    popularity = models.FloatField()
-    vote_count = models.IntegerField()
+    popularity = models.FloatField(null=True)
+    vote_count = models.IntegerField(null=True)
     vote_average = models.FloatField()
     overview = models.TextField()
     video_path = models.CharField(max_length=200)

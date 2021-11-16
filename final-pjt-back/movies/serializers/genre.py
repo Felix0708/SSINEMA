@@ -6,7 +6,7 @@ class GenreAllSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ('id', 'name',)
+        fields = ('genre_id', 'name',)
 
 
 class GenreDetailSerializer(serializers.ModelSerializer):
@@ -21,4 +21,4 @@ class GenreDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ('id', 'movies')
+        fields = ('genre_id', 'title', 'movies')
