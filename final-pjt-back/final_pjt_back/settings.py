@@ -31,16 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'articles',
     'accounts',
-    'movies',    
-    'imagekit',
-    'django_extensions',  
+    'articles',
+    'movies',
+
     'django_seed',     
 
     'rest_framework',
-    
-    'corsheaders',     
+    # 'corsheaders',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -155,7 +154,6 @@ REST_FRAMEWORK = {
 }
 
 import datetime
-
 JWT_AUTH= {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1)
 }
