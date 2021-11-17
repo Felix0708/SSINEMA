@@ -14,6 +14,8 @@ class Movie(models.Model):
     movie_id = models.IntegerField()
     title = models.CharField(max_length=100)
     vote_average = models.FloatField()
+    vote_count = models.IntegerField()
+    popularity = models.FloatField()
     release_date = models.DateField()
     overview = models.TextField()
     video_path = models.CharField(max_length=200)

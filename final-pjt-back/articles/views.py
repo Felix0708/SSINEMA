@@ -26,7 +26,7 @@ def article_index(request):
 def create_article(request):
     serializer = ArticleSerializer(data=request.data)            
     if serializer.is_valid(raise_exception=True):
-        serializer.save(author=request.user)
+        serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -43,7 +43,7 @@ def article_detail_or_update_or_delete(request, article_pk):
     def update_article():
         serializer = ArticleSerializer(instance=article, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(author = request.user)
+            serializer.save(user = request.user)
             return Response(serializer.data)
     
     def delete_article():
@@ -83,7 +83,7 @@ def create_comment(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     serializer = CommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(article=article, author=request.user)
+        serializer.save(article=article, user=request.user)
         return Response(serializer.data, status= status.HTTP_201_CREATED)
 
 
@@ -91,7 +91,7 @@ def create_comment(request, article_pk):
 @permission_classes([IsAuthenticated])
 def delete_comment(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
-    if request.user.pk == comment.author.pk:
+    if request.user.pk == comment.user.pk:
         comment.delete()
         data = {
             'delete': f'데이터 {comment_pk}번 댓글이 삭제되었습니다'
