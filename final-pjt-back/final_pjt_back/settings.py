@@ -31,16 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'articles',
     'accounts',
-    'movies',    
-    'imagekit',
-    'django_extensions',  
+    'articles',
+    'movies',
+
     'django_seed',     
 
     'rest_framework',
-    
-    # 'corsheaders', 
+    # 'corsheaders',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -145,17 +144,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-#     ),
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}
 
-# import datetime
-
-# JWT_AUTH= {
-#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1)
-# }
+import datetime
+JWT_AUTH= {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1)
+}
