@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <img src="https://fontmeme.com/permalink/211117/18c046fa6dc1dff4a68fda564614a5dd.png" alt="netflix-font" border="0">
     <div class="homeText">
       <h1>당신이 원하는 그 모든 영화 정보를 언제나</h1>
       <h3>커뮤니티로 정보 공유도 할 수 있어요.</h3>
@@ -47,6 +48,11 @@ export default {
   z-index: -1;
 }
 
+img {
+  margin-top: 30px;
+  margin-right: 50px;
+}
+
 .homeText {
   opacity: 100;
   color: white;
@@ -57,11 +63,11 @@ export default {
 }
 
 h1 {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 h3 {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .loginBtn {
