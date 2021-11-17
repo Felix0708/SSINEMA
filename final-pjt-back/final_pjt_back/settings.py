@@ -34,11 +34,13 @@ INSTALLED_APPS = [
     'accounts',
     'articles',
     'movies',
-
-    'django_seed',     
+    'dummydata',    
+    'imagekit',
+    'django_extensions',  
+    'django_seed',    
 
     'rest_framework',
-    # 'corsheaders',
+    'corsheaders',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
