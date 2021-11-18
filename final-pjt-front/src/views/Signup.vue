@@ -73,18 +73,15 @@ export default {
 
 <style scoped>
 .Signup {
-  position: relative;
-  top: 25%;
-  /* margin: auto 0; */
+  margin: 25vh 0 0 0;
+  width: 100%;
+  height: auto;
   color: white;
 }
 
 .signupText {
-  position: absolute;
-  width: 50%;
-  top: -17%;
-  left: 35.5%;
-  /* text-align: center; */
+  text-align: center;
+  margin-bottom: 5px;
 }
 
 .container {
@@ -119,11 +116,11 @@ input:focus {
 
 .signupBtn {
   margin: 10px auto;
-  width: 30%;
+  width: 30vw;
   height: 100%;
   padding: 8px;
-  border: 1px solid rgb(185, 35, 85);
-  background-color: rgb(185, 35, 85);
+  border: 1px solid #FF0558;
+  background-color: #FF0558;
   border-radius: 18px;
   text-align: center;
   font-weight: bold;
