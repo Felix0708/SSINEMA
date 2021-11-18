@@ -42,12 +42,9 @@ export default {
     return {
       buttonOn : true,
       swiperOptions: {
-          slidesPerView: 'auto',
-          
-          pagination: {
-            el: '.swiper-pagination',
-            dynamicBullets: true
-          },
+          slidesPerView: 5,
+          spaceBetween: 50,
+          loop: true,
           navigation: {
             nextEl: '#button-next-relacionados',
             prevEl: '#button-prev-relacionados'

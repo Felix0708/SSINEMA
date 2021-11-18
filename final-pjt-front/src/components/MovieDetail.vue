@@ -26,7 +26,6 @@
     
     <form @submit="commentSubmit">
       <div class="form-group">
-
         <label for="star">별점</label>
         <star-rating
           id="star" 
@@ -98,7 +97,6 @@ export default {
   },
   props: {
     movie_pk: Number,
-
   },
   methods: {
     nextPage () {
