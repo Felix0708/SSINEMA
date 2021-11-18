@@ -2,12 +2,12 @@ from django.db import models
 from django.conf import settings
 
 # Create your models here.
-# class Genre(models.Model):
-#     id = models.IntegerField()
-#     name = models.CharField(max_length=50)
+class Genre(models.Model):
+    genre_id = models.IntegerField()
+    name = models.CharField(max_length=50)
 
-#     def __str__(self):
-        # return f'{self.pk}: {self.name}'
+    def __str__(self):
+        return f'{self.pk}: {self.name}'
 
 
 class Movie(models.Model):
@@ -20,11 +20,11 @@ class Movie(models.Model):
     overview = models.TextField()
     video_path = models.CharField(max_length=200)
     poster_path = models.CharField(max_length=200)
-    # like_users = models.ManyToManyField(
-    #     settings.AUTH_USER_MODEL,
-    #     related_name = 'favorite_movies',
-    # )
-    # genres = models.ManyToManyField(Genre, related_name='genre')
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name = 'favorite_movies',
+    )
+    genres = models.ManyToManyField(Genre, related_name='genre')
 
     def __str__(self):
         return f'{self.pk}: {self.title}'
