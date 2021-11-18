@@ -100,6 +100,8 @@ def review_delete(request, review_pk):
 #                 poster_path=movie['poster_path'],
 #                 title=movie['title'],
 #                 vote_average=movie['vote_average'],
+#                 vote_count=movie['vote_count'],
+#                 popularity=movie['popularity'],
 #                 overview=movie['overview'],
 #                 release_date=movie['release_date'],
 #                 movie_id=movie['id'],
