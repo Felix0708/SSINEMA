@@ -30,13 +30,13 @@ class Movie(models.Model):
         return f'{self.pk}: {self.title}'
 
 class Review(models.Model):
-    RANKS = [
-        (1, '★'),
-        (2, '★★'),
-        (3, '★★★'),
-        (4, '★★★★'),
-        (5, '★★★★★'),
-    ]
+    # RANKS = [
+    #     (1, '★'),
+    #     (2, '★★'),
+    #     (3, '★★★'),
+    #     (4, '★★★★'),
+    #     (5, '★★★★★'),
+    # ]
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
@@ -44,7 +44,8 @@ class Review(models.Model):
     )
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     content = models.TextField()
-    rank = models.IntegerField(choices=RANKS, default=5)
+    # rank = models.IntegerField(choices=RANKS, default=5)
+    rank = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
