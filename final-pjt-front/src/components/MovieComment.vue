@@ -78,6 +78,7 @@ export default {
       console.error(err)
     })
     const token = localStorage.getItem('jwt')
+    // console.log(jwt_decode(token))
     const username = jwt_decode(token).username
     this.currentName = username
   }
