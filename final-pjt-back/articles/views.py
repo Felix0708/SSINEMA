@@ -8,15 +8,16 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.http.response import JsonResponse
 
 from articles import serializer 
 
 # Create your views here.
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def article_index(request):
-    articles = get_list_or_404(Article)
+    articles = get_list_or_404(Article.objects.order_by('-created_at'))
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
 
@@ -31,11 +32,12 @@ def create_article(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def article_detail_or_update_or_delete(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
 
     def article_detail():
+        article.update_counter
         article.save()
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
@@ -47,8 +49,13 @@ def article_detail_or_update_or_delete(request, article_pk):
             return Response(serializer.data)
     
     def delete_article():
-        article.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if request.user.pk == article.user.pk:
+            article.delete()
+            context ={
+                'delete':f'게시글 {article_pk}번 글이 삭제되었습니다.'
+            }
+            return Response(context, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     if request.method == 'GET':
         return article_detail()
