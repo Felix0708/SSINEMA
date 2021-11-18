@@ -80,31 +80,31 @@ def review_delete(request, review_pk):
     review.delete()
     return Response({'id': review_pk}, status = status.HTTP_204_NO_CONTENT)
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def bestFive(request):
-    movies = Movie.objects.all().order_by('-vote_average')[:20]
-    serializer = MovieSerializer(movies, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def bestFive(request):
+#     movies = Movie.objects.all().order_by('-vote_average')[:20]
+#     serializer = MovieSerializer(movies, many=True)
+#     return Response(serializer.data)
 
-@api_view(['POST'])
-def forUserMovieSave(request):
-    # print(request.body)
-    chocie_movies = request.data['forusermovies']
-    for movie in chocie_movies:
-        print(movie['title'],movie['id'])
-        if not Movie.objects.filter(movie_id=movie['id']).exists():
-            print('new create')
-            
-            Movie.objects.create(
-                poster_path=movie['poster_path'],
-                title=movie['title'],
-                vote_average=movie['vote_average'],
-                overview=movie['overview'],
-                release_date=movie['release_date'],
-                movie_id=movie['id'],
-                )
-        else:
-            print('already have')
-            pass
-    return Response({'Movie': 'Movie'}, status= status.HTTP_202_ACCEPTED)
+# @api_view(['POST'])
+# def forUserMovieSave(request):
+#     # print(request.body)
+#     chocie_movies = request.data['forusermovies']
+#     for movie in chocie_movies:
+#         print(movie['title'],movie['id'])
+#         if not Movie.objects.filter(movie_id=movie['id']).exists():
+#             print('new create')
+
+#             Movie.objects.create(
+#                 poster_path=movie['poster_path'],
+#                 title=movie['title'],
+#                 vote_average=movie['vote_average'],
+#                 overview=movie['overview'],
+#                 release_date=movie['release_date'],
+#                 movie_id=movie['id'],
+#                 )
+#         else:
+#             print('already have')
+#             pass
+#     return Response({'Movie': 'Movie'}, status= status.HTTP_202_ACCEPTED)

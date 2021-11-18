@@ -82,7 +82,7 @@ export default {
       })
       this.nowmovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/movies/forUserMovieSave/ ',
+          url: 'http://127.0.0.1:8000/movies/forUserMovieSave/',
           method: 'POST',
           data: {
             forusermovies:this.nowmovies,
