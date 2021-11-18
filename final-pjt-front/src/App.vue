@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div class="isLogin" v-if="isLogin">
+      <div class="isLogin" v-if="login">
         <router-link :to="{ name: 'MainPage' }">
-          <a href="/mainpage">
-            <img src="../img_folder/SSINEMA.png" alt="logo">
+          <a href="/">
+            <img src="https://fontmeme.com/permalink/211118/422000f0de99430e1e601da94a274ec4.png" alt="netflix-font" border="0">
           </a>
         </router-link>
         <router-link class="loginLink" @click.native="logout" to="#">
@@ -14,7 +14,7 @@
       <div class="isLogout" v-else>
         <router-link to="/">
           <a href="/">
-            <img src="../img_folder/SSINEMA.png" alt="logo">
+            <img src="https://fontmeme.com/permalink/211118/422000f0de99430e1e601da94a274ec4.png" alt="netflix-font" border="0">
           </a>
         </router-link>
         <router-link class="loginLink" :to="{ name: 'Login' }">
@@ -22,7 +22,7 @@
         </router-link>
       </div>
     </div>
-    <router-view @login="isLogin = true"/>
+    <router-view @login="login = true"/>
   </div>
 </template>
 
@@ -31,52 +31,43 @@ export default {
   name: 'App',
   data: function () {
     return {
-      isLogin: false,
+      login: false,
     }
   },
   methods: {
     logout: function () {
-      this.isLogin = false
       localStorage.removeItem('jwt')
-      this.$router.push({ name: 'Home' })
+      this.login = false
+      this.$router.push({ name: 'MainPage' })
     }
   },
-  created: function () {
+  created() {
     const token = localStorage.getItem('jwt')
-
     if (token) {
-      this.isLogin = true
+      this.login = true
     }
-  },
+  }
 }
 </script>
 
 <style>
-
 #app {
-  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
+  text-align: center;
   color: #2c3e50;
-  height: 100vh;
 }
-
-/* #nav {
+nav {
   padding: 30px;
-  display: flex;
-  justify-content: space-between;
-} */
-
+}
 #nav a {
   font-weight: bold;
-  color: black;
+  color: #2c3e50;
 }
-
 /* #nav a.router-link-exact-active {
-  color: #42b983; 
+  color: #42b983;
 } */
-
 </style>
 
 <style scoped>
@@ -91,27 +82,29 @@ export default {
   justify-content: space-between;
 }
 
-img {
-  margin: -1px 0 0 3px;
-  width: auto; 
-  height: auto;
-  max-width: 18%;
-  max-height: 100%;
-}
-
 .loginLink {
-  /* size: 1rem; */
   margin: auto 20px;
-  padding: 6px 10px 6px 10px;
+  padding: 2px 10px 2px 10px;
   text-decoration: none;
   border: 1px solid white;
   border-radius: 16px;
   background-color: white;
 }
 
-.loginText {
-  font-size: 13px;
+a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  margin: auto 0;
   text-align: center;
-  /* font-weight: bold; */
 }
+
+.loginText {
+  margin: 1.5px 0 0 0 ;
+}
+
+img {
+  margin: 5px 0 0 2px;
+}
+
 </style>

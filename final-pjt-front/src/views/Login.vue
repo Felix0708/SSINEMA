@@ -1,5 +1,6 @@
 <template>
   <div class="Login">
+    <div>
     <div class="loginText">로그인</div>
     <div class="container">
       <div class="username">
@@ -22,6 +23,7 @@
           placeholder="  비밀번호"
         >
       </div>
+    </div>
     </div>
     <div class="loginBtn">
       <button @click="login">로그인</button>
@@ -60,7 +62,7 @@ export default {
           console.log(res)
           localStorage.setItem('jwt', res.data.token)
           this.$emit('login')
-          this.$router.push({ name: 'MainPage' })
+          this.$router.push({ name: 'Home' })
         })
         .catch(err => {
           console.log(err)
@@ -72,18 +74,15 @@ export default {
 
 <style scoped>
 .Login {
-  position: relative;
-  top: 25%;
-  /* margin: auto 0; */
+  margin: 25vh 0 0 0;
+  width: 100%;
+  height: auto;
   color: white;
 }
 
 .loginText {
-  position: absolute;
-  width: 50%;
-  top: -17%;
-  left: 35.5%;
-  /* text-align: center; */
+  text-align: center;
+  margin-bottom: 5px;
 }
 
 .container {
@@ -117,8 +116,8 @@ input:focus {
   width: 30%;
   height: 100%;
   padding: 8px;
-  border: 1px solid rgb(185, 35, 85);
-  background-color: rgb(185, 35, 85);
+  border: 1px solid #FF0558;
+  background-color: #FF0558;
   border-radius: 18px;
   text-align: center;
   font-weight: bold;
