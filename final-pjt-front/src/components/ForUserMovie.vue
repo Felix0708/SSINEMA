@@ -74,13 +74,11 @@ export default {
 <style>
 .bgblack {
   background-color: black;
-  
-  
+
 }
 .card-img:hover {
   transform: scale(1.2)
-  
-  
+
 }
 .card-img {
   z-index: 2;
@@ -89,13 +87,15 @@ export default {
   margin-bottom: 60px;
   cursor: pointer;
   transition-duration: 1s;
-  
 }
+
 .card-img-top {
   background-size: cover;
   box-shadow: 5px 5px 5px rgb(167, 152, 152);
 }
+
 .card-body {
   z-index: 3;
 }
+
 </style>
