@@ -32,9 +32,9 @@ def movielist(request):
     return Response(context)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def moviedetail(request,movie_id):
-    movie = get_object_or_404(Movie,movie_id=movie_id)
+    movie = get_object_or_404(Movie, pk=movie_id)
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
@@ -65,7 +65,7 @@ def review_list_or_create(request, movie_id):
             return Response('이미 데이터 리뷰가 존재합니다.')
 
         # like_users 저장
-        if rating >= 4:
+        if rating >= 7:
             if not movie.like_users.filter(pk=user_id).exists():
                 movie.like_users.add(user)
         # print(movie.like_users)
