@@ -161,6 +161,8 @@ export default {
           })
           this.comments = temp
       }).catch((err)=>{
+        const temp = []
+        this.comments = temp
         console.error(err)
       })
     },

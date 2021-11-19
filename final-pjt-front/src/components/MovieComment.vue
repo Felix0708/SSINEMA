@@ -17,7 +17,7 @@
     <div class="row">
       <div class="col-2"><p><b>{{ getName }}</b></p></div>
       <div class="col-8"><p>{{ getComment }}</p></div>
-      <div class="col-2"><b><a href="" v-if="getName" @click="deleteComment">삭제</a></b></div>
+      <div class="col-2"><b><a href="" @click="deleteComment">삭제</a></b></div>
       
     </div>
     <hr style="background-color:white"> 
@@ -29,6 +29,7 @@
 import axios from 'axios'
 import StarRating from 'vue-star-rating'
 // import jwt_decode from 'jwt-decode'
+
 export default {
   components: {
     StarRating
@@ -36,7 +37,7 @@ export default {
   data() {
     return {
       getName: '',
-      currentName: '',
+      // currentName: '',
     }
   },
   props: {
@@ -54,10 +55,14 @@ export default {
   methods: {
     deleteComment(event) {
       event.preventDefault()
+    
       const review_pk = this.comment.id
       axios({
         url: `http://127.0.0.1:8000/api/v1/movies/${this.movie_pk}/review/${review_pk}/` ,
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`
+        },
       }).then(()=>{
         this.$emit('onParentDeleteComment')
       }).catch((err)=>{
@@ -79,7 +84,7 @@ export default {
     //   console.error(err)
     // })
     // const token = localStorage.getItem('jwt')
-    // // console.log(jwt_decode(token))
+    // console.log(jwt_decode(token))
     // const username = jwt_decode(token).username
     // this.currentName = username
   }
