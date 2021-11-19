@@ -34,7 +34,7 @@ def movielist(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def moviedetail(request,movie_id):
-    movie = get_object_or_404(Movie, pk=movie_id)
+    movie = get_object_or_404(Movie, movie_id=movie_id)
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
@@ -42,7 +42,7 @@ def moviedetail(request,movie_id):
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
 def review_list_or_create(request, movie_id):
-    movie = get_object_or_404(Movie, pk=movie_id)
+    movie = get_object_or_404(Movie, movie_id=movie_id)
 
     def review_list():
         reviews = get_list_or_404(Review, movie=movie)
@@ -80,8 +80,8 @@ def review_list_or_create(request, movie_id):
 @api_view(['GET', 'DELETE'])
 @permission_classes([AllowAny])
 def review_detail_or_delete(request, review_pk, movie_id):
-    review = get_object_or_404(Review, pk=review_pk)
-    movie = get_object_or_404(Movie, pk=movie_id)
+    review = get_object_or_404(Review, review_pk=review_pk)
+    movie = get_object_or_404(Movie, movie_id=movie_id)
 
     def review_detail():
         
@@ -108,12 +108,12 @@ def review_detail_or_delete(request, review_pk, movie_id):
         return delete_review()
 
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def topRated(request):
-    movies = Movie.objects.all().order_by('-vote_average')[:20]
-    serializer = MovieSerializer(movies, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def topRated(request):
+#     movies = Movie.objects.all().order_by('-vote_average')[:20]
+#     serializer = MovieSerializer(movies, many=True)
+#     return Response(serializer.data)
 
 
 #

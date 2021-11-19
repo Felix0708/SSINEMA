@@ -118,7 +118,7 @@ export default {
         const user = jwt_decode(token).user_id
 
         axios({
-          url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
+          url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
           method: 'POST',
           data: {
             user: user,
@@ -130,7 +130,7 @@ export default {
           },
         }).then(()=>{
           axios({
-            url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
+            url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
             method: 'GET',
           }).then((res)=>{
               const temp = []
@@ -152,7 +152,7 @@ export default {
     onParentDeleteComment: function() {
       const movie_pk = this.movie_pk
       axios({
-        url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
+        url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
         method: 'GET',
       }).then((res)=>{
           const temp = []
@@ -189,7 +189,7 @@ export default {
   beforeUpdate(){
     const API_KEY = 'AIzaSyCSuYF6TkPO5Lb5osPYMo7W6AWP9pYHS-0'
     const API_URL = 'https://www.googleapis.com/youtube/v3/search'
-    const inputValue = `${this.title} review`
+    const inputValue = `${this.title} trailer`
     console.log(inputValue)
     const params = {
       key: API_KEY,
@@ -231,7 +231,7 @@ export default {
       console.error(err)
     })
     axios({
-      url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
+      url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
       method: 'GET',
     }).then((res)=>{
         const temp = []

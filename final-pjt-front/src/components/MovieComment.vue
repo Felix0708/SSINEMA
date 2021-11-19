@@ -17,7 +17,7 @@
     <div class="row">
       <div class="col-2"><p><b>{{ getName }}</b></p></div>
       <div class="col-8"><p>{{ getComment }}</p></div>
-      <div class="col-2"> <b><a href="" v-if="getName == currentName" @click="deleteComment">삭제</a></b></div>
+      <div class="col-2"><b><a href="" v-if="getName" @click="deleteComment">삭제</a></b></div>
       
     </div>
     <hr style="background-color:white"> 
@@ -56,7 +56,7 @@ export default {
       event.preventDefault()
       const review_pk = this.comment.id
       axios({
-        url: `http://127.0.0.1:8000/api/v1/movies/${review_pk}/review_delete/` ,
+        url: `http://127.0.0.1:8000/api/v1/movies/${this.movie_pk}/review/${review_pk}/` ,
         method: 'DELETE'
       }).then(()=>{
         this.$emit('onParentDeleteComment')
@@ -67,7 +67,7 @@ export default {
   },
   created() {
     console.log(this.comment)
-    const userid = this.comment.username
+    const userid = this.comment.user.username
     this.getName = userid
     // axios({
     //   url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,

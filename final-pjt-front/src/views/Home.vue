@@ -131,18 +131,18 @@ export default {
       // this.username=jwt_decode(token).username
       //끝
 
-      //평점 높은 영화 : 차라리 toprated로 바꾸자.
+      //평점 높은 영화  toprated
       axios({
-        url:'http://127.0.0.1:8000/api/v1/movies/topRated/',
+        url:'http://127.0.0.1:8000/api/v1/movies/',
         method:'GET',
       }).then((res)=>{
-        // console.log(res)
+        console.log(res)
         const temp=[]
-        res.data.forEach(function(element){
+        res.data.toprate_movies.forEach(function(element){
           temp.push(element)
           // console.log(temp)
         })
-        this.topRatedmovies=temp 
+        this.topRatedmovies=temp
       }).catch((err)=>{
         console.error(err)
       }),
@@ -202,7 +202,7 @@ export default {
       })
       this.nowmovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/',
+          url: 'http://127.0.0.1:8000/api/v1/dummydata/moviedata/',
           method: 'POST',
           data: {
             forusermovies:this.nowmovies,
@@ -239,7 +239,7 @@ export default {
       })
       this.SFmovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/ ',
+          url: 'http://127.0.0.1:8000/api/v1/dummydata/moviedata/',
           method: 'POST',
           data: {
             forusermovies:this.SFmovies,
@@ -274,7 +274,7 @@ export default {
       })
       this.Romancemovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/ ',
+          url: 'http://127.0.0.1:8000/api/v1/dummydata/moviedata/',
           method: 'POST',
           data: {
             forusermovies:this.Romancemovies,
@@ -309,7 +309,7 @@ export default {
       })
       this.horrormovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/ ',
+          url: 'http://127.0.0.1:8000/api/v1/dummydata/moviedata/',
           method: 'POST',
           data: {
             forusermovies:this.horrormovies,
