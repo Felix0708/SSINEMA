@@ -73,11 +73,9 @@ def create_genres(request):
 
 
 def create_movies(request):
-    for old in Movie.objects.all() :
-        old.delete()
 
     API_KEY = config('API_KEY')
-    URL = f"https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}&language=ko-KR&page="
+    URL = f"https://api.themoviedb.org/3/movie/now_playing?api_key={API_KEY}&language=ko-KR&page="
     # for pageNum in range(1, 10):
     for pageNum in range(1, 2):
         res = requests.get(URL + str(pageNum)).json()
@@ -94,28 +92,32 @@ def create_movies(request):
             poster_path = movie["poster_path"]
             genre_ids_list = movie["genre_ids"]
 
-            VIDEO_URL = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}&append_to_response=videos"
-            video_res = requests.get(VIDEO_URL).json()
-            video_result = video_res["videos"]["results"]
-            video_path = ''
-            if video_result:
-                video_path = video_result[0]['key']
+            if Movie.objects.filter(movie_id=movie_id).exists():
+                continue
 
-            movie = Movie.objects.create(
-                movie_id = movie_id,
-                title = title,
-                vote_average = vote_average,
-                vote_count = vote_count,
-                popularity = popularity,
-                release_date = release_date,
-                overview = overview,
-                poster_path = poster_path,
-                video_path = video_path
-            )
+            else:
+                VIDEO_URL = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}&append_to_response=videos"
+                video_res = requests.get(VIDEO_URL).json()
+                video_result = video_res["videos"]["results"]
+                video_path = ''
+                if video_result:
+                    video_path = video_result[0]['key']
 
-            for genre in genre_ids_list:
-                genre_object = Genre.objects.get(genre_id=genre)
-                movie.genres.add(genre_object)
+                movie = Movie.objects.create(
+                    movie_id = movie_id,
+                    title = title,
+                    vote_average = vote_average,
+                    vote_count = vote_count,
+                    popularity = popularity,
+                    release_date = release_date,
+                    overview = overview,
+                    poster_path = poster_path,
+                    video_path = video_path
+                )
+
+                for genre in genre_ids_list:
+                    genre_object = Genre.objects.get(genre_id=genre)
+                    movie.genres.add(genre_object)
 
 
     print('======================================================')
@@ -146,7 +148,7 @@ def create_movie_review(request):
 
 
 def create_movie_like(request):
-    like_movie_list = Review.objects.filter(rank__gte=4).values_list('movie_id', 'user_id')
+    like_movie_list = Review.objects.filter(rank__gte=7).values_list('movie_id', 'user_id')
     for like_movie in like_movie_list:
         movie_object = Movie.objects.get(pk=like_movie[0])
         user_object = get_user_model().objects.get(pk=like_movie[1])
