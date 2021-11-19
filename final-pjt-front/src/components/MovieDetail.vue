@@ -1,9 +1,9 @@
 <template>
-  <div class="mb-3 bgblack text-white" style="width: auto;">
+  <div class="mb-3 bgblack text-white" style="width: auto; border: 1px solid gray; border-radius: 10px; padding: 10px; ">
     <div class="col-md-4" >
       <br>
       <img :src="getImage" alt="poster"  
-      style = "margin-left: 80px;">
+      style = "margin-left: 130px;">
     </div>
     <hr>
     <iframe 
@@ -15,7 +15,7 @@
     <div class="row no-gutters" style="display: inline-block;">
       <div class="card-body">
         <br>
-        <h1 class="card-title">{{ title }}</h1>
+        <h1 class="card-title" style="font-size: 37px; font-weight: bold;">{{ title }}</h1>
         <br>
         <h5>개봉일: {{ release_date }} / 평점: {{ vote_average }}</h5>
         <br>
@@ -27,6 +27,8 @@
     <form @submit="commentSubmit">
       <div class="form-group">
         <label for="star">별점</label>
+        <br>
+        <br>
         <star-rating
           id="star" 
           v-bind:increment="0.5"
@@ -36,14 +38,15 @@
           active-color="#ff0"
           border-color="#ff0"
           v-bind:padding="8"
-          v-bind:border-width="2"
-          v-bind:star-size="50"
+          v-bind:border-width="1"
+          v-bind:star-size="30"
           @rating-selected="setRating">
         </star-rating>
         <hr>
         <label for="comment">댓글을 입력하세요.</label>
         <textarea class="form-control" id="comment" rows="2" v-model="mycomment" @keypress.enter="commentSubmit"></textarea>
       </div>
+      <br>
       <button class="btn btn-primary">제출</button>
     </form>
     <hr>
@@ -115,19 +118,19 @@ export default {
         const user = jwt_decode(token).user_id
 
         axios({
-          url: `http://127.0.0.1:8000/movies/${movie_pk}/reviews/`,
+          url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
           method: 'POST',
           data: {
             user: user,
             content: this.mycomment,
-            rating: this.myrating,
+            rank: this.myrating,
           },
           headers: {
             Authorization: `JWT ${localStorage.getItem('jwt')}`
           },
         }).then(()=>{
           axios({
-            url: `http://127.0.0.1:8000/movies/${movie_pk}/reviews/`,
+            url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
             method: 'GET',
           }).then((res)=>{
               const temp = []
@@ -149,7 +152,7 @@ export default {
     onParentDeleteComment: function() {
       const movie_pk = this.movie_pk
       axios({
-        url: `http://127.0.0.1:8000/movies/${movie_pk}/reviews/`,
+        url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
         method: 'GET',
       }).then((res)=>{
           const temp = []
@@ -167,7 +170,7 @@ export default {
   },
   computed: {
     getImage: function() {
-      return 'http://image.tmdb.org/t/p/w500'+this.poster_path
+      return 'http://image.tmdb.org/t/p/w500/'+this.poster_path
     },
     pageCount () {
       let listLeng = this.comments.length,
@@ -184,15 +187,15 @@ export default {
     },
   },
   beforeUpdate(){
-    const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
+    const API_KEY = 'AIzaSyCSuYF6TkPO5Lb5osPYMo7W6AWP9pYHS-0'
     const API_URL = 'https://www.googleapis.com/youtube/v3/search'
     const inputValue = `${this.title} review`
     console.log(inputValue)
     const params = {
       key: API_KEY,
       part: 'snippet',
-      type: 'video',
       q: inputValue,
+      type: 'video',
     }
     axios.get(API_URL, {
       params,
@@ -209,14 +212,14 @@ export default {
     })
   },
   created() {
+    console.log(movie_pk)
     const movie_pk = this.movie_pk
     
     axios({
-      url: `http://127.0.0.1:8000/movies/${movie_pk}/`,
+      url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/`,
       method: 'GET',
       
     }).then((res)=>{
-      console.log('하이')
       console.log(res.data)  
       this.id = res.data.id
       this.poster_path = res.data.poster_path
@@ -228,7 +231,7 @@ export default {
       console.error(err)
     })
     axios({
-      url: `http://127.0.0.1:8000/movies/${movie_pk}/reviews/`,
+      url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/reviews/`,
       method: 'GET',
     }).then((res)=>{
         const temp = []

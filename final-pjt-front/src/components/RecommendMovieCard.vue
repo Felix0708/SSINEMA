@@ -1,7 +1,9 @@
 <template>
   <swiper-slide>
     <div class="card bgblack" style="width: 15rem;" @click=getMovieDetail()>
-      <div class="card-img"><img  :src="getImage" class="card-img-top" alt=""></div>
+      <div class="card-img">
+        <img  :src="getImage" class="card-img-top" alt="poster">
+      </div>
       
       <div class="card-body">
         <span class="card-title" v-for="(item,idx) in getTitle" :key="idx"><b>{{ item }}</b></span>
@@ -40,11 +42,10 @@ export default {
   },
   computed: {
     getImage: function() {
-      return 'http://image.tmdb.org/t/p/w185'+this.movie.poster_path
+      return 'http://image.tmdb.org/t/p/w185' + this.movie.poster_path
     },
     getTitle: function() {
       const t = this.movie.title
-
       const temp = t.split(' ')
 
       let res = []

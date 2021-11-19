@@ -25,7 +25,7 @@
       :title="RomanceTitle"
     />
 
-    <!-- <div @mouseover = "btnOn" @mouseleave= "btnOff">
+    <div @mouseover = "btnOn" @mouseleave= "btnOff">
       <h4 
       v-if="forusermovies.length !== 0" 
       class='text-left ml-3'>
@@ -54,7 +54,7 @@
         >
         </div>
       </swiper>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -102,24 +102,24 @@ export default {
     }
   },
   methods: {
-    // btnOn(){
-    //   this.buttonOn = true
-    // },
-    // btnOff(){
-    //   this.buttonOn = false
-    // },
-    // Recprev(){
-    //   for (let i = 0; i < 5; i++){
-    //     this.$refs.rec.$swiper.slidePrev()
-    //   }
-    //   this.$refs.rec.$swiper.slidePrev()
-    // },
-    // Recnext(){
-    //   for (let i = 0; i < 5; i++){
-    //     this.$refs.rec.$swiper.slideNext()
-    //   }
-    //   this.$refs.rec.$swiper.slideNext()
-    // },
+    btnOn(){
+      this.buttonOn = true
+    },
+    btnOff(){
+      this.buttonOn = false
+    },
+    Recprev(){
+      for (let i = 0; i < 5; i++){
+        this.$refs.rec.$swiper.slidePrev()
+      }
+      this.$refs.rec.$swiper.slidePrev()
+    },
+    Recnext(){
+      for (let i = 0; i < 5; i++){
+        this.$refs.rec.$swiper.slideNext()
+      }
+      this.$refs.rec.$swiper.slideNext()
+    },
   },
   
   created() {
@@ -147,6 +147,42 @@ export default {
         console.error(err)
       }),
       //끝
+
+      // // 유저가 평점 잘 준 영화와 비슷한 영화, DB에 저장까지
+      // axios({
+      //   url:`http://127.0.0.1:8000/api/v1/accounts/${user}/recommend/`,
+      //   method: 'GET',
+      // }).then((res)=> {
+      //   console.log(res.data)
+      //   const movieId = res.data.fav_movie
+      //   axios({
+      //     url:`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=a03503b78be406a84d592df5327b4dbd&language=ko-KR&page=1`,
+      //     method: 'GET'
+      //   }).then((res)=>{
+      //   const tmp = []
+      //   console.log('resdata',res.data)
+      //   res.data.results.forEach(function(element){
+      //     tmp.push(element)
+      //   })
+      // this.forusermovies = tmp
+      // axios({
+      //   url: 'http://127.0.0.1:8000/movies/forUserMovieSave/ ',
+      //   method: 'POST',
+      //   data: {
+      //     forusermovies:this.forusermovies,
+      //   },
+      //   headers: {
+      //     Authorization: `JWT ${localStorage.getItem('jwt')}`
+      //   },
+      // }).then(()=>{
+      //   console.log('취향저격','DB에 저장')
+      // }).catch((err)=>{
+      //   console.error(err)
+      // })
+      //   // console.log(this.forusermovies)
+      // })
+      // })
+      // //끝
 
       //상영중영화
       axios({

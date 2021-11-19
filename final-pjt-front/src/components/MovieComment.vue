@@ -28,7 +28,7 @@
 <script>
 import axios from 'axios'
 import StarRating from 'vue-star-rating'
-import jwt_decode from 'jwt-decode'
+// import jwt_decode from 'jwt-decode'
 export default {
   components: {
     StarRating
@@ -37,7 +37,6 @@ export default {
     return {
       getName: '',
       currentName: '',
-      
     }
   },
   props: {
@@ -49,7 +48,7 @@ export default {
       return this.comment.content
     },
     getRating() {
-      return this.comment.rating / 2
+      return this.comment.rank / 2
     },
   },
   methods: {
@@ -57,7 +56,7 @@ export default {
       event.preventDefault()
       const review_pk = this.comment.id
       axios({
-        url: `http://127.0.0.1:8000/movies/${review_pk}/review_delete/` ,
+        url: `http://127.0.0.1:8000/api/v1/movies/${review_pk}/review_delete/` ,
         method: 'DELETE'
       }).then(()=>{
         this.$emit('onParentDeleteComment')
@@ -68,19 +67,21 @@ export default {
   },
   created() {
     console.log(this.comment)
-    const userid = this.comment.user
-    axios({
-      url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
-      method: 'GET',
-    }).then((res)=>{
-      this.getName = res.data.username
-    }).catch((err)=>{
-      console.error(err)
-    })
-    const token = localStorage.getItem('jwt')
-    // console.log(jwt_decode(token))
-    const username = jwt_decode(token).username
-    this.currentName = username
+    const userid = this.comment.username
+    this.getName = userid
+    // axios({
+    //   url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
+    //   method: 'GET',
+    // }).then((res)=>{
+    //   // console.log(res)
+    //   this.getName = res.data.username
+    // }).catch((err)=>{
+    //   console.error(err)
+    // })
+    // const token = localStorage.getItem('jwt')
+    // // console.log(jwt_decode(token))
+    // const username = jwt_decode(token).username
+    // this.currentName = username
   }
 }
 </script>
