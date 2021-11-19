@@ -1,9 +1,10 @@
 import requests
 from django.shortcuts import render
 
-# Create your views here.
-from django.shortcuts import render
+from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 from django.contrib.auth import get_user_model
 from articles.models import Article, Comment
@@ -15,19 +16,24 @@ from decouple import config
 
 import datetime
 
-# Create your views here.
 
+# Create your views here.
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def create_user(request):
     fake = Faker('ko_KR')
 
-    for f in range(10):
+    for f in range(1, 2):
         get_user_model().objects.create(
             username=fake.name(), 
             password='abc',
             email=fake.email())
-    return Response('testUser')
+
+    return Response('complete_user')
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def create_article(request):
     fake = Faker('ko_KR')
     userList = get_user_model().objects.all()
@@ -39,9 +45,11 @@ def create_article(request):
 
         like_user = get_user_model().objects.get(pk=f+1)
         article.like_users.add(like_user)
-    return Response('testArticle')
+    return Response('complete_article')
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def create_article_comment(request):
     fake = Faker('ko_KR')
     userList = get_user_model().objects.all()
@@ -53,9 +61,11 @@ def create_article_comment(request):
             article = articleList[f],
             content = fake.sentence())
 
-    return Response('testArticleComment')
+    return Response('complete_article_comment')
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def create_genres(request):
     API_KEY = config('API_KEY')
     URL = f"https://api.themoviedb.org/3/genre/movie/list?api_key={API_KEY}&language=ko-KR"
@@ -69,9 +79,11 @@ def create_genres(request):
         )
         # genre_id = genre['id']
         # name = genre['name']
-    return Response('testGenre')
+    return Response('complete_movie_genre')
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def create_movies(request):
 
     API_KEY = config('API_KEY')
@@ -123,9 +135,11 @@ def create_movies(request):
     print('======================================================')
     print('complete')
     print('======================================================')
-    return Response('testMovie')
+    return Response('complete_movie')
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def create_movie_review(request):
     for old in Review.objects.all() :
         old.delete()
@@ -144,14 +158,17 @@ def create_movie_review(request):
     print('======================================================')
     print('complete')
     print('======================================================')
-    return Response('testMovieReview')
+    return Response('complete_movie_review')
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def create_movie_like(request):
     like_movie_list = Review.objects.filter(rank__gte=7).values_list('movie_id', 'user_id')
     for like_movie in like_movie_list:
         movie_object = Movie.objects.get(pk=like_movie[0])
         user_object = get_user_model().objects.get(pk=like_movie[1])
         movie_object.like_users.add(user_object)
+    return Response('complete_movie_like')
 
 

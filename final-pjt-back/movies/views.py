@@ -7,8 +7,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.contrib.auth import get_user_model
 
-from .models import Movie, Review
+from .models import Genre, Movie, Review
 from .serializers import MovieSerializer, ReviewSerializer
+
+from django.db.models import Q
+from collections import Counter
 
 # Create your views here.
 @api_view(['GET'])
@@ -19,14 +22,26 @@ def movielist(request):
     toprate_movies = Movie.objects.order_by('vote_average').reverse()[:50]
     mostpop_movies = Movie.objects.order_by('popularity').reverse()[:50]
 
-    latest_serializer = MovieSerializer(latest_movies,many=True)
-    toprate_serializer = MovieSerializer(toprate_movies,many=True)
-    mostpop_serializer = MovieSerializer(mostpop_movies,many=True)
+    like_movie = Movie.objects.filter(like_users=request.user.pk)
+
+    genre_list = []
+    for movie in like_movie:
+        genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
+    best_genre_pk = Counter(genre_list).most_common(1)[0][0]
+    second_genre_pk = Counter(genre_list).most_common(2)[0][0]
+
+    best_genre_movies = Movie.objects.filter(Q(genres=best_genre_pk) | Q(genres=second_genre_pk))
+
+    latest_serializer = MovieSerializer(latest_movies, many=True)
+    toprate_serializer = MovieSerializer(toprate_movies, many=True)
+    mostpop_serializer = MovieSerializer(mostpop_movies, many=True)
+    best_genre_serializer = MovieSerializer(best_genre_movies, many=True)
 
     context = {
         "latest_movies": latest_serializer.data,
         "toprate_movies": toprate_serializer.data,
-        "mostpop_serializer": mostpop_serializer.data
+        "mostpop_movies": mostpop_serializer.data,
+        "best_genre_movies": best_genre_serializer.data,
     }
 
     return Response(context)
@@ -80,11 +95,10 @@ def review_list_or_create(request, movie_id):
 @api_view(['GET', 'DELETE'])
 @permission_classes([AllowAny])
 def review_detail_or_delete(request, review_pk, movie_id):
-    review = get_object_or_404(Review, review_pk=review_pk)
+    review = get_object_or_404(Review, pk=review_pk)
     movie = get_object_or_404(Movie, movie_id=movie_id)
 
     def review_detail():
-        
         review.save()
         serializer = ReviewSerializer(review)
 
@@ -108,12 +122,12 @@ def review_detail_or_delete(request, review_pk, movie_id):
         return delete_review()
 
 
-# @api_view(['GET'])
-# @permission_classes([AllowAny])
-# def topRated(request):
-#     movies = Movie.objects.all().order_by('-vote_average')[:20]
-#     serializer = MovieSerializer(movies, many=True)
-#     return Response(serializer.data)
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def topRated(request):
+    movies = Movie.objects.all().order_by('-vote_average')[:20]
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
 
 
 #
