@@ -45,7 +45,7 @@ class TMDBHelper:
                     except:
                         continue
 
-                    movie = Movie.objects.create(
+                    removie = Movie.objects.create(
                         movie_id = movie_id,
                         title = title,
                         vote_average = vote_average,
@@ -59,6 +59,6 @@ class TMDBHelper:
 
                     for genre in genre_ids_list:
                         genre_object = Genre.objects.get(genre_id=genre)
-                        movie.genres.add(genre_object)
+                        removie.genres.add(genre_object)
 
         return print('complete_movie_saved')
