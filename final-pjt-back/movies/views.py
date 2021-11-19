@@ -9,6 +9,8 @@ from django.contrib.auth import get_user_model
 
 from .models import Genre, Movie, Review
 from .serializers import MovieSerializer, ReviewSerializer
+from .moviedummy import TMDBHelper
+from decouple import config
 
 from django.db.models import Q
 from collections import Counter
@@ -17,6 +19,9 @@ from collections import Counter
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def movielist(request):
+    # DB 업데이트
+    TMDBHelper().create_movies()
+
     # movies = Movie.objects.all()
     latest_movies = Movie.objects.order_by('release_date').reverse()[:50]
     toprate_movies = Movie.objects.order_by('vote_average').reverse()[:50]
@@ -32,16 +37,20 @@ def movielist(request):
 
     best_genre_movies = Movie.objects.filter(Q(genres=best_genre_pk) | Q(genres=second_genre_pk))
 
+    random_movie = Movie.objects.order_by('?')[0]
+
     latest_serializer = MovieSerializer(latest_movies, many=True)
     toprate_serializer = MovieSerializer(toprate_movies, many=True)
     mostpop_serializer = MovieSerializer(mostpop_movies, many=True)
     best_genre_serializer = MovieSerializer(best_genre_movies, many=True)
+    random_serializer = MovieSerializer(random_movie)
 
     context = {
         "latest_movies": latest_serializer.data,
         "toprate_movies": toprate_serializer.data,
         "mostpop_movies": mostpop_serializer.data,
         "best_genre_movies": best_genre_serializer.data,
+        "random_movie": random_serializer.data,
     }
 
     return Response(context)
@@ -99,6 +108,14 @@ def review_detail_or_delete(request, review_pk, movie_id):
     movie = get_object_or_404(Movie, movie_id=movie_id)
 
     def review_detail():
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        print(request)
+        print(request.user)
+
+        print(request.user.pk)
+        print(request.user.id)
+        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
         review.save()
         serializer = ReviewSerializer(review)
 

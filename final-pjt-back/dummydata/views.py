@@ -87,9 +87,9 @@ def create_genres(request):
 def create_movies(request):
 
     API_KEY = config('API_KEY')
-    URL = f"https://api.themoviedb.org/3/movie/now_playing?api_key={API_KEY}&language=ko-KR&page="
-    # for pageNum in range(1, 10):
-    for pageNum in range(1, 2):
+    URL = f"https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}&language=ko-KR&page="
+    for pageNum in range(1, 52):
+    # for pageNum in range(1, 2):
         res = requests.get(URL + str(pageNum)).json()
 
         movie_list = res['results']
@@ -99,7 +99,6 @@ def create_movies(request):
             vote_average = movie['vote_average']
             vote_count = movie['vote_count']
             popularity = movie['popularity']      
-            release_date = datetime.datetime.strptime(movie["release_date"], "%Y-%m-%d").date()
             overview = movie["overview"]
             poster_path = movie["poster_path"]
             genre_ids_list = movie["genre_ids"]
@@ -108,12 +107,18 @@ def create_movies(request):
                 continue
 
             else:
-                VIDEO_URL = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}&append_to_response=videos"
-                video_res = requests.get(VIDEO_URL).json()
-                video_result = video_res["videos"]["results"]
-                video_path = ''
-                if video_result:
-                    video_path = video_result[0]['key']
+                try:
+                    release_date = datetime.datetime.strptime(movie["release_date"], "%Y-%m-%d").date()
+                    VIDEO_URL = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}&append_to_response=videos"
+                    video_res = requests.get(VIDEO_URL).json()
+                    video_result = video_res["videos"]["results"]
+                    video_path = ''
+                    if video_result:
+                        video_path = video_result[0]['key']
+                    if not release_date:
+                        continue
+                except:
+                    continue
 
                 movie = Movie.objects.create(
                     movie_id = movie_id,
@@ -136,7 +141,6 @@ def create_movies(request):
     print('complete')
     print('======================================================')
     return Response('complete_movie')
-
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
