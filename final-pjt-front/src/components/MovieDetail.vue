@@ -2,7 +2,7 @@
   <div class="mb-3 bgblack text-white" style="width: auto;">
     <div class="col-md-4" >
       <br>
-      <img :src="getImage" alt=""  
+      <img :src="getImage" alt="poster"  
       style = "margin-left: 80px;">
     </div>
     <hr>
@@ -184,7 +184,7 @@ export default {
     },
   },
   beforeUpdate(){
-    const API_KEY = 'AIzaSyCXIrZdWD7A8aaMCRE-WMaRv0Pv6-qnpKo'
+    const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
     const API_URL = 'https://www.googleapis.com/youtube/v3/search'
     const inputValue = `${this.title} review`
     console.log(inputValue)
@@ -216,6 +216,7 @@ export default {
       method: 'GET',
       
     }).then((res)=>{
+      console.log('하이')
       console.log(res.data)  
       this.id = res.data.id
       this.poster_path = res.data.poster_path
