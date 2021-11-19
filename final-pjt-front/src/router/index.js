@@ -5,6 +5,7 @@ import Login from '@/views/Login'
 import Signup from '@/views/Signup'
 import MainPage from '@/views/MainPage'
 import Profile from '@/views/Profile'
+import Community from '@/views/Community'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+  },
+  {
+    path: '/community',
+    name: 'Community',
+    component: Community,
   },
 ]
 

@@ -1,6 +1,6 @@
 <template>
   <div @mouseover = "btnOn" @mouseleave = "btnOff">
-    <h4 class='text-left ml-3'>{{ title }}</h4>
+    <h4 class='text-left ml-3' style="color: white;">{{ title }}</h4>
     <swiper :options = "swiperOptions" ref = "slider" >
       <RecommendMovieCard
         v-for="(movie, idx) in movies"
@@ -76,4 +76,5 @@ export default {
 </script>
 
 <style>
+
 </style>
