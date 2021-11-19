@@ -1,10 +1,10 @@
 <template>
   <swiper-slide>
-    <div class="card bgblack" style="width: 18rem;" @click=getMovieDetail()>
+    <div class="card bgblack" style="width: 15rem;" @click=getMovieDetail()>
       <div class="card-img"><img  :src="getImage" class="card-img-top" alt=""></div>
       
       <div class="card-body">
-        <h5 class="card-title" v-for="(item,idx) in getTitle" :key="idx"><b>{{ item }}</b></h5>
+        <span class="card-title" v-for="(item,idx) in getTitle" :key="idx"><b>{{ item }}</b></span>
       </div>
       
       <b-modal 
@@ -76,11 +76,24 @@ export default {
 
 <style>
 .bgblack {
-  background-color: black;
+  background-color: black !important;
 }
+
 .modal_content
 .modal_header
 .modal_body {
   background-color: black;
+}
+</style>
+
+<style scoped>
+span {
+  color: white;
+  font-size: 14px;
+}
+
+img {
+  width: 100%;
+  height: 120%;
 }
 </style>

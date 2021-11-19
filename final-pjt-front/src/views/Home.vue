@@ -5,23 +5,57 @@
     <br>
     <br>
     <Sliders
-      :movies="nowmovies"
-      :title="nowTitle"
+      :movies="topRatedmovies"
+      :title="topRatedTitle"
     />
     <Sliders
-      :movies="horrormovies"
-      :title="horrorTitle"
+      :movies="nowmovies"
+      :title="nowTitle"
     />
     <Sliders
       :movies="SFmovies"
       :title="SFTitle"
     />
     <Sliders
+      :movies="horrormovies"
+      :title="horrorTitle"
+    />
+    <Sliders
       :movies="Romancemovies"
       :title="RomanceTitle"
     />
+
+    <!-- <div @mouseover = "btnOn" @mouseleave= "btnOff">
+      <h4 
+      v-if="forusermovies.length !== 0" 
+      class='text-left ml-3'>
+      {{ username }}님의 취향저격 베스트 컨텐츠
+      </h4>
+      <swiper :options = "swiperOptions" ref = "rec">
+        <ForUserMovie
+          v-for="(forusermovie, idx) in forusermovies"
+          :key="idx"
+          :forusermovie="forusermovie"
+          class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+        />
+        <div class="swiper-pagination" slot="pagination"></div>
+        <div 
+          v-if="buttonOn"
+          class="swiper-button-prev swiper-button-white" 
+          slot="button-prev" 
+          @click = "Recprev"
+        >
+        </div>
+        <div 
+        v-if="buttonOn"
+        class="swiper-button-next swiper-button-white" 
+        slot="button-next" 
+        @click = "Recnext"
+        >
+        </div>
+      </swiper>
+    </div> -->
   </div>
-  
 </template>
 
 <script>
@@ -35,14 +69,18 @@ export default {
   },
   data() {
     return {
-
+      buttonOn : true,
+      //얘는 특별관리
+      forusermovies:[],
       //배열들
+      topRatedmovies:[],
       nowmovies:[],
       horrormovies:[],
       SFmovies:[],
       Romancemovies:[],
 
       //제목들
+      topRatedTitle: '평점이 높은 영화',
       nowTitle:'현재 상영중인 영화',
       SFTitle:'SF 영화',
       RomanceTitle:'로맨스 영화',
@@ -50,9 +88,38 @@ export default {
 
       //유저이름
       username:'',
+
+      //스와이퍼 옵션
+      swiperOptions: {
+        slidesPerView: 5,
+        spaceBetween: 100,
+        loop: true,
+        navigation: {
+          nextEl: '#button-next-relacionados',
+          prevEl: '#button-prev-relacionados'
+        },
+      }
     }
   },
   methods: {
+    // btnOn(){
+    //   this.buttonOn = true
+    // },
+    // btnOff(){
+    //   this.buttonOn = false
+    // },
+    // Recprev(){
+    //   for (let i = 0; i < 5; i++){
+    //     this.$refs.rec.$swiper.slidePrev()
+    //   }
+    //   this.$refs.rec.$swiper.slidePrev()
+    // },
+    // Recnext(){
+    //   for (let i = 0; i < 5; i++){
+    //     this.$refs.rec.$swiper.slideNext()
+    //   }
+    //   this.$refs.rec.$swiper.slideNext()
+    // },
   },
   
   created() {
@@ -62,6 +129,23 @@ export default {
       // console.log(jwt_decode(token))
       // const user = jwt_decode(token).user_id
       // this.username=jwt_decode(token).username
+      //끝
+
+      //평점 높은 영화 : 차라리 toprated로 바꾸자.
+      axios({
+        url:'http://127.0.0.1:8000/api/v1/movies/topRated/',
+        method:'GET',
+      }).then((res)=>{
+        // console.log(res)
+        const temp=[]
+        res.data.forEach(function(element){
+          temp.push(element)
+          // console.log(temp)
+        })
+        this.topRatedmovies=temp 
+      }).catch((err)=>{
+        console.error(err)
+      }),
       //끝
 
       //상영중영화
@@ -82,7 +166,7 @@ export default {
       })
       this.nowmovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/movies/forUserMovieSave/',
+          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/',
           method: 'POST',
           data: {
             forusermovies:this.nowmovies,
@@ -119,7 +203,7 @@ export default {
       })
       this.SFmovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/movies/forUserMovieSave/ ',
+          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/ ',
           method: 'POST',
           data: {
             forusermovies:this.SFmovies,
@@ -154,7 +238,7 @@ export default {
       })
       this.Romancemovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/movies/forUserMovieSave/ ',
+          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/ ',
           method: 'POST',
           data: {
             forusermovies:this.Romancemovies,
@@ -189,7 +273,7 @@ export default {
       })
       this.horrormovies = tmp
       axios({
-          url: 'http://127.0.0.1:8000/movies/forUserMovieSave/ ',
+          url: 'http://127.0.0.1:8000/api/v1/movies/forUserMovieSave/ ',
           method: 'POST',
           data: {
             forusermovies:this.horrormovies,
