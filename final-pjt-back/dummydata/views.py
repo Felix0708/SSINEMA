@@ -78,7 +78,8 @@ def create_movies(request):
 
     API_KEY = config('API_KEY')
     URL = f"https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}&language=ko-KR&page="
-    for pageNum in range(1, 11):
+    # for pageNum in range(1, 10):
+    for pageNum in range(1, 2):
         res = requests.get(URL + str(pageNum)).json()
 
         movie_list = res['results']

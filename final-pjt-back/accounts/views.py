@@ -8,6 +8,9 @@ from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 
+from movies.models import Movie
+from movies.serializers import MovieSerializer
+
 # Create your views here.
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -29,20 +32,8 @@ def signup(request):
     # password는 직렬화 과정에는 포함 되지만 → 표현(response)할 때는 나타나지 않음
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-# @api_view(['GET'])
-# @permission_classes([AllowAny])
-# def getName(request, user_pk):
-#     User = get_user_model()
-#     Users = User.objects.all()
-#     # print(User.objects.all())
-#     # print(user_pk)
-#     user = get_object_or_404(Users,pk=user_pk)
-#     # print(user)
-#     serializer = UserSerializer(user)
-#     return Response(serializer.data)
-
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
     context = {
@@ -55,8 +46,18 @@ def profile(request, username):
     return JsonResponse(context)
 
 
-@api_view(['POST'])
+
+@api_view(['GET'])
 @permission_classes([AllowAny])
+def my_movie(request, username):
+    like_movie = Movie.objects.filter(like_users=request.user.pk)
+    serializer = MovieSerializer(like_movie, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def follow(request, username):
     me = request.user
     you = get_object_or_404(get_user_model(), username=username)

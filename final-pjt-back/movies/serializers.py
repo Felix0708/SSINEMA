@@ -1,19 +1,17 @@
 from rest_framework import serializers
-from .models import Movie,Review
+from .models import Movie, Review
+from accounts.serializers import UserDetailSerializer
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
 
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = ('id','content', 'rank','user')
-        read_only_fields = ('movie',)
 
-class ReviewDetailSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserDetailSerializer(read_only=True)
     class Meta:
         model = Review
-        fields = ('id','content', 'rank','username')
-        read_only_fields = ('movie',)
+        exclude =('updated_at',)
+        read_only_fields = ('movie', 'user')
+        # ('id','content', 'rank','username')
