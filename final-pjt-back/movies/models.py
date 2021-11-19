@@ -13,13 +13,13 @@ class Genre(models.Model):
 class Movie(models.Model):
     movie_id = models.IntegerField()
     title = models.CharField(max_length=100)
-    vote_average = models.FloatField()
-    vote_count = models.IntegerField()
-    popularity = models.FloatField()
-    release_date = models.DateField()
-    overview = models.TextField()
-    video_path = models.CharField(max_length=200)
-    poster_path = models.CharField(max_length=200)
+    vote_average = models.FloatField(null=True)
+    vote_count = models.IntegerField(null=True)
+    popularity = models.FloatField(null=True)
+    release_date = models.DateField(null=True)
+    overview = models.TextField(null=True)
+    video_path = models.CharField(max_length=200, null=True)
+    poster_path = models.CharField(max_length=200, null=True)
     like_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name = 'favorite_movies',
@@ -47,7 +47,6 @@ class Review(models.Model):
     # rank = models.IntegerField(choices=RANKS, default=5)
     rank = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.pk}: {self.content}'
