@@ -34,7 +34,9 @@ INSTALLED_APPS = [
     'accounts',
     'articles',
     'movies',
-    'dummydata',    
+    'category',
+    'dummydata',
+        
     'imagekit',
     'django_extensions',  
     'django_seed',    
