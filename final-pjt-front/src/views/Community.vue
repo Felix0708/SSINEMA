@@ -25,7 +25,7 @@
     <p>전체</p>
     <br>
     <form @submit="searchSome" class="form-inline ml-auto mr-2 d-flex mb-1">
-      <select v-model="selected" name="kind" class='custom-select bg-light' style="margin: 0 2px">
+      <select v-model="selected" name="kind" class='form-select bg-light' style="margin: 0 2px; width: auto;">
         <option value="title" selected>제목</option>
         <option value="person">글쓴이</option>
       </select>
@@ -122,11 +122,14 @@ export default {
         })
       } else {
         this.articles.forEach((element)=>{
-          // console.log(element.title)
+          // console.log(element.title)+
           const userid = element.user
           axios({
             url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
             method: 'GET',
+            headers: {
+              Authorization: `JWT ${localStorage.getItem('jwt')}`
+            },
           }).then((res)=>{
             // console.log(res)
             const username = res.data.username

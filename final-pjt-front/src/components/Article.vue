@@ -57,14 +57,14 @@ export default {
       return this.article.title
     },
     getRead() {
-      return this.article.read
+      return this.article.view_count
     },
     getComments_cnt(){
-      return this.article.comments_cnt
+      return this.article.comment_count
     }
   },
   created() {
-    // console.log(this.article)
+    console.log(this.article)
     const userid = this.article.user
 
     axios({

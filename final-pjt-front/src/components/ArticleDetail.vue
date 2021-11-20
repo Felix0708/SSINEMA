@@ -2,35 +2,35 @@
   <div class="container articledetail" style="width: auto;">
     <div class="card" style="background-color: black">
       <div class="card-header">
-        <div class='row'>
-          <p class="my-2 ml-4"><b>{{ writer }}</b>님의 글</p>
-          <p class="my-2 ml-auto mr-4" style="display: inline;">{{getDate}} {{ getTime }}</p>
+        <div class='d-flex'>
+          <p class="mt-2 me-5 ml-4"><b>{{ writer }}</b>님의 글</p>
+          <p class="mt-2 ms-5 ml-auto mr-4" style="display: inline;">{{getDate}} {{ getTime }}</p>
         </div>
+        <p class="card-title mt-2" style="text-align: left;"><b>{{ title }}</b></p>
       </div>
+      <hr style="margin: 0;">
       <div class="card-body">
-        <h3 class="card-title" style="text-align: left;"><b>{{ title }}</b></h3>
         <br>
-        <p class="card-text" style="text-align: left;">{{ content }}</p>
+        <p class="card-text" style="text-align: left; margin: 0;">{{ content }}</p>
+        <br>
       </div>
       <div class="card-footer text-muted">
         <div v-if="writer == currentName">
-          <button class="btn btn-success" @click="updateArticle">Update</button>
+          <button class="btn btn-success me-3" @click="updateArticle">Update</button>
           <button class="btn btn-danger ml-4" style="display: inline-block;" @click="deleteArticle">Delete</button>
         </div>
       </div>
     </div>
-    <br>
     <hr>
     <form @submit="commentSubmit">
-      <div class="form-group" >
-        <label for="comment">댓글을 입력하세요.</label>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="margin-bottom:5px;" for="comment">댓글을 입력하세요.</label>
         <textarea class="form-control" style="background-color: black color:white" id="comment" rows="2" v-model="mycomment" @keypress.enter="commentSubmit"></textarea>
       </div>
       <button class="btn btn-primary">Submit</button>
     </form>
     <hr>
     <h3><b>Comments</b></h3>
-    
     <Comment 
       v-for="(comment, idx) in paginatedData"
       :key="idx"
@@ -55,6 +55,7 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import Comment from '../components/Comment.vue'
 export default {
+  name: 'ArticleDetail',
   components: {
     Comment
   },
@@ -89,6 +90,7 @@ export default {
     commentSubmit(event) {
       event.preventDefault()
       if (this.mycomment.length !== 0) {
+        // console.log(this.article_pk)
         const article_pk = this.article_pk
         const token = localStorage.getItem('jwt')
         // console.log(jwt_decode(token))
@@ -104,11 +106,14 @@ export default {
           headers: {
             Authorization: `JWT ${localStorage.getItem('jwt')}`
           },
-        }).then(()=>{
-          // console.log(res.data)
+        }).then((res)=>{
+          console.log(res.data)
           axios({
             url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
             method: 'GET',
+            headers: {
+              Authorization: `JWT ${localStorage.getItem('jwt')}`
+            },
           }).then((res)=>{
               const temp = []
               res.data.forEach((element)=>{
@@ -131,6 +136,9 @@ export default {
       axios({
         url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
         method: 'GET',
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`
+        },
       }).then((res)=>{
           const temp = []
           res.data.forEach((element)=>{
@@ -151,14 +159,24 @@ export default {
           Authorization: `JWT ${localStorage.getItem('jwt')}`
         },
       }).then(()=>{
-        this.$router.push({name: 'Community'})
+        // this.$router.push({name: 'Community'})
+        this.$router.go(this.$router.currentRoute)
       }).catch((err)=>{
         console.error(err)
       })
     },
     updateArticle() {
       console.log(this.article_pk)
-      this.$router.push({name: 'UpdateArticle', params: {article_pk: this.article_pk, currentTitle: this.title, currentContent: this.content}})
+      console.log(this.title)
+      console.log(this.content)
+      this.$router.push({
+        name: 'UpdateArticle',
+        params: {
+          article_pk: this.article_pk, 
+          currentTitle: this.title, 
+          currentContent: this.content,
+        },
+      })
     }
   },
   computed: {
@@ -192,7 +210,7 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      // console.log(res.data)
+      console.log(res.data)
       this.title = res.data.title
       this.content = res.data.content
       this.created_at = res.data.created_at
@@ -203,7 +221,11 @@ export default {
     axios({
       url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
       method: 'GET',
+      headers: {
+        Authorization: `JWT ${localStorage.getItem('jwt')}`
+      },
     }).then((res)=>{
+        console.log(res)
         const temp = []
         res.data.forEach((element)=>{
           temp.push(element)
@@ -216,15 +238,18 @@ export default {
     // console.log(jwt_decode(token))
     const username = jwt_decode(token).username
     this.currentName = username
-    //조회수 추가
-    axios({
-      url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/read/`,
-      method: 'POST',
-    }).then((res)=>{
-      console.log(res)
-    }).catch((err)=>{
-      console.error(err)
-    })
+    // //조회수 추가
+    // axios({
+    //   url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/read/`,
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `JWT ${localStorage.getItem('jwt')}`
+    //   },
+    // }).then((res)=>{
+    //   console.log(res)
+    // }).catch((err)=>{
+    //   console.error(err)
+    // })
   },
 }
 </script>
@@ -234,5 +259,7 @@ export default {
     background-color: black;
     height: 800px;
     color: white;
+    border: 1px solid white;
+    border-radius: 10px;
   }
 </style>
