@@ -32,6 +32,17 @@ def signup(request):
     # password는 직렬화 과정에는 포함 되지만 → 표현(response)할 때는 나타나지 않음
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def takename(request, user_pk):
+    User = get_user_model()
+    Users = User.objects.all()
+    user = get_object_or_404(Users,pk=user_pk)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def profile(request, username):

@@ -9,51 +9,50 @@ from django.contrib.auth import get_user_model
 
 from .models import Genre, Movie, Review
 from .serializers import MovieSerializer, ReviewSerializer
-from .moviedummy import TMDBHelper
 from decouple import config
 
 from django.db.models import Q
 from collections import Counter
 
 # Create your views here.
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def movielist(request):
-    # DB 업데이트
-    TMDBHelper().create_movies()
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def movielist(request):
+#     # DB 업데이트
+#     TMDBHelper().create_movies()
 
-    # movies = Movie.objects.all()
-    latest_movies = Movie.objects.order_by('release_date').reverse()[:50]
-    toprate_movies = Movie.objects.order_by('vote_average').reverse()[:50]
-    mostpop_movies = Movie.objects.order_by('popularity').reverse()[:50]
+#     # movies = Movie.objects.all()
+#     latest_movies = Movie.objects.order_by('release_date').reverse()[:50]
+#     toprate_movies = Movie.objects.order_by('vote_average').reverse()[:50]
+#     mostpop_movies = Movie.objects.order_by('popularity').reverse()[:50]
 
-    like_movie = Movie.objects.filter(like_users=request.user.pk)
+#     like_movie = Movie.objects.filter(like_users=request.user.pk)
 
-    genre_list = []
-    for movie in like_movie:
-        genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
-    best_genre_pk = Counter(genre_list).most_common(1)[0][0]
-    second_genre_pk = Counter(genre_list).most_common(2)[0][0]
+#     genre_list = []
+#     for movie in like_movie:
+#         genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
+#     best_genre_pk = Counter(genre_list).most_common(1)[0][0]
+#     second_genre_pk = Counter(genre_list).most_common(2)[0][0]
 
-    best_genre_movies = Movie.objects.filter(Q(genres=best_genre_pk) | Q(genres=second_genre_pk))
+#     best_genre_movies = Movie.objects.filter(Q(genres=best_genre_pk) | Q(genres=second_genre_pk))
 
-    random_movie = Movie.objects.order_by('?')[0]
+#     random_movie = Movie.objects.order_by('?')[0]
 
-    latest_serializer = MovieSerializer(latest_movies, many=True)
-    toprate_serializer = MovieSerializer(toprate_movies, many=True)
-    mostpop_serializer = MovieSerializer(mostpop_movies, many=True)
-    best_genre_serializer = MovieSerializer(best_genre_movies, many=True)
-    random_serializer = MovieSerializer(random_movie)
+#     latest_serializer = MovieSerializer(latest_movies, many=True)
+#     toprate_serializer = MovieSerializer(toprate_movies, many=True)
+#     mostpop_serializer = MovieSerializer(mostpop_movies, many=True)
+#     best_genre_serializer = MovieSerializer(best_genre_movies, many=True)
+#     random_serializer = MovieSerializer(random_movie)
 
-    context = {
-        "latest_movies": latest_serializer.data,
-        "toprate_movies": toprate_serializer.data,
-        "mostpop_movies": mostpop_serializer.data,
-        "best_genre_movies": best_genre_serializer.data,
-        "random_movie": random_serializer.data,
-    }
+#     context = {
+#         "latest_movies": latest_serializer.data,
+#         "toprate_movies": toprate_serializer.data,
+#         "mostpop_movies": mostpop_serializer.data,
+#         "best_genre_movies": best_genre_serializer.data,
+#         "random_movie": random_serializer.data,
+#     }
 
-    return Response(context)
+#     return Response(context)
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
