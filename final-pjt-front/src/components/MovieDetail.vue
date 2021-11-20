@@ -1,16 +1,16 @@
 <template>
-  <div class="mb-3 bgblack text-white" style="width: auto; border: 1px solid gray; border-radius: 10px; padding: 10px; ">
-    <div class="col-md-4" >
+  <div class="mb-3 bgblack text-white" style=" width: auto; border-radius: 10px; padding:10px">
+    <div class="col-md-4 col-sm-6 col-xs-12" >
       <br>
-      <img :src="getImage" alt="poster"  
-      style = "margin-left: 130px;">
+      <img :src="getImage" alt="poster"
+      style = "margin: 1px 130px;">
     </div>
     <hr>
     <iframe 
     v-if="videoURI" 
     :src="videoURI" 
     frameborder="0" 
-    style = "width: 700px; height: 350px">
+    style = "width: 700px; height: 350px; margin: 1px 25px;">
     </iframe>
     <div class="row no-gutters" style="display: inline-block;">
       <div class="card-body">
@@ -23,7 +23,7 @@
         <br>
       </div> 
     </div>
-    
+    <hr>
     <form @submit="commentSubmit">
       <div class="form-group">
         <label for="star">별점</label>
@@ -42,7 +42,7 @@
           v-bind:star-size="30"
           @rating-selected="setRating">
         </star-rating>
-        <hr>
+        <br>
         <label for="comment">댓글을 입력하세요.</label>
         <textarea class="form-control" id="comment" rows="2" v-model="mycomment" @keypress.enter="commentSubmit"></textarea>
       </div>
@@ -189,7 +189,7 @@ export default {
     },
   },
   beforeUpdate(){
-    const API_KEY = 'AIzaSyCSuYF6TkPO5Lb5osPYMo7W6AWP9pYHS-0'
+    const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
     const API_URL = 'https://www.googleapis.com/youtube/v3/search'
     const inputValue = `${this.title} trailer`
     console.log(inputValue)
@@ -214,7 +214,7 @@ export default {
     })
   },
   created() {
-    console.log(movie_pk)
+    console.log(this.movie_pk)
     const movie_pk = this.movie_pk
     
     axios({

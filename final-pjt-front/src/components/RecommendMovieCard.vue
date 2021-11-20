@@ -2,19 +2,18 @@
   <swiper-slide>
     <div class="card bgblack" style="width: 15rem;" @click=getMovieDetail()>
       <div class="card-img">
-        <img  :src="getImage" class="card-img-top" alt="poster">
+        <img  :src="getImage" style="width: auto 0;" class="card-img-top" alt="poster">
       </div>
       
       <div class="card-body">
         <span class="card-title" v-for="(item,idx) in getTitle" :key="idx"><b>{{ item }}</b></span>
       </div>
       
-      <b-modal 
+      <b-modal
       ref="detail" 
       size="lg" 
-      class="bg-black" 
+      class="bg-black"
       :header-bg-variant="black"
-      :body-bg-variant="black"
       :footer-bg-variant="black"
       hide-footer hide-header>
         <MovieDetail
@@ -68,7 +67,7 @@ export default {
   },
   methods: {
     getMovieDetail() {
-      console.log('TQ',this.movie.title)
+      console.log('영화 정보',this.movie.title)
       this.$refs['detail'].show()
     },
   },
@@ -90,11 +89,11 @@ export default {
 <style scoped>
 span {
   color: white;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 img {
-  width: 100%;
-  height: 120%;
+  width: 200px;
+  height: 300px;
 }
 </style>

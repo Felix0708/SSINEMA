@@ -1,6 +1,6 @@
 <template>
   <div @mouseover = "btnOn" @mouseleave = "btnOff">
-    <h4 class='text-left ml-3' style="color: white;">{{ title }}</h4>
+    <h4 class='text-left mb-3' style="color: white;">{{ title }}</h4>
     <swiper :options = "swiperOptions" ref = "slider" >
       <RecommendMovieCard
         v-for="(movie, idx) in movies"
@@ -43,7 +43,7 @@ export default {
       buttonOn : true,
       swiperOptions: {
           slidesPerView: 5,
-          spaceBetween: 100,
+          spaceBetween: 50,
           loop: true,
           navigation: {
             nextEl: '#button-next-relacionados',
