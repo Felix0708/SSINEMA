@@ -25,7 +25,7 @@
       :title="RomanceTitle"
     /> -->
 
-    <div @mouseover = "btnOn" @mouseleave= "btnOff">
+    <!-- <div @mouseover = "btnOn" @mouseleave= "btnOff">
       <h4 
       v-if="forusermovies.length !== 0" 
       class='text-left ml-3'>
@@ -54,7 +54,7 @@
         >
         </div>
       </swiper>
-    </div>
+    </div> -->
   </div>
 </template>
 

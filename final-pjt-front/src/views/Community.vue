@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <h1><b>커뮤니티</b></h1>
+    <h1 style="color:white; margin-top:20px"><b>커뮤니티</b></h1>
     <br><br>
-    <h3><b>베스트 조회수</b></h3>
+    <p>베스트 조회수</p>
     <br>
     <table class="table table-hover table-striped text-center" style="border: 2px solid">
       <thead>
@@ -22,8 +22,16 @@
       </tbody> 
     </table>
     <br><br><br>
-    <h3><b>전체</b></h3>
+    <p>전체</p>
     <br>
+    <form @submit="searchSome" class="form-inline ml-auto mr-2 d-flex mb-1">
+      <select v-model="selected" name="kind" class='custom-select bg-light' style="margin: 0 2px">
+        <option value="title" selected>제목</option>
+        <option value="person">글쓴이</option>
+      </select>
+      <input class="form-control mr-sm-2 me-1" v-model="search" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
     <table class="table table-hover table-striped text-center" style="border: 2px solid">
       <thead>
         <tr style="color:black">
@@ -41,23 +49,14 @@
         />
       </tbody> 
     </table>
-    <div class="row">
-      
-      <button class="btn btn-primary ml-4" @click="sendToCreateArticle">글쓰기</button>
-      <form @submit="searchSome" class="form-inline ml-auto mr-2">
-        <select v-model="selected" name="kind" class='mx-1 custom-select'>
-          <option value="title">제목</option>
-          <option value="person">글쓴이</option>
-        </select>
-        <input class="form-control mr-sm-2" v-model="search" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+    <div class="d-flex justify-content-center">
+      <button style="margin:0 10px 0 10px" class="btn btn-primary ml-4" @click="sendToCreateArticle">글쓰기</button>
       <form>
         <button class="btn btn-primary ml-auto mr-4" onClick="history.go(0)">Refresh</button>
       </form>
     </div>
     <p></p>
-    <div class="btn-cover">
+    <div class="btn-cover" style="color:white;">
       <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">
         이전
       </button>
@@ -201,6 +200,12 @@ export default {
 </script>
 
 <style>
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0px;
+  }
   .table {
     color: lightgray;
     
@@ -211,6 +216,11 @@ export default {
   tbody {
     cursor: pointer;
   }
+
+  select {
+    text-align: center;
+  }
+
   .btn-cover {
     margin-top: 1.5rem;
     text-align: center;

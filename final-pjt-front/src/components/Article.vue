@@ -1,7 +1,8 @@
 <template>
   <tr v-on:click="getArticleDetail()">
-    <td>{{ getTitle }}</td>
-    <td v-if="point > 600">
+    <td style="color: white;">{{ getTitle }}</td>
+    <td style="color: white;">{{ getUsername }}</td>
+    <!-- <td v-if="point > 600">
       <b style="color:gold;">{{ getUsername }}</b>
     </td>
     <td v-else-if="point > 300">
@@ -9,9 +10,9 @@
     </td>
     <td v-else>
       <b style="color:brown;">{{ getUsername }}</b>
-    </td>
-    <td>{{ getComments_cnt }}</td>
-    <td>{{ getRead }}</td>
+    </td> -->
+    <td style="color: white;">{{ getComments_cnt }}</td>
+    <td style="color: white;">{{ getRead }}</td>
     <b-modal 
       ref="detail" 
       size="lg" 
@@ -40,7 +41,6 @@ export default {
     return {
       getUsername: '',
       black:'black',
-      point:0,
     }
   },
   props: {
@@ -64,29 +64,34 @@ export default {
     }
   },
   created() {
+    // console.log(this.article)
     const userid = this.article.user
+
     axios({
       url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
       method: 'GET',
+      headers: {
+        Authorization: `JWT ${localStorage.getItem('jwt')}`
+      },
     }).then((res)=>{
       // console.log(res)
       this.getUsername = res.data.username
     }).catch((err)=>{
       console.error(err)
     })
-    axios({
-      url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/points/`,
-      method: 'GET'
-    }).then((res)=>{
-      // console.log(res.data)
-      this.point = res.data.point
-    }).catch((err)=>{
-      console.log(err)
-    })
+    // axios({
+    //   url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/points/`,
+    //   method: 'GET'
+    // // }).then((res)=>{
+    // //   // console.log(res.data)
+    // //   this.point = res.data.point
+    // }).catch((err)=>{
+    //   console.log(err)
+    // })
   }
 }
 </script>
 
 <style>
-  
+
 </style>
