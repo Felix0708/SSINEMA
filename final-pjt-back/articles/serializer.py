@@ -17,7 +17,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        exclude =('updated_at', 'like_users')
+        exclude = ('like_users',)
         # API로 GET만 하고 POST나 PUT은 하지 않을 필드
         read_only_fields = ('user', 'view_count')
 
@@ -27,5 +27,5 @@ class ArticleListSerializer(serializers.ModelSerializer):
 
     class Meta : 
         model = Article
-        exclude =('content', 'updated_at', 'like_users')
+        exclude =('content', 'like_users',)
         read_only_fields = ('user','view_count')

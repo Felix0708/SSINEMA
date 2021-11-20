@@ -84,24 +84,37 @@ def like_article(request, article_pk):
     return JsonResponse(context)
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_comment(request, article_pk):
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
+def comment_list_or_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    serializer = CommentSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(article=article, user=request.user)
-        return Response(serializer.data, status= status.HTTP_201_CREATED)
 
+    def comment_list():
+        comments = get_list_or_404(Comment, article=article)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+    
+    def create_comment():
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(article=article, user=request.user)
+            return Response(serializer.data, status= status.HTTP_201_CREATED)
+
+    if request.method == 'GET':
+        return comment_list()
+    elif request.method == 'POST':
+        return create_comment()
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def delete_comment(request, comment_pk):
+def delete_comment(request, comment_pk, article_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
+
     if request.user.pk == comment.user.pk:
-        comment.delete()
-        data = {
-            'delete': f'데이터 {comment_pk}번 댓글이 삭제되었습니다'
-        }
-        return Response(data, status=status.HTTP_204_NO_CONTENT)
+        if comment.article.pk == article_pk:
+            comment.delete()
+            data = {
+                'delete': f'데이터 {comment_pk}번 댓글이 삭제되었습니다'
+            }
+            return Response(data, status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_401_UNAUTHORIZED)

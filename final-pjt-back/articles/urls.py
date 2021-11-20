@@ -15,6 +15,6 @@ urlpatterns = [
     
     # Comment
     ## CD
-    path('<int:article_pk>/comments/', views.create_comment, name='create_comment'),
+    path('<int:article_pk>/comments/', views.comment_list_or_create, name='comment_list_or_create'),
     path('<int:article_pk>/comments/<int:comment_pk>/delete/', views.delete_comment, name='delete_comment'),
 ]

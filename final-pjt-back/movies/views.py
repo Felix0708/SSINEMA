@@ -15,45 +15,6 @@ from django.db.models import Q
 from collections import Counter
 
 # Create your views here.
-# @api_view(['GET'])
-# @permission_classes([AllowAny])
-# def movielist(request):
-#     # DB 업데이트
-#     TMDBHelper().create_movies()
-
-#     # movies = Movie.objects.all()
-#     latest_movies = Movie.objects.order_by('release_date').reverse()[:50]
-#     toprate_movies = Movie.objects.order_by('vote_average').reverse()[:50]
-#     mostpop_movies = Movie.objects.order_by('popularity').reverse()[:50]
-
-#     like_movie = Movie.objects.filter(like_users=request.user.pk)
-
-#     genre_list = []
-#     for movie in like_movie:
-#         genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
-#     best_genre_pk = Counter(genre_list).most_common(1)[0][0]
-#     second_genre_pk = Counter(genre_list).most_common(2)[0][0]
-
-#     best_genre_movies = Movie.objects.filter(Q(genres=best_genre_pk) | Q(genres=second_genre_pk))
-
-#     random_movie = Movie.objects.order_by('?')[0]
-
-#     latest_serializer = MovieSerializer(latest_movies, many=True)
-#     toprate_serializer = MovieSerializer(toprate_movies, many=True)
-#     mostpop_serializer = MovieSerializer(mostpop_movies, many=True)
-#     best_genre_serializer = MovieSerializer(best_genre_movies, many=True)
-#     random_serializer = MovieSerializer(random_movie)
-
-#     context = {
-#         "latest_movies": latest_serializer.data,
-#         "toprate_movies": toprate_serializer.data,
-#         "mostpop_movies": mostpop_serializer.data,
-#         "best_genre_movies": best_genre_serializer.data,
-#         "random_movie": random_serializer.data,
-#     }
-
-#     return Response(context)
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def moviedetail(request,movie_id):
@@ -74,24 +35,21 @@ def review_list_or_create(request, movie_id):
 
 
     def create_review():
-        user_id = int(request.data['user'])
-        user = get_user_model().objects.get(pk=user_id)
-
         rating = int(request.data['rank'])
 
         # 리뷰 저장
-        if not movie.like_users.filter(pk=user.pk).exists():
+        if not Review.objects.filter(movie=movie, user=request.user).exists():
             serializer = ReviewSerializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
-                serializer.save(movie=movie, user=user)
+                serializer.save(movie=movie, user=request.user)
         else:
             return Response('이미 데이터 리뷰가 존재합니다.')
 
         # like_users 저장
         if rating >= 7:
-            if not movie.like_users.filter(pk=user_id).exists():
-                movie.like_users.add(user)
-        # print(movie.like_users)
+            # 아래 조건은 필요 없을 것 같다. 리뷰를 중복으로 작성할 수 없기 때문
+            if not movie.like_users.filter(pk=request.user.pk).exists():
+                movie.like_users.add(request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     if request.method == 'GET':
@@ -107,14 +65,6 @@ def review_detail_or_delete(request, review_pk, movie_id):
     movie = get_object_or_404(Movie, movie_id=movie_id)
 
     def review_detail():
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print(request)
-        print(request.user)
-
-        print(request.user.pk)
-        print(request.user.id)
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-
         review.save()
         serializer = ReviewSerializer(review)
 
@@ -123,6 +73,7 @@ def review_detail_or_delete(request, review_pk, movie_id):
     def delete_review():
         if request.user.pk == review.user.pk:
             if review.movie.pk == movie.pk:
+                # Movie 자체를 삭제하는 것이 아니기 때문에 추가적인 like_users 제거 작업이 필요하다
                 movie.like_users.remove(request.user)
                 review.delete()
 
