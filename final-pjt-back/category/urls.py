@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+app_name = 'category'
 urlpatterns = [
     path('random/', views.random_movie, name='random_movie'),
     path('latest/', views.latest_movies, name='latest_movies'),

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from django.shortcuts import get_list_or_404, get_object_or_404
+from django.shortcuts import get_list_or_404, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 
 from movies.models import Genre, Movie
@@ -20,20 +20,23 @@ from collections import Counter
 @permission_classes([AllowAny])
 def random_movie(request):
     like_movies = Movie.objects.filter(like_users=request.user.pk)
+    with_video = Movie.objects.exclude(Q(video_path__isnull=True) | Q(video_path__exact=''))
 
-    genre_list = []
-    for movie in like_movies:
-        genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
-    best_genre_pk = Counter(genre_list).most_common(1)[0][0]
-    second_genre_pk = Counter(genre_list).most_common(2)[0][0]
+    if like_movies:
+        genre_list = []
+        for movie in like_movies:
+            genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
+        best_genre_pk = Counter(genre_list).most_common(1)[0][0]
+        second_genre_pk = Counter(genre_list).most_common(2)[0][0]
+        best_genre = Genre.objects.filter(Q(pk=best_genre_pk) | Q(pk=second_genre_pk))
 
-    best_genre = Genre.objects.filter(Q(pk=best_genre_pk) | Q(pk=second_genre_pk))
+        random_movie = with_video.filter(genres__in=best_genre).order_by('?')[0]
+    else:
+        random_movie = with_video.order_by('popularity').reverse()[0]
 
-    random_movie = Movie.objects.exclude(
-        Q(video_path__isnull=True) | Q(video_path__exact='')).filter(
-            genres__in=best_genre).order_by('?')[0]
+
     random_serializer = MovieSerializer(random_movie)
-    
+        
     return Response({"random_movie": random_serializer.data})
 
 
@@ -72,18 +75,22 @@ def foruser_movies(request):
 
     like_movies = Movie.objects.filter(like_users=request.user.pk)
 
-    genre_list = []
-    for movie in like_movies:
-        genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
-    best_genre_pk = Counter(genre_list).most_common(1)[0][0]
-    second_genre_pk = Counter(genre_list).most_common(2)[0][0]
+    if like_movies:
+        genre_list = []
+        for movie in like_movies:
+            genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
+        best_genre_pk = Counter(genre_list).most_common(1)[0][0]
+        second_genre_pk = Counter(genre_list).most_common(2)[0][0]
 
-    foruser_genres = Genre.objects.filter(Q(id=best_genre_pk) | Q(id=second_genre_pk))
+        foruser_genres = Genre.objects.filter(Q(id=best_genre_pk) | Q(id=second_genre_pk))
 
-    best_genre_movies = Movie.objects.filter(genres__in=foruser_genres).order_by('?')[:50]
-    best_genre_serializer = MovieSerializer(best_genre_movies, many=True)
+        foruser_movies = Movie.objects.filter(genres__in=foruser_genres).order_by('?')[:50]
+        foruser_serializer = MovieSerializer(foruser_movies, many=True)
 
-    return Response({"best_genre_movies": best_genre_serializer.data})
+        return Response({"foruser_movies": foruser_serializer.data})
+    
+    else:
+        return redirect('category:mostpop_movies')
 
 
 @api_view(['GET'])
