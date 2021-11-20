@@ -10,7 +10,7 @@
       </div>
 
       <div class="col-2">
-        <a v-if="getName == currentName" @click="deleteComment">댓글 삭제</a>
+        <button v-if="getName == currentName" @click="deleteComment">댓글 삭제</button>
       </div>
     </div>
     <br>
@@ -42,7 +42,10 @@ export default {
       const comment_pk = this.comment.id
       axios({
         url: `http://127.0.0.1:8000/api/v1/articles/${this.article_pk}/comments/${comment_pk}/delete/`,
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`
+        },
       }).then(()=>{
         this.$emit('onParentDeleteComment')
       }).catch((err)=>{
@@ -51,10 +54,14 @@ export default {
     }
   },
   created() {
-    const userid = this.comment.user
+    const userid = this.comment.user.id
+    // console.log(this.comment)
     axios({
       url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
       method: 'GET',
+      headers: {
+        Authorization: `JWT ${localStorage.getItem('jwt')}`
+      },
     }).then((res)=>{
       // console.log(res)
       this.getName = res.data.username

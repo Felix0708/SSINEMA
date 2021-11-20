@@ -2,23 +2,13 @@
   <tr v-on:click="getArticleDetail()">
     <td style="color: white;">{{ getTitle }}</td>
     <td style="color: white;">{{ getUsername }}</td>
-    <!-- <td v-if="point > 600">
-      <b style="color:gold;">{{ getUsername }}</b>
-    </td>
-    <td v-else-if="point > 300">
-      <b style="color:silver;">{{ getUsername }}</b>
-    </td>
-    <td v-else>
-      <b style="color:brown;">{{ getUsername }}</b>
-    </td> -->
     <td style="color: white;">{{ getComments_cnt }}</td>
     <td style="color: white;">{{ getRead }}</td>
     <b-modal 
       ref="detail" 
       size="lg" 
-      class="bg-black" 
+      class="bg-black"
       :header-bg-variant="black"
-      :body-bg-variant="black"
       :footer-bg-variant="black"
       hide-footer hide-header>
         <ArticleDetail
@@ -48,7 +38,6 @@ export default {
   },
   methods: {
     getArticleDetail() {
-      // this.$router.push({name: 'ArticleDetail', params: {article_pk: this.article.id, writer: this.getUsername}})
       this.$refs['detail'].show()
     },
   },
@@ -79,15 +68,6 @@ export default {
     }).catch((err)=>{
       console.error(err)
     })
-    // axios({
-    //   url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/points/`,
-    //   method: 'GET'
-    // // }).then((res)=>{
-    // //   // console.log(res.data)
-    // //   this.point = res.data.point
-    // }).catch((err)=>{
-    //   console.log(err)
-    // })
   }
 }
 </script>

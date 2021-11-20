@@ -49,7 +49,7 @@ export default {
 
       //제목들
       topRatedTitle: '평점이 높은 영화',
-      latestTitle:'최근 개봉한 영화',
+      latestTitle:'최근 개봉한 영화 (혹은 개봉 할 영화)',
       TodayTitle:'오늘 이런 영화는 어떠세요?',
       mostpopTitle:'스테디 셀러 영화',
       foryouTitle:'',

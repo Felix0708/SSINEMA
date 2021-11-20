@@ -112,9 +112,9 @@ export default {
       event.preventDefault()
       if (this.mycomment.length !== 0) {
         const movie_pk = this.movie_pk
-        console.log("무비 피케이",movie_pk)
+        // console.log("무비 피케이",movie_pk)
         const token = localStorage.getItem('jwt')
-        console.log(jwt_decode(token))
+        // console.log(jwt_decode(token))
         const user = jwt_decode(token).user_id
 
         axios({
@@ -133,6 +133,7 @@ export default {
             url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
             method: 'GET',
           }).then((res)=>{
+            console.log(res)
               const temp = []
               res.data.forEach((element)=>{
                 temp.push(element)
@@ -166,8 +167,8 @@ export default {
         console.error(err)
       })
     },
-    setRating(rating) {
-      this.myrating = rating * 2
+    setRating(rank) {
+      this.myrating = rank * 2
     }
   },
   computed: {

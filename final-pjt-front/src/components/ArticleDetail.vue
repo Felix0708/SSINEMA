@@ -93,7 +93,7 @@ export default {
         // console.log(this.article_pk)
         const article_pk = this.article_pk
         const token = localStorage.getItem('jwt')
-        // console.log(jwt_decode(token))
+        console.log(jwt_decode(token))
         const user = jwt_decode(token).user_id
         // console.log(user)
         axios({
@@ -101,6 +101,7 @@ export default {
           method: 'POST',
           data: {
             user: user,
+            article: article_pk,
             content: this.mycomment
           },
           headers: {
@@ -146,6 +147,8 @@ export default {
           })
           this.comments = temp
       }).catch((err)=>{
+        const temp = []
+        this.comments = temp
         console.error(err)
       })
     },
@@ -238,18 +241,6 @@ export default {
     // console.log(jwt_decode(token))
     const username = jwt_decode(token).username
     this.currentName = username
-    // //조회수 추가
-    // axios({
-    //   url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/read/`,
-    //   method: 'POST',
-    //   headers: {
-    //     Authorization: `JWT ${localStorage.getItem('jwt')}`
-    //   },
-    // }).then((res)=>{
-    //   console.log(res)
-    // }).catch((err)=>{
-    //   console.error(err)
-    // })
   },
 }
 </script>
