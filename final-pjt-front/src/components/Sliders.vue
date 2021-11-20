@@ -43,7 +43,7 @@ export default {
       buttonOn : true,
       swiperOptions: {
           slidesPerView: 5,
-          spaceBetween: 50,
+          spaceBetween: 10,
           loop: true,
           navigation: {
             nextEl: '#button-next-relacionados',

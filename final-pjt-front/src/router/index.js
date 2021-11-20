@@ -7,6 +7,7 @@ import MainPage from '@/views/MainPage'
 import Profile from '@/views/Profile'
 import Community from '@/views/Community'
 import CreateArticle from '@/views/CreateArticle'
+import UpdateArticle from '@/views/UpdateArticle'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,12 @@ const routes = [
     path: '/createarticle',
     name: 'CreateArticle',
     component: CreateArticle,
+  },
+  {
+    path: '/updatearticle',
+    name: 'UpdateArticle',
+    component: UpdateArticle,
+    props: true,
   },
 ]
 

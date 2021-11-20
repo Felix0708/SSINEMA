@@ -41,7 +41,7 @@ export default {
       event.preventDefault()
       const comment_pk = this.comment.id
       axios({
-        url: `http://127.0.0.1:8000/api/v1/articles/${comment_pk}/comments_delete/`,
+        url: `http://127.0.0.1:8000/api/v1/articles/${this.article_pk}/comments/${comment_pk}/delete/`,
         method: 'DELETE'
       }).then(()=>{
         this.$emit('onParentDeleteComment')
