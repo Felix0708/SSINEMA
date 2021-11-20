@@ -19,7 +19,19 @@ from collections import Counter
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def random_movie(request):
-    random_movie = Movie.objects.exclude(Q(video_path__isnull=True) | Q(video_path__exact='')).order_by('?')[0]
+    like_movies = Movie.objects.filter(like_users=request.user.pk)
+
+    genre_list = []
+    for movie in like_movies:
+        genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
+    best_genre_pk = Counter(genre_list).most_common(1)[0][0]
+    second_genre_pk = Counter(genre_list).most_common(2)[0][0]
+
+    best_genre = Genre.objects.filter(Q(pk=best_genre_pk) | Q(pk=second_genre_pk))
+
+    random_movie = Movie.objects.exclude(
+        Q(video_path__isnull=True) | Q(video_path__exact='')).filter(
+            genres__in=best_genre).order_by('?')[0]
     random_serializer = MovieSerializer(random_movie)
     
     return Response({"random_movie": random_serializer.data})
@@ -66,7 +78,9 @@ def foruser_movies(request):
     best_genre_pk = Counter(genre_list).most_common(1)[0][0]
     second_genre_pk = Counter(genre_list).most_common(2)[0][0]
 
-    best_genre_movies = Movie.objects.filter(Q(genres=best_genre_pk) | Q(genres=second_genre_pk))[:50]
+    foruser_genres = Genre.objects.filter(Q(id=best_genre_pk) | Q(id=second_genre_pk))
+
+    best_genre_movies = Movie.objects.filter(genres__in=foruser_genres).order_by('?')[:50]
     best_genre_serializer = MovieSerializer(best_genre_movies, many=True)
 
     return Response({"best_genre_movies": best_genre_serializer.data})
