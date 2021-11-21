@@ -165,14 +165,17 @@ export default {
       // console.log(this.articles)
       let bestArticles = []
       this.articles.forEach((element)=>{
-        // console.log(element.read)
+        // console.log(element)
         if (bestArticles.length < 3) {
           bestArticles.push(element)
+          // console.log(bestArticles)
         } else {
           bestArticles.sort(function(a, b) {
-            return b.read - a.read
+            // console.log(b.view_count)
+            // console.log(a)
+            return b.view_count - a.view_count
           })
-          if (bestArticles[2].read < element.read) {
+          if (bestArticles[2].view_count < element.view_count) {
             bestArticles.pop()
             bestArticles.push(element)
           }

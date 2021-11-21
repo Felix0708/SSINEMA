@@ -8,22 +8,15 @@
           </a>
         </router-link>
         <div class="d-flex">
-          <div class="container me-3">
-            <form class="searchbox">
-              <input type="search" placeholder="Search......" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
-              <input type="submit" class="searchbox-submit" value="GO">
-              <span class="searchbox-icon"><i class="fa fa-search"></i></span>
-            </form>
-          </div>
           <router-link class="communityLink me-3" to="/community">
-            <svg width="1.5em" height="1.5em" viewBox="0 0 21 21" class="bi bi-chat-square-text" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg style="margin-top: 2px;" width="1.5em" height="1.5em" viewBox="0 0 21 21" class="bi bi-chat-square-text" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2.5a2 2 0 0 1 1.6.8L8 14.333 9.9 11.8a2 2 0 0 1 1.6-.8H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
               <path fill-rule="evenodd" d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
             </svg>
             <b>커뮤니티</b>
           </router-link>
           <router-link class="profileLink me-3" to="/profile">
-            <svg width="1.5em" height="1.5em" viewBox="0 0 21 21" class="bi bi-person-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg style="margin-top: 2px;" width="1.5em" height="1.5em" viewBox="0 0 21 21" class="bi bi-person-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
               <path fill-rule="evenodd" d="M2 15v-1c0-1 1-4 6-4s6 3 6 4v1H2zm6-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
             </svg>
@@ -63,45 +56,6 @@ export default {
       this.login = false
       this.$router.push({ name: 'MainPage' })
     },
-    // ready(){
-    //   var submitIcon = $('.searchbox-icon');
-    //   var inputBox = $('.searchbox-input');
-    //   var searchBox = $('.searchbox');
-    //   var isOpen = false;
-    //   submitIcon.click(function(){
-    //     if(isOpen == false){
-    //       searchBox.addClass('searchbox-open');
-    //       inputBox.focus();
-    //       isOpen = true;
-    //     } else {
-    //       searchBox.removeClass('searchbox-open');
-    //       inputBox.focusout();
-    //       isOpen = false;
-    //     }
-    //   });
-    //   submitIcon.mouseup(function(){
-    //     return false;
-    //   });
-    //   searchBox.mouseup(function(){
-    //     return false;
-    //   });
-    //   $(document).mouseup(function(){
-    //     if(isOpen == true){
-    //       $('.searchbox-icon').css('display','block');
-    //       submitIcon.click();
-    //     }
-    //   });
-    //   },
-    //   buttonUp(){
-    //       var inputVal = $('.searchbox-input').val();
-    //       inputVal = $.trim(inputVal).length;
-    //       if( inputVal !== 0){
-    //         $('.searchbox-icon').css('display','none');
-    //       } else {
-    //         $('.searchbox-input').val('');
-    //         $('.searchbox-icon').css('display','block');
-    //       }
-    //   },
   },
   created() {
     const token = localStorage.getItem('jwt')
@@ -120,8 +74,10 @@ export default {
   text-align: center;
   /* color: #2c3e50; */
 }
-nav {
-  padding: 30px;
+#nav {
+  /* padding: 30px; */
+  background-color: rgb(39, 37, 37);
+  margin-bottom: 50px;
 }
 #nav a {
   font-weight: bold;
@@ -195,85 +151,6 @@ img {
 
 /* search */
 
-.container{
-    width:300px;
-    margin: auto 0;
-}
 
-.searchbox{
-    position:relative;
-    min-width:50px;
-    width:0%;
-    height:50px;
-    float:right;
-    overflow:hidden;    
-    -webkit-transition: width 0.3s;
-    -moz-transition: width 0.3s;
-    -ms-transition: width 0.3s;
-    -o-transition: width 0.3s;
-    transition: width 0.3s;
-}
-
-.searchbox-input{
-    top:0;
-    right:0;
-    border:0;
-    outline:0;
-    background:#dcddd8;
-    width:100%;
-    height:50px;
-    margin:0;
-    padding:0px 55px 0px 20px;
-    font-size:20px;
-    color: #000;
-}
-.searchbox-input::-webkit-input-placeholder {
-    color: #000;
-    opacity:0.8;
-}
-.searchbox-input:-moz-placeholder {
-        color: #000;
-    opacity:0.8;
-}
-.searchbox-input::-moz-placeholder {
-        color: #000;
-    opacity:0.8;
-}
-.searchbox-input:-ms-input-placeholder {
-        color: #000;
-    opacity:0.8;
-}
-
-.searchbox-icon,
-.searchbox-submit{
-    width:50px;
-    height:50px;
-    display:block;
-    position:absolute;
-    top:0;
-    font-family:verdana;
-    font-size:22px;
-    right:0;
-    padding:0;
-    margin:0;
-    border:0;
-    outline:0;
-    line-height:50px;
-    text-align:center;
-    cursor:pointer;
-    color:#dcddd8;
-    background:#172b3c;
-}
-
-.searchbox-open{
-    width:100%;
-}
-.center {
-
-  text-align: center;
-  margin: 0 auto;
-  float: none;
-  margin-top: 40px;
-}
 
 </style>

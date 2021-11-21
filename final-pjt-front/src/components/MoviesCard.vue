@@ -1,33 +1,35 @@
 <template>
-  <div v-on:click="getMovieDetail()" class="card bg-black" style="width: 18rem;">
-    <div class="card-img"><img :src="getImage" class="card-img-top" alt=""></div>
-    
-    <div class="card-body ml-4" >
-      <h5 class="card-title" v-for="(item,idx) in getTitle" 
-      :key="idx"><b>{{ item }}</b></h5>
-      <!-- <p class="card-text">{{ getOverview }}</p> -->
-    </div>
-    <b-modal 
+  <swiper-slide>
+    <div class="card bgblack" style="width: 15rem;" @click=getMovieDetail()>
+      <div class="card-img">
+        <img  :src="getImage" style="width: auto 0;" class="card-img-top" alt="poster">
+      </div>
+      
+      <div class="card-body">
+        <span class="card-title" v-for="(item,idx) in getTitle" :key="idx"><b>{{ item }}</b></span>
+      </div>
+      
+      <b-modal
       ref="detail" 
       size="lg" 
-      class="bg-black" 
+      class="bg-black"
       :header-bg-variant="black"
-      :body-bg-variant="black"
       :footer-bg-variant="black"
       hide-footer hide-header>
         <MovieDetail
           :movie_pk = this.movie.movie_id
         />
       </b-modal>
-  </div>
+    </div>
+  </swiper-slide>
+  
 </template>
 
 <script>
-// import axios from 'axios'
 import MovieDetail from '../components/MovieDetail.vue'
 export default {
   props: {
-    movie: Object
+    movie:Object
   },
   components: {
     MovieDetail
@@ -39,13 +41,12 @@ export default {
   },
   computed: {
     getImage: function() {
-      return 'http://image.tmdb.org/t/p/w185'+this.movie.poster_path
+      return 'http://image.tmdb.org/t/p/w185' + this.movie.poster_path
     },
     getTitle: function() {
       const t = this.movie.title
-      // const len = length(t)
       const temp = t.split(' ')
-      
+
       let res = []
       let tp = ''
       for(let i = 0; i < temp.length; i++){
@@ -61,24 +62,38 @@ export default {
     },
     getOverview: function() {
       return this.movie.overview
-    }
+    },
+    
   },
   methods: {
     getMovieDetail() {
-      // console.log(this.movie.title)
-      console.log(this.movie)
-      // this.$bvModal.show('detail')
+      console.log('영화 정보',this.movie.title)
       this.$refs['detail'].show()
-      // console.log(this.movie)
-      // this.$router.push({name: 'MovieDetail', params: {movie_pk: this.movie.movie_id}})
     },
   },
 }
 </script>
 
 <style>
-.bg-black{
+.bgblack {
+  background-color: black !important;
+}
+
+.modal_content
+.modal_header
+.modal_body {
   background-color: black;
-  margin: 3%;
+}
+</style>
+
+<style scoped>
+span {
+  color: white;
+  font-size: 15px;
+}
+
+img {
+  width: 250px;
+  height: 350px;
 }
 </style>

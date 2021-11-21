@@ -8,6 +8,7 @@ import Profile from '@/views/Profile'
 import Community from '@/views/Community'
 import CreateArticle from '@/views/CreateArticle'
 import UpdateArticle from '@/views/UpdateArticle'
+import OtherProfile from '@/views/OtherProfile'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,12 @@ const routes = [
     name: 'UpdateArticle',
     component: UpdateArticle,
     props: true,
+  },
+  {
+    path: '/otherprofile',
+    name: 'OtherProfile',
+    component: OtherProfile,
+    // props: true,
   },
 ]
 

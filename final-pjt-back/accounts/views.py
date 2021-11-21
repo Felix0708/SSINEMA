@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import UserSerializer
 from django.http.response import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth import get_user_model
 
 from movies.models import Movie
@@ -53,11 +53,10 @@ def profile(request, username):
     context = {
         'username': person.username,
         'email': person.email,
-        'followers': person.follwers.count(),
-        'followings': person.followings.count()
+        'followers': person.followers.count(),
+        'followings': person.followings.count(),
     }
     return JsonResponse(context)
-
 
 
 @api_view(['GET'])
@@ -70,8 +69,8 @@ def my_movie(request, username):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def my_article(request, username):
-    articles = Article.objects.filter(user=request.user)
+def my_article(request, user_pk):
+    articles = Article.objects.filter(user=user_pk)
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
 
@@ -107,3 +106,4 @@ def follow(request, username):
             'followings_count': you.followings.count(),
         }
         return JsonResponse(context)
+    return HttpResponse(status="401")

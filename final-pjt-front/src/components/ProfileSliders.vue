@@ -1,8 +1,7 @@
 <template>
   <div @mouseover = "btnOn" @mouseleave = "btnOff">
-    <h4 class='text-left mb-3' style="color: white;">{{ title }}</h4>
     <swiper :options = "swiperOptions" ref = "slider" >
-      <RecommendMovieCard
+      <MoviesCard
         v-for="(movie, idx) in movies"
         :key="idx"
         :movie="movie"
@@ -28,15 +27,14 @@
 </template>
 
 <script>
-import RecommendMovieCard from '../components/RecommendMovieCard.vue'
+import MoviesCard from '../components/MoviesCard.vue'
 
 export default {
   props:{
     movies:Array,
-    title: String,
   },
   components:{
-    RecommendMovieCard,
+    MoviesCard,
   },
   data() {
     return {

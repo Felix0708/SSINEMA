@@ -3,7 +3,28 @@
     <div class="card" style="background-color: black">
       <div class="card-header">
         <div class='d-flex'>
-          <p class="mt-2 me-5 ml-4"><b>{{ writer }}</b>님의 글</p>
+          <!-- params로 보내면 데이터 유지가 안된다.  -->
+          <router-link
+            v-if="this.currentName != writer"
+            :to="{
+              name: 'OtherProfile',
+              query: {
+                articleWriter: `${ this.articleWriter }`,
+                articleWriterId: `${ this.articleWriterId }`,
+              }
+            }"
+            class="my-auto"
+            >
+            <p><b>{{writer}}</b></p>
+          </router-link>
+          <router-link
+            v-else
+            to="/profile"
+            class="my-auto"
+          >
+            <p><b>{{writer}}</b></p>
+          </router-link>
+          <p class="mt-2 me-5 ml-4 my-auto"><b>님의 글</b></p>
           <p class="mt-2 ms-5 ml-auto mr-4" style="display: inline;">{{getDate}} {{ getTime }}</p>
         </div>
         <p class="card-title mt-2" style="text-align: left;"><b>{{ title }}</b></p>
@@ -61,6 +82,8 @@ export default {
   },
   data() {
     return {
+      articleWriterId: '',
+      articleWriter: '',
       title: '',
       content: '',
       created_at: '',
@@ -205,6 +228,8 @@ export default {
     },
   },
   created() {
+    this.articleWriter = this.writer
+    console.log(this.articleWriter)
     const article_pk = this.article_pk
     axios({
       url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
@@ -214,10 +239,12 @@ export default {
       },
     }).then((res)=>{
       console.log(res.data)
+      this.articleWriterId = res.data.user
       this.title = res.data.title
       this.content = res.data.content
       this.created_at = res.data.created_at
       this.updated_at = res.data.updated_at
+      console.log(this.articleWriterId)
     }).catch((err)=>{
       console.error(err)
     }),
@@ -228,7 +255,7 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-        console.log(res)
+        // console.log(res)
         const temp = []
         res.data.forEach((element)=>{
           temp.push(element)
@@ -252,5 +279,16 @@ export default {
     color: white;
     border: 1px solid white;
     border-radius: 10px;
+  }
+</style>
+
+<style scoped>
+  a {
+    text-decoration: none;
+  }
+  a > p {
+    color: gold;
+    margin-top: 3px;
+    margin-right: 3px;
   }
 </style>

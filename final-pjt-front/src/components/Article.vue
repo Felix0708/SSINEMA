@@ -53,7 +53,7 @@ export default {
     }
   },
   created() {
-    console.log(this.article)
+    // console.log(this.article)
     const userid = this.article.user
 
     axios({
