@@ -50,7 +50,10 @@ def takename(request, user_pk):
 @permission_classes([IsAuthenticated])
 def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
-    follow_people = get_list_or_404(get_user_model().objects.exclude(followers__isnull=True).values_list('followers', flat=True))
+    # follow_people = get_list_or_404(get_user_model().objects.exclude(followers__isnull=True).values_list('followers', flat=True))
+    follow_people = get_list_or_404(
+        get_user_model().objects.filter(username=username).exclude(
+            followers__isnull=True).values_list('followers', flat=True))
     
     context = {
         'username': person.username,
