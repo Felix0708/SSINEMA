@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import UserSerializer
 from django.http.response import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from django.contrib.auth import get_user_model
+from django.shortcuts import get_list_or_404, render, redirect, get_object_or_404, HttpResponse
+from django.contrib.auth import get_user, get_user_model
 
 from movies.models import Movie
 from movies.serializers import MovieSerializer
@@ -50,9 +50,12 @@ def takename(request, user_pk):
 @permission_classes([IsAuthenticated])
 def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
+    follow_people = get_list_or_404(get_user_model().objects.exclude(followers__isnull=True).values_list('followers', flat=True))
+    
     context = {
         'username': person.username,
         'email': person.email,
+        'follower_list': follow_people,
         'followers': person.followers.count(),
         'followings': person.followings.count(),
     }
