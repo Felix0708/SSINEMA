@@ -1,5 +1,5 @@
 <template>
-  <div class="container profilediv" style="height: auto">
+  <div class="container profilediv">
     <br>
     <h2 style="color:white">{{ this.articlesUser }}의 프로필</h2>
     <br>

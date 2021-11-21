@@ -15,7 +15,27 @@
       @rating-selected="setRating">
     </star-rating>
     <div class="row">
-      <div class="col-2"><p><b>{{ getName }}</b></p></div>
+      <div class="col-2">
+        <router-link
+        v-if="this.currentName != this.articleWriter"
+        :to="{
+          name: 'OtherProfile',
+          query: {
+            articleWriter: `${ this.articleWriter }`,
+            articleWriterId: `${ this.articleWriterId }`,
+          }
+        }"
+        >
+          <p class="my-auto"><b>{{ getName }}</b></p>
+        </router-link>
+        <router-link
+        v-else
+        @click="refresh"
+        to="/profile"
+        >
+          <p class="my-auto"><b>{{ getName }}</b></p>
+        </router-link>
+      </div>
       <div class="col-8"><p>{{ getComment }}</p></div>
       <div class="col-2"><b><a href="" @click="deleteComment">삭제</a></b></div>
       
@@ -28,7 +48,7 @@
 <script>
 import axios from 'axios'
 import StarRating from 'vue-star-rating'
-// import jwt_decode from 'jwt-decode'
+import jwt_decode from 'jwt-decode'
 
 export default {
   components: {
@@ -37,7 +57,10 @@ export default {
   data() {
     return {
       getName: '',
-      // currentName: '',
+      currentId: '',
+      currentName: '',
+      articleWriterId: '',
+      articleWriter: '',
     }
   },
   props: {
@@ -74,6 +97,9 @@ export default {
     console.log(this.comment)
     const userid = this.comment.user.username
     this.getName = userid
+
+    this.articleWriter = this.comment.user.username
+    this.articleWriterId = this.comment.user.id
     // axios({
     //   url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
     //   method: 'GET',
@@ -83,10 +109,12 @@ export default {
     // }).catch((err)=>{
     //   console.error(err)
     // })
-    // const token = localStorage.getItem('jwt')
-    // console.log(jwt_decode(token))
-    // const username = jwt_decode(token).username
-    // this.currentName = username
+    const token = localStorage.getItem('jwt')
+    console.log(jwt_decode(token))
+    // const userid = jwt_decode(token).user_id
+    const username = jwt_decode(token).username
+    // this.currentId = userid
+    this.currentName = username
   }
 }
 </script>
