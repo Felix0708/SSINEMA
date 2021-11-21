@@ -9,25 +9,40 @@
     <br>
     <div>
       <form id="follow-form" @submit="followed">
-        <button   class="btn btn-link p-0 m-0" style="box-shadow: none;">
+        <button v-if="this.followerList.includes(this.userId)" class="btn btn-link p-0 m-0" style="box-shadow: none;">
           <i id="follow-btn" class="fas fa-user-minus" style="color:crimson;">
             <span id="follow-text" class="ms-1">Unfollow</span>
           </i>
         </button>
-        <button class="btn btn-link p-0 m-0" style="box-shadow: none;">
+        <button v-else class="btn btn-link p-0 m-0" style="box-shadow: none;">
           <i id="follow-btn" class="fas fa-user-plus" style="color:primary;">
             <span id="follow-text" class="ms-1">Follow</span>
           </i>
         </button>
       </form>
     </div>
+    <br>
     <hr style="background-color:white">
+    <br>
+    <h2 class="text-left" style="color:white">{{this.articlesUser}}가 찜한 영화</h2>
+    <br>
+    <div @mouseover = "btnOn" @mouseleave= "btnOff">
+      <ProfileSliders
+      v-show="articlesUserMovies"
+      :movies="articlesUserMovies"
+      />
+    </div>
+    <br>
+    <hr style="background-color:white">
+    <br>
     <h2 class="text-left" style="color:white">{{ this.articlesUser }}님이 작성하신 글</h2>
+    <br>
     <span v-for= "(article,idx) in paginatedArticles" :key = "idx">
       <!-- <li class="text-left" style="list-style:none; color:white;" @click="getArticleDetail(idx)"> -->
-        <button class="mt-3" @click="getArticleDetail(idx)" style="list-style:none; color:white;">
+        <button class="mx-5 my-2" @click="getArticleDetail(idx)" style="list-style:none; color:white;">
           {{article.title}}
         </button>
+        <br>
         <br>
         <b-modal 
         ref="detail" 
@@ -59,11 +74,13 @@
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import ArticleDetail from '../components/ArticleDetail'
+import ProfileSliders from '../components/ProfileSliders'
 
 export default {
   name: 'OtherProfile',
   components:{
     ArticleDetail,
+    ProfileSliders,
   },
   // props: {
   //   articleWriter: {
@@ -72,17 +89,30 @@ export default {
   // },
   data: function () {
     return {
+      buttonOn : true,
       username: '',
       articles: [],
       articlesUser: '',
       articlesUserId: '',
+      articlesUserMovies: [],
       followings: 0,
       followers: 0,
+      followerList: [],
       black: 'black',
       pageNum: 0,
       pageSize: 3,
       pageCommentNum: 0,
       pageCommentSize: 3,
+
+      swiperOptions: {
+        slidesPerView: 5,
+        spaceBetween: 100,
+        loop: true,
+        navigation: {
+          nextEl: '#button-next-relacionados',
+          prevEl: '#button-prev-relacionados'
+        },
+      }
     }
   },
   methods:{
@@ -98,7 +128,7 @@ export default {
         .then(response => {
           const followBtn = document.querySelector('#follow-btn')
           const followText = document.querySelector('#follow-text')
-          const isFollowed = response.data.isFollowed
+          const isFollowed = response.data.followed
 
           if (isFollowed === true) {
             followBtn.classList.add('fa-user-minus')
@@ -111,6 +141,25 @@ export default {
             followBtn.style = 'color:primary;'
             followText.innerText = 'Follow'
           }
+        }).then(() => {
+            axios({
+              url:`http://127.0.0.1:8000/api/v1/accounts/${this.articlesUser}/`,
+              method: 'GET',
+              headers: {
+                Authorization: `JWT ${localStorage.getItem('jwt')}`
+              },
+            }).then((res)=>{
+              console.log(res.data)
+              // console.log(typeof(res.data.followings))
+              this.followings = res.data.followings
+              this.followers = res.data.followers
+              this.followerList = res.data.follower_list
+              // console.log(this.followerList)
+            }).catch((err)=>{
+              console.log(err)
+            })
+        }).catch((err) => {
+          console.log(err)
         })
         .catch(error => {
           console.log(error)
@@ -125,6 +174,25 @@ export default {
     },
     prevPage () {
       this.pageNum -= 1;
+    },
+
+    btnOn(){
+      this.buttonOn = true
+    },
+    btnOff(){
+      this.buttonOn = false
+    },
+    Recprev(){
+      for (let i = 0; i < 5; i++){
+        this.$refs.rec.$swiper.slidePrev()
+      }
+      this.$refs.rec.$swiper.slidePrev()
+    },
+    Recnext(){
+      for (let i = 0; i < 5; i++){
+        this.$refs.rec.$swiper.slideNext()
+      }
+      this.$refs.rec.$swiper.slideNext()
     },
   },
   computed: {
@@ -148,11 +216,18 @@ export default {
   },
   created() {
     // if (localStorage.getItem('jwt')) {
+    const token = localStorage.getItem('jwt')
+    const decoded = jwt_decode(token)
+    // console.log(decoded)
+    this.username = decoded['username']
+    // console.log(this.username)
+    this.userId = decoded['user_id']
+    // console.log(this.userId)
     // console.log(this.$route.query.articleWriter)
     this.articlesUser = this.$route.query.articleWriter
     // console.log(this.articlesUser)
     this.articlesUserId = this.$route.query.articleWriterId
-    console.log(this.articlesUserId)
+    // console.log(this.articlesUserId)
 
     // 유저 articles
     axios({
@@ -162,7 +237,7 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      console.log(res.data)
+      // console.log(res.data)
       this.articles = res.data
     }).catch((err)=>{
       console.log(err)
@@ -176,21 +251,35 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      // console.log(res.data)
+      console.log(res.data)
       // console.log(typeof(res.data.followings))
       this.followings = res.data.followings
       this.followers = res.data.followers
+      this.followerList = res.data.follower_list
+      console.log(this.followerList)
     }).catch((err)=>{
       console.log(err)
     })
 
-    const token = localStorage.getItem('jwt')
-    const decoded = jwt_decode(token)
-    // console.log(decoded)
-    this.username = decoded['username']
-    // console.log(this.username)
-    // this.userId = decoded['user_id']
-    // console.log(this.userId)
+    //유저 movies
+    axios({
+      url:`http://127.0.0.1:8000/api/v1/accounts/${this.articlesUserId}/myMovie/`,
+      method: 'GET',
+      headers: {
+        Authorization: `JWT ${localStorage.getItem('jwt')}`
+      },
+    }).then((res)=>{
+      console.log('찜한 영화',res.data)
+      const tmp = []
+      res.data.forEach(function(element){
+        tmp.push(element)
+      })
+      this.articlesUserMovies=tmp
+      // console.log(this.myMovies)
+    }).catch((err)=>{
+      console.error(err)
+    })
+
     // } else {
     //   this.$router.push({ name: 'Login' })
     // }

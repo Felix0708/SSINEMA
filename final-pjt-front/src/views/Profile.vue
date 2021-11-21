@@ -6,9 +6,10 @@
     <div>
       <div id="follow-count" style="color: white;">팔로잉 수 &nbsp; : &nbsp; {{followings}} &nbsp; | &nbsp; 팔로워 수 &nbsp; : &nbsp; {{followers}}</div>
     </div>
-    <hr style="background-color:white">
-    <h2 class="text-left" style="color:white">내가 찜한 영화</h2>
     <br>
+    <hr style="background-color:white">
+    <br>
+    <h2 class="text-left" style="color:white">내가 찜한 영화</h2>
     <br>
     <div @mouseover = "btnOn" @mouseleave= "btnOff">
       <ProfileSliders
@@ -16,13 +17,17 @@
       :movies="myMovies"
       />
     </div>
+    <br>
     <hr style="background-color:white">
+    <br>
     <h2 class="text-left" style="color:white">내가 작성한 글</h2>
+    <br>
     <span v-for= "(article,idx) in paginatedArticles" :key = "idx">
       <!-- <li class="text-left" style="list-style:none; color:white;" @click="getArticleDetail(idx)"> -->
-        <button class="mt-3" @click="getArticleDetail(idx)" style="list-style:none; color:white;">
+        <button class="mx-5 my-2" @click="getArticleDetail(idx)" style="list-style:none; color:white;">
           {{article.title}}
         </button>
+        <br>
         <br>
         <b-modal 
         ref="detail" 
@@ -47,18 +52,21 @@
         다음
       </button>
     </div>
-    <br><br>
+    <br>
     <hr style="background-color:white">
+    <br>
     <h2 class="text-left row" >
       <div class="col-5" style="color:white">내가 작성한 댓글</div>
       <div class="col-7 text-right" style="color:white"> 원문</div>
     </h2>
+    <br>
     <span v-for= "(comment,idx) in paginatedComments" :key = "idx">
       <li class="text-left row" style="list-style:none">
         <div class="col-5" style="color:white">댓글:  &nbsp; &nbsp;  {{comment.content}}</div>
         <div class="col-7 text-right" style="color:white">{{articleuserName}}님 &nbsp; - &nbsp; {{articleName}}</div>
       </li>
     </span>
+    <br>
     <div class="btn-cover">
       <button style="color:white" :disabled="pageCommentNum === 0" @click="prevCommentPage" class="page-btn">
         이전
@@ -242,7 +250,7 @@ export default {
 
     //유저 movies
     axios({
-      url:`http://127.0.0.1:8000/api/v1/accounts/${this.username}/myMovie/`,
+      url:`http://127.0.0.1:8000/api/v1/accounts/${this.userId}/myMovie/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
