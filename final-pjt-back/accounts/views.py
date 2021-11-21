@@ -10,6 +10,9 @@ from django.contrib.auth import get_user_model
 
 from movies.models import Movie
 from movies.serializers import MovieSerializer
+from articles.models import Article, Comment
+from articles.serializer import ArticleListSerializer, CommentSerializer
+
 
 # Create your views here.
 @api_view(['POST'])
@@ -52,7 +55,6 @@ def profile(request, username):
         'email': person.email,
         'followers': person.follwers.count(),
         'followings': person.followings.count()
-        # 작성한 글, 댓글 db모델 확인 후 추가 예정
     }
     return JsonResponse(context)
 
@@ -65,6 +67,21 @@ def my_movie(request, username):
     serializer = MovieSerializer(like_movie, many=True)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def my_article(request, username):
+    articles = Article.objects.filter(user=request.user)
+    serializer = ArticleListSerializer(articles, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def my_comment(request, username):
+    comments = Comment.objects.filter(user=request.user)
+    serializer = CommentSerializer(comments, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['POST'])
