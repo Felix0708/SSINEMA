@@ -54,7 +54,7 @@ def profile(request, username):
     follow_people = get_list_or_404(
         get_user_model().objects.filter(username=username).exclude(
             followers__isnull=True).values_list('followers', flat=True))
-    
+
     context = {
         'username': person.username,
         'email': person.email,
@@ -67,8 +67,8 @@ def profile(request, username):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def my_movie(request, username):
-    like_movie = Movie.objects.filter(like_users=request.user.pk)
+def my_movie(request, user_pk):
+    like_movie = Movie.objects.filter(like_users=user_pk)
     serializer = MovieSerializer(like_movie, many=True)
     return Response(serializer.data)
 
@@ -83,8 +83,8 @@ def my_article(request, user_pk):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def my_comment(request, username):
-    comments = Comment.objects.filter(user=request.user)
+def my_comment(request, user_pk):
+    comments = Comment.objects.filter(user=user_pk)
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
 
