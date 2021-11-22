@@ -54,7 +54,7 @@ export default {
     }
   },
   created() {
-    const userid = this.comment.user.id
+    const userid = this.comment.user
     // console.log(this.comment)
     axios({
       url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,

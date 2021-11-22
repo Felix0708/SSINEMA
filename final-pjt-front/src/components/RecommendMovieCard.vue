@@ -1,12 +1,12 @@
 <template>
   <swiper-slide>
-    <div class="card bgblack" style="width: 15rem;" @click=getMovieDetail()>
+    <div class="card bgblack card-box" style="width: 15rem;" @click=getMovieDetail()>
       <div class="card-img">
-        <img  :src="getImage" style="width: auto 0;" class="card-img-top" alt="poster">
+        <img  :src="getImage" class="card-img-top" alt="poster">
       </div>
       
       <div class="card-body">
-        <span class="card-title" v-for="(item,idx) in getTitle" :key="idx"><b>{{ item }}</b></span>
+        <div class="card-title" v-for="(item,idx) in getTitle" :key="idx">{{ item }}</div>
       </div>
       
       <b-modal
@@ -84,16 +84,41 @@ export default {
 .modal_body {
   background-color: black;
 }
+
+.card-box {
+  position: absolute;
+  height: 400px;
+  transition: all 0.8s linear;
+}
+
+.card-box:hover {
+  position: absolute;
+  /* top: 50%; */
+  z-index: 10;
+  height: 100%;
+  transform:scale(1.4);
+}
+
 </style>
 
 <style scoped>
-span {
+.card-body {
+  display: grid;
+  justify-content: center;
+  /* padding: 0; */
+}
+
+.card-body > div {
+  font-weight: bold;
+  margin: auto;
+  text-align: center;
   color: white;
   font-size: 15px;
 }
 
 img {
   width: 235px;
-  height: 350px;
+  height: 300px;
+  margin: 0;
 }
 </style>

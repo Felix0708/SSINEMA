@@ -48,9 +48,6 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "globals": {
-      "kakao": false
-    },
     "parserOptions": {
       "parser": "babel-eslint"
     },
