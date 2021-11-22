@@ -70,7 +70,13 @@ def profile(request, username):
 def my_movie(request, user_pk):
     like_movie = Movie.objects.filter(like_users=user_pk)
     serializer = MovieSerializer(like_movie, many=True)
-    return Response(serializer.data)
+    title_list = get_list_or_404(Movie.objects.filter(like_users=user_pk).values_list('title', flat=True))
+    
+    context = {
+        'serializer': serializer.data,
+        'title_list': title_list
+    }
+    return Response(context)
 
 
 @api_view(['GET'])
