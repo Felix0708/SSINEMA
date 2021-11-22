@@ -34,7 +34,22 @@
         <br>
         <p class="card-text" style="text-align: left; margin: 0;">{{ content }}</p>
         <br>
+        <div>
+          <form @click="like" class="d-inline like-form">
+            <!-- {% if user in article.like_users.all %} -->
+              <button v-if="this.articleLikeusers.includes(this.userId)" class="btn btn-link p-0 m-0" style="box-shadow: none;">
+                <i id="like" class="far fa-heart" style="color:crimson;"></i>
+              </button>
+            <!-- {% else %} -->
+              <button v-else class="btn btn-link p-0 m-0" style="box-shadow: none;">
+                <i id="like" class="fas fa-heart" style="color:crimson;"></i>
+              </button>
+            <!-- {% endif %} -->
+          </form>
+          <span id="like-count"> &nbsp; {{ this.articleLike }} 명이 이 글을 좋아합니다.</span>
+        </div>
       </div>
+      <br>
       <div class="card-footer text-muted">
         <div v-if="writer == currentName">
           <button class="btn btn-success me-3" @click="updateArticle">Update</button>
@@ -82,14 +97,18 @@ export default {
   },
   data() {
     return {
+      articleId: '',
       articleWriterId: '',
       articleWriter: '',
+      articleLike: 0,
+      articleLikeusers: [],
       title: '',
       content: '',
       created_at: '',
       updated_at: '',
       mycomment: '',
       comments: [],
+      currentId: '',
       currentName: '',
       pageNum: 0,
       pageSize: 3,
@@ -104,6 +123,58 @@ export default {
     },
   },
   methods: {
+    like (event) {
+      event.preventDefault()
+        const token = localStorage.getItem('jwt')
+        // console.log(jwt_decode(token))
+        const userid = jwt_decode(token).user_id
+        this.userId = userid
+        console.log(this.userId)
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/api/v1/articles/${this.article_pk}/like/`,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`
+        },
+      })
+        .then(function (response) {
+          console.log(response)
+          const liked = response.data.liked
+          const likeBtn = document.querySelector(`#like`)
+          if (liked === true) {
+            likeBtn.classList.add('fas')
+            likeBtn.classList.remove('far')
+          } else {
+            likeBtn.classList.add('far')
+            likeBtn.classList.remove('fas')
+          }
+        }) .then(() => {
+            const article_pk = this.article_pk
+            axios({
+              url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
+              method: 'GET',
+              headers: {
+                Authorization: `JWT ${localStorage.getItem('jwt')}`
+              },
+            }).then((res)=>{
+              console.log(res.data)
+              this.articleWriterId = res.data.user
+              this.articleLikeusers = res.data.like_users
+              this.articleLike = res.data.like_users_count
+              this.title = res.data.title
+              this.content = res.data.content
+              this.created_at = res.data.created_at
+              this.updated_at = res.data.updated_at
+              // console.log(this.articleWriterId)
+              console.log(this.articleLikeusers)
+            }).catch((err)=>{
+              console.error(err)
+            })
+        }).catch((err) => {
+          console.log(err)
+        })
+    },
+
     nextPage () {
       this.pageNum += 1;
     },
@@ -116,7 +187,7 @@ export default {
         // console.log(this.article_pk)
         const article_pk = this.article_pk
         const token = localStorage.getItem('jwt')
-        console.log(jwt_decode(token))
+        // console.log(jwt_decode(token))
         const user = jwt_decode(token).user_id
         // console.log(user)
         axios({
@@ -178,6 +249,7 @@ export default {
     deleteArticle(event) {
       event.preventDefault()
       const article_pk = this.article_pk
+      this.articleId = article_pk
       axios({
         url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
         method: 'DELETE',
@@ -192,9 +264,9 @@ export default {
       })
     },
     updateArticle() {
-      console.log(this.article_pk)
-      console.log(this.title)
-      console.log(this.content)
+      // console.log(this.article_pk)
+      // console.log(this.title)
+      // console.log(this.content)
       this.$router.push({
         name: 'UpdateArticle',
         params: {
@@ -229,8 +301,9 @@ export default {
   },
   created() {
     this.articleWriter = this.writer
-    console.log(this.articleWriter)
+    // console.log(this.articleWriter)
     const article_pk = this.article_pk
+
     axios({
       url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
       method: 'GET',
@@ -240,14 +313,18 @@ export default {
     }).then((res)=>{
       console.log(res.data)
       this.articleWriterId = res.data.user
+      this.articleLikeusers = res.data.like_users
+      this.articleLike = res.data.like_users_count
       this.title = res.data.title
       this.content = res.data.content
       this.created_at = res.data.created_at
       this.updated_at = res.data.updated_at
-      console.log(this.articleWriterId)
+      // console.log(this.articleWriterId)
+      console.log(this.articleLikeusers)
     }).catch((err)=>{
       console.error(err)
-    }),
+    })
+
     axios({
       url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
       method: 'GET',
@@ -264,10 +341,15 @@ export default {
     }).catch((err)=>{
       console.error(err)
     })
+
     const token = localStorage.getItem('jwt')
-    // console.log(jwt_decode(token))
+    console.log(jwt_decode(token))
+    const userid = jwt_decode(token).user_id
     const username = jwt_decode(token).username
+    this.userId = userid
+    console.log(this.userId)
     this.currentName = username
+
   },
 }
 </script>
