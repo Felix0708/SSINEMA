@@ -39,6 +39,7 @@ def article_detail_or_update_or_delete(request, article_pk):
     def article_detail():
         article.update_counter
         article.save()
+
         serializer = ArticleSerializer(article)
         return Response(serializer.data)
 
