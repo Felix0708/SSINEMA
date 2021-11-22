@@ -1,7 +1,9 @@
 <template>
   <div class="container profilediv">
     <br>
+    <br>
     <h2 style="color:white">{{ username }}의 프로필</h2>
+    <br>
     <br>
     <div>
       <div id="follow-count" style="color: white;">팔로잉 수 &nbsp; : &nbsp; {{followings}} &nbsp; | &nbsp; 팔로워 수 &nbsp; : &nbsp; {{followers}}</div>
@@ -62,8 +64,21 @@
     <br>
     <span v-for= "(comment,idx) in paginatedComments" :key = "idx">
       <li class="text-left row" style="list-style:none">
-        <div class="col-5" style="color: gold">댓글:  &nbsp; &nbsp;  {{comment.content}}</div>
-        <div class="col-7 text-right" style="color:gold">{{articleuserName}}님 &nbsp; - &nbsp; {{articleName}}</div>
+        <div class="col-3" style="color: gold; margin-left: -10px;">
+          댓글: 
+        </div>
+        <div class="col-2" style="color: gold; margin-left: -30px">
+          {{comment.content}}
+        </div>
+        <div class="col-3 text-right" style="color:gold; margin-left: 120px">
+          {{comment.article.user.username}}님의
+        </div>
+        <div class="col-1 text-right" style="color:gold; margin-left: -80px">
+          제목:
+        </div>
+        <div class="col-2 text-right" style="color:gold; margin-left: -40px">
+          {{comment.article.title}}
+        </div>
       </li>
     </span>
     <br>
@@ -76,6 +91,10 @@
         다음
       </button>
     </div>
+    <br>
+    <hr style="background-color:white">
+    <br>
+    <Maps/>
   </div>
 </template>
 
@@ -84,12 +103,14 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import ArticleDetail from '../components/ArticleDetail'
 import ProfileSliders from '../components/ProfileSliders'
+import Maps from '../components/Maps.vue'
 
 export default {
   name: 'Profile',
   components:{
     ArticleDetail,
     ProfileSliders,
+    Maps,
   },
   data: function () {
     
@@ -101,7 +122,6 @@ export default {
       comments: [],
       article_set: [],
       articleName: '',
-      articleuserName: '',
       myMovies: [],
       followings: 0,
       followers: 0,
@@ -212,38 +232,14 @@ export default {
     
     // 유저 comments
     axios({
-      url: 'http://127.0.0.1:8000/api/v1/accounts/' + this.username + '/myComment/',
+      url: 'http://127.0.0.1:8000/api/v1/accounts/' + this.userId + '/myComment/',
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      // console.log(res.data)
+      console.log(res.data)
       this.comments = res.data
-      axios({
-        url: `http://127.0.0.1:8000/api/v1/articles/${this.comments[0].article}/`,
-        method: 'GET',
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('jwt')}`
-        },
-      }).then((res) => {
-        // console.log(res.data)
-        this.articleName = res.data.title
-        // console.log(this.articleName)
-        const user = res.data.user
-        axios({
-          url: `http://127.0.0.1:8000/api/v1/accounts/${user}/`,
-          method: 'GET',
-          headers: {
-            Authorization: `JWT ${localStorage.getItem('jwt')}`
-          },
-        }).then((res)=>{
-          // console.log(res.data)
-          this.articleuserName = res.data.username
-        })
-      }).catch((err)=>{
-        console.log(err)
-      })
     }).catch((err)=>{
       console.log(err)
     })
@@ -258,7 +254,7 @@ export default {
     }).then((res)=>{
       console.log('찜한 영화',res.data)
       const tmp = []
-      res.data.forEach(function(element){
+      res.data.serializer.forEach(function(element){
         tmp.push(element)
       })
       this.myMovies=tmp

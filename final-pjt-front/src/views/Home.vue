@@ -1,7 +1,17 @@
 <template>
-  <div @mouseover = "btnOn" @mouseleave= "btnOff">
+  <div class="bg-home" @mouseover = "btnOn" @mouseleave= "btnOff">
+    <br>
+    <br>
+    <br>
     <img src="https://fontmeme.com/permalink/211118/6dfb6fa7875c07d34e39155bdbaf6638.png" alt="netflix-font" border="0">
     <br>
+    <br>
+    <!-- <iframe 
+    v-if="videoURI" 
+    :src="videoURI" 
+    frameborder="0"
+    style = "width: 99%; height: 990px; margin: auto;">
+    </iframe> -->
     <br>
     <br>
     <Sliders
@@ -56,6 +66,7 @@ export default {
 
       //유저이름
       username:'',
+      userId: '',
 
       //스와이퍼 옵션
       swiperOptions: {
@@ -89,7 +100,7 @@ export default {
       this.$refs.rec.$swiper.slideNext()
     },
   },
-  
+
   // async created() {
   created() {
   if (localStorage.getItem('jwt')) {
@@ -101,92 +112,127 @@ export default {
     this.foryouTitle = `${this.username}을 위한 취향저격 베스트 컨텐츠`
     //끝
 
-      //foruser
-      // await axios({
-      axios({
-        url:'http://127.0.0.1:8000/api/v1/movies/category/foryou/',
-        method: 'GET',
-      }).then((res)=>{
-        console.log('취향 저격',res.data)
-        const tmp = []
-        res.data.foruser_movies.forEach(function(element){
-          tmp.push(element)
-        })
-        this.foryoumovies=tmp
-      }).catch((err)=>{
-        console.error(err)
+    //foruser
+    // await axios({
+    axios({
+      url:'http://127.0.0.1:8000/api/v1/movies/category/foryou/',
+      method: 'GET',
+    }).then((res)=>{
+      console.log('취향 저격',res.data)
+      const tmp = []
+      res.data.foruser_movies.forEach(function(element){
+        tmp.push(element)
       })
-      //끝
+      this.foryoumovies=tmp
+    }).catch((err)=>{
+      console.error(err)
+    })
+    //끝
 
-      //Today
-      // await axios({
-      axios({
-        url:'http://127.0.0.1:8000/api/v1/movies/category/weather/',
-        method: 'GET',
-      }).then((res)=>{
-        console.log('오늘의',res.data)
-        const tmp = []
-        res.data.weather_movies.forEach(function(element){
-          tmp.push(element)
-        })
-        this.Todaymovies=tmp
-      }).catch((err)=>{
-        console.error(err)
+    //Today
+    // await axios({
+    axios({
+      url:'http://127.0.0.1:8000/api/v1/movies/category/weather/',
+      method: 'GET',
+    }).then((res)=>{
+      console.log('오늘의',res.data)
+      const tmp = []
+      res.data.weather_movies.forEach(function(element){
+        tmp.push(element)
       })
-      //끝
+      this.Todaymovies=tmp
+    }).catch((err)=>{
+      console.error(err)
+    })
+    //끝
 
-      //최근 개봉한 영화
-      // await axios({
-      axios({
-        url:'http://127.0.0.1:8000/api/v1/movies/category/latest/',
-        method: 'GET',
-      }).then((res)=>{
-        console.log('최근 개봉',res.data)
-        const tmp = []
-        res.data.latest_movies.forEach(function(element){
-          tmp.push(element)
-        })  
-        this.latestmovies=tmp
+    //최근 개봉한 영화
+    // await axios({
+    axios({
+      url:'http://127.0.0.1:8000/api/v1/movies/category/latest/',
+      method: 'GET',
+    }).then((res)=>{
+      console.log('최근 개봉',res.data)
+      const tmp = []
+      res.data.latest_movies.forEach(function(element){
+        tmp.push(element)
+      })  
+      this.latestmovies=tmp
+    })
+    .catch((err)=>{
+      console.log(err)
+    }),
+
+    //평점 높은 영화  toprated
+    // await axios({
+    axios({
+      url:'http://127.0.0.1:8000/api/v1/movies/category/toprate/',
+      method:'GET',
+    }).then((res)=>{
+      console.log('평점 높은',res.data)
+      const tmp=[]
+      res.data.toprate_movies.forEach(function(element){
+        tmp.push(element)
+        // console.log(temp)
       })
-      .catch((err)=>{
-        console.log(err)
-      }),
+      this.topRatedmovies=tmp
+    }).catch((err)=>{
+      console.error(err)
+    }),
+    //끝
 
-      //평점 높은 영화  toprated
-      // await axios({
-      axios({
-        url:'http://127.0.0.1:8000/api/v1/movies/category/toprate/',
-        method:'GET',
-      }).then((res)=>{
-        console.log('평점 높은',res.data)
-        const tmp=[]
-        res.data.toprate_movies.forEach(function(element){
-          tmp.push(element)
-          // console.log(temp)
-        })
-        this.topRatedmovies=tmp
-      }).catch((err)=>{
-        console.error(err)
-      }),
-      //끝
-
-      //mostpop
-      // await axios({
-      axios({
-        url:'http://127.0.0.1:8000/api/v1/movies/category/mostpop/',
-        method: 'GET',
-      }).then((res)=>{
-        console.log('스테디 셀러',res.data)
-        const tmp = []
-        res.data.mostpop_movies.forEach(function(element){
-          tmp.push(element)
-        })
-        this.mostpopmovies=tmp
-      }).catch((err)=>{
-        console.error(err)
+    //mostpop
+    // await axios({
+    axios({
+      url:'http://127.0.0.1:8000/api/v1/movies/category/mostpop/',
+      method: 'GET',
+    }).then((res)=>{
+      console.log('스테디 셀러',res.data)
+      const tmp = []
+      res.data.mostpop_movies.forEach(function(element){
+        tmp.push(element)
       })
-      //끝
+      this.mostpopmovies=tmp
+    }).catch((err)=>{
+      console.error(err)
+    })
+    //끝
 
+
+    // const token = localStorage.getItem('jwt')
+    // this.userId = jwt_decode(token).user_id
+    // axios({
+    //     url:`http://127.0.0.1:8000/api/v1/accounts/${this.userId}/myMovie/`,
+    //     method: 'GET',
+    // }).then((res) => {
+    //   console.log(res.data.title_list)
+    //   const API_KEY = 'AIzaSyCSuYF6TkPO5Lb5osPYMo7W6AWP9pYHS-0'
+    //   const API_URL = 'https://www.googleapis.com/youtube/v3/search'
+    //   const titleList = res.data.title_list
+    //   const inputValue = titleList[Math.floor(Math.random()*titleList.length)] + ' trailer'
+    //   console.log(inputValue)
+    //   const params = {
+    //     key: API_KEY,
+    //     part: 'snippet',
+    //     q: inputValue,
+    //     type: 'video',
+    //   }
+    //   axios.get(API_URL, {
+    //     params,
+    //   })
+    //   .then((res) => {
+    //     console.log('이거',res.data.items)
+    //     const videoId = res.data.items[0].id.videoId
+    //     console.log('저거', videoId)
+    //     this.videoURI = `https://www.youtube.com/embed/${videoId}?rel=0&mute=1&autoplay=1&controls=0&frameborder=0&cc_lang_pref=ko&modestbranding=1&loop=1`
+    //     console.log('비디오주소', this.videoURI)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //   })
+    // }).catch((err) => {
+    //     console.log(err)
+    //   })
     } else {
       this.$router.push({ name: 'Login' })
     }
@@ -195,6 +241,8 @@ export default {
 </script>
 
 <style>
-  
-  
+  .bg-home{
+    background-image: url('../assets/slider-bg2.jpg');
+    background-repeat: repeat;
+  }
 </style>

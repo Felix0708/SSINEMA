@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <br>
+    <br>
     <h1 style="color:white; margin-top:20px"><b>커뮤니티</b></h1>
     <br><br>
     <p>베스트 조회수</p>
@@ -30,7 +32,7 @@
         <option value="person">글쓴이</option>
       </select>
       <input class="form-control mr-sm-2 me-1" v-model="search" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     <table class="table table-hover table-striped text-center" style="border: 2px solid">
       <thead>

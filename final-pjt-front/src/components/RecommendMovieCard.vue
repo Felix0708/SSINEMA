@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     getImage: function() {
-      return 'http://image.tmdb.org/t/p/w185' + this.movie.poster_path
+      return 'http://image.tmdb.org/t/p/w200' + this.movie.poster_path
     },
     getTitle: function() {
       const t = this.movie.title
@@ -93,7 +93,7 @@ span {
 }
 
 img {
-  width: 250px;
+  width: 235px;
   height: 350px;
 }
 </style>

@@ -74,11 +74,12 @@ export default {
   text-align: center;
   /* color: #2c3e50; */
 }
-#nav {
+/* #nav { */
   /* padding: 30px; */
-  background-color: rgb(39, 37, 37);
-  margin-bottom: 50px;
-}
+  /* background-color: rgb(39, 37, 37); */
+  /* background-image: url('./assets/user-hero-bg4.jpg'); */
+  /* margin-bottom: 50px; */
+/* } */
 #nav a {
   font-weight: bold;
   /* color: #2c3e50; */
@@ -89,6 +90,13 @@ export default {
 </style>
 
 <style scoped>
+
+#nav {
+  /* padding: 30px; */
+  background-color: rgb(22, 21, 21);
+  /* background-image: url('./assets/user-hero-bg4.jpg'); */
+  /* margin-bottom: 50px; */
+}
 
 .isLogin {
   display: flex;

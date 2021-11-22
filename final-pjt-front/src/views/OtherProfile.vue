@@ -1,7 +1,9 @@
 <template>
   <div class="container profilediv">
     <br>
+    <br>
     <h2 style="color:white">{{ this.articlesUser }}의 프로필</h2>
+    <br>
     <br>
     <div>
       <div id="follow-count" style="color: white;">팔로잉 수 &nbsp; : &nbsp; {{followings}} &nbsp; | &nbsp; 팔로워 수 &nbsp; : &nbsp; {{followers}}</div>
@@ -271,7 +273,7 @@ export default {
     }).then((res)=>{
       console.log('찜한 영화',res.data)
       const tmp = []
-      res.data.forEach(function(element){
+      res.data.serializer.forEach(function(element){
         tmp.push(element)
       })
       this.articlesUserMovies=tmp

@@ -207,7 +207,7 @@ export default {
       console.log('이거',res.data.items)
       const videoId = res.data.items[0].id.videoId
       console.log('저거', videoId)
-      this.videoURI = `https://www.youtube.com/embed/${videoId}?rel=1&mute=1&autoplay=1&controls=0&frameborder=0`
+      this.videoURI = `https://www.youtube.com/embed/${videoId}?rel=0&mute=1&autoplay=1&controls=0&frameborder=0`
       console.log('비디오주소', this.videoURI)
     })
     .catch((err) => {
