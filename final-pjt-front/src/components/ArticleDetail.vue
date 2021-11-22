@@ -35,21 +35,20 @@
         <p class="card-text" style="text-align: left; margin: 0;">{{ content }}</p>
         <br>
         <div>
-          <form @click="like" class="d-inline like-form">
+          <form @submit="like" class="d-inline like-form">
             <!-- {% if user in article.like_users.all %} -->
               <button v-if="this.articleLikeusers.includes(this.userId)" class="btn btn-link p-0 m-0" style="box-shadow: none;">
-                <i id="like" class="far fa-heart" style="color:crimson;"></i>
+                <i id="like" class="fas fa-heart" style="color:crimson;"></i>
               </button>
             <!-- {% else %} -->
               <button v-else class="btn btn-link p-0 m-0" style="box-shadow: none;">
-                <i id="like" class="fas fa-heart" style="color:crimson;"></i>
+                <i id="like" class="far fa-heart" style="color:crimson;"></i>
               </button>
             <!-- {% endif %} -->
           </form>
           <span id="like-count"> &nbsp; {{ this.articleLike }} 명이 이 글을 좋아합니다.</span>
         </div>
       </div>
-      <br>
       <div class="card-footer text-muted">
         <div v-if="writer == currentName">
           <button class="btn btn-success me-3" @click="updateArticle">Update</button>
@@ -158,18 +157,20 @@ export default {
               },
             }).then((res)=>{
               console.log(res.data)
-              this.articleWriterId = res.data.user
-              this.articleLikeusers = res.data.like_users
-              this.articleLike = res.data.like_users_count
-              this.title = res.data.title
-              this.content = res.data.content
-              this.created_at = res.data.created_at
-              this.updated_at = res.data.updated_at
-              // console.log(this.articleWriterId)
+              this.articleWriterId = res.data.serializer.user
+              this.articleLikeusers = res.data.like_people
+              this.articleLike = res.data.serializer.like_users_count
+              this.title = res.data.serializer.title
+              this.content = res.data.serializer.content
+              this.created_at = res.data.serializer.created_at
+              this.updated_at = res.data.serializer.updated_at
+              console.log(this.articleWriterId)
               console.log(this.articleLikeusers)
             }).catch((err)=>{
               console.error(err)
             })
+        }).catch((err) => {
+          console.log(err)
         }).catch((err) => {
           console.log(err)
         })
@@ -303,7 +304,7 @@ export default {
     this.articleWriter = this.writer
     // console.log(this.articleWriter)
     const article_pk = this.article_pk
-
+    console.log(this.articleLikeusers)
     axios({
       url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
       method: 'GET',
@@ -312,13 +313,13 @@ export default {
       },
     }).then((res)=>{
       console.log(res.data)
-      this.articleWriterId = res.data.user
-      this.articleLikeusers = res.data.like_users
-      this.articleLike = res.data.like_users_count
-      this.title = res.data.title
-      this.content = res.data.content
-      this.created_at = res.data.created_at
-      this.updated_at = res.data.updated_at
+      this.articleWriterId = res.data.serializer.user
+      this.articleLikeusers = res.data.like_people
+      this.articleLike = res.data.serializer.like_users_count
+      this.title = res.data.serializer.title
+      this.content = res.data.serializer.content
+      this.created_at = res.data.serializer.created_at
+      this.updated_at = res.data.serializer.updated_at
       // console.log(this.articleWriterId)
       console.log(this.articleLikeusers)
     }).catch((err)=>{

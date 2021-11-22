@@ -39,7 +39,7 @@
     <br>
     <span v-for= "(article,idx) in paginatedArticles" :key = "idx">
       <!-- <li class="text-left" style="list-style:none; color:white;" @click="getArticleDetail(idx)"> -->
-        <button class="mx-5 my-2" @click="getArticleDetail(idx)" style="list-style:none; color:white;">
+        <button class="mx-5 my-2" @click="getArticleDetail(idx)" style="list-style:none; color:gold;">
           {{article.title}}
         </button>
         <br>

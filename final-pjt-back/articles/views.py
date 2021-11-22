@@ -40,8 +40,17 @@ def article_detail_or_update_or_delete(request, article_pk):
         article.update_counter
         article.save()
 
+        like_people = get_list_or_404(
+            Article.objects.filter(pk=article_pk).values_list('like_users', flat=True))
+
         serializer = ArticleSerializer(article)
-        return Response(serializer.data)
+
+        context = {
+            'like_people': like_people,
+            'serializer': serializer.data
+        }
+
+        return Response(context)
 
     def update_article():
         serializer = ArticleSerializer(instance=article, data=request.data)

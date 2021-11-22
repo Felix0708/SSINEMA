@@ -24,7 +24,7 @@
     <br>
     <span v-for= "(article,idx) in paginatedArticles" :key = "idx">
       <!-- <li class="text-left" style="list-style:none; color:white;" @click="getArticleDetail(idx)"> -->
-        <button class="mx-5 my-2" @click="getArticleDetail(idx)" style="list-style:none; color:white;">
+        <button class="mx-5 my-2" @click="getArticleDetail(idx)" style="list-style:none; color: gold;">
           {{article.title}}
         </button>
         <br>
@@ -62,8 +62,8 @@
     <br>
     <span v-for= "(comment,idx) in paginatedComments" :key = "idx">
       <li class="text-left row" style="list-style:none">
-        <div class="col-5" style="color:white">댓글:  &nbsp; &nbsp;  {{comment.content}}</div>
-        <div class="col-7 text-right" style="color:white">{{articleuserName}}님 &nbsp; - &nbsp; {{articleName}}</div>
+        <div class="col-5" style="color: gold">댓글:  &nbsp; &nbsp;  {{comment.content}}</div>
+        <div class="col-7 text-right" style="color:gold">{{articleuserName}}님 &nbsp; - &nbsp; {{articleName}}</div>
       </li>
     </span>
     <br>

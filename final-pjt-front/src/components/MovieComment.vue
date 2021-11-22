@@ -26,7 +26,7 @@
           }
         }"
         >
-          <p class="my-auto"><b>{{ getName }}</b></p>
+          <p class="my-auto" style="color: gold;"><b>{{ getName }}</b></p>
         </router-link>
         <router-link
         v-else
@@ -120,4 +120,7 @@ export default {
 </script>
 
 <style>
+a {
+  text-decoration: none;
+}
 </style>
