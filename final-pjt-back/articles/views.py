@@ -78,9 +78,14 @@ def like_article(request, article_pk):
     else:
         article.like_users.add(user)
         liked = True
+
+    like_people = get_list_or_404(
+        Article.objects.filter(pk=article_pk).values_list('like_users', flat=True))
+
     context = {
         'liked': liked,
         'count': article.like_users.count(),
+        'like_people': like_people,
     }
     return JsonResponse(context)
 
