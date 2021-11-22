@@ -31,3 +31,19 @@ class ArticleListSerializer(serializers.ModelSerializer):
         model = Article
         exclude =('content', 'like_users',)
         read_only_fields = ('user','view_count')
+
+
+
+class ArticleCommentSerializer(serializers.ModelSerializer):
+    user = UserDetailSerializer(read_only=True)
+    class Meta : 
+        model = Article
+        fields = ('user', 'title')
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    article = ArticleCommentSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = "__all__"
