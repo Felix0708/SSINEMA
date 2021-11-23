@@ -8,6 +8,7 @@ from django.http.response import JsonResponse
 from django.shortcuts import get_list_or_404, render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth import get_user, get_user_model
 
+from .serializers import UserDetailSerializer
 from movies.models import Movie
 from movies.serializers import MovieSerializer
 from articles.models import Article, Comment
@@ -46,23 +47,50 @@ def takename(request, user_pk):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
-def profile(request, username):
+def profile_detail_or_update_or_delete(request, username):
     person = get_object_or_404(get_user_model(), username=username)
-    # follow_people = get_list_or_404(get_user_model().objects.exclude(followers__isnull=True).values_list('followers', flat=True))
-    follow_people = get_list_or_404(
-        get_user_model().objects.filter(username=username).exclude(
-            followers__isnull=True).values_list('followers', flat=True))
+    me = request.user
 
-    context = {
-        'username': person.username,
-        'email': person.email,
-        'follower_list': follow_people,
-        'followers': person.followers.count(),
-        'followings': person.followings.count(),
-    }
-    return JsonResponse(context)
+    def profile_detail():
+        serializer = UserDetailSerializer(person, data=request.data)
+        follow_people = get_list_or_404(
+            get_user_model().objects.filter(username=username).exclude(
+                followers__isnull=True).values_list('followers', flat=True))
+
+        if serializer.is_valid(raise_exception=True):
+            context = {
+                'serializer': serializer.data,
+                'follower_list': follow_people,
+                'followers': person.followers.count(),
+                'followings': person.followings.count(),
+            }
+            return Response(context)
+
+    def profile_update():
+        image = request.data.get('image')
+        if person == me:
+            serializer = UserDetailSerializer(me, data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(image=image)
+                return Response(serializer.data)
+
+    def profile_delete():
+        if person == me:
+            person.delete()
+            context ={
+                'delete':f'회원 {username}님이 탈퇴하였습니다.'
+            }
+            return Response(context, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    
+    if request.method == 'GET':
+        return profile_detail()
+    elif request.method == 'PUT':
+        return profile_update()
+    else:
+        return profile_delete()
 
 
 @api_view(['GET'])
