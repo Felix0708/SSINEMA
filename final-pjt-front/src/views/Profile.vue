@@ -94,7 +94,6 @@
     <br>
     <hr style="background-color:white">
     <br>
-    <Maps/>
   </div>
 </template>
 
@@ -103,14 +102,12 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import ArticleDetail from '../components/ArticleDetail'
 import ProfileSliders from '../components/ProfileSliders'
-import Maps from '../components/Maps.vue'
 
 export default {
   name: 'Profile',
   components:{
     ArticleDetail,
     ProfileSliders,
-    Maps,
   },
   data: function () {
     

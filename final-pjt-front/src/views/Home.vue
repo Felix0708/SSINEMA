@@ -19,18 +19,22 @@
       :movies="foryoumovies"
       :title="foryouTitle"
     />
+    <br>
     <Sliders
       :movies="Todaymovies"
       :title="TodayTitle"
     />
+    <br>
     <Sliders
       :movies="topRatedmovies"
       :title="topRatedTitle"
     />
+    <br>
     <Sliders
       :movies="latestmovies"
       :title="latestTitle"
     />
+    <br>
     <Sliders
       :movies="mostpopmovies"
       :title="mostpopTitle"
