@@ -93,7 +93,7 @@ export default {
     }
   },
   created() {
-    console.log(this.comment)
+    // console.log(this.comment)
     const userid = this.comment.user.username
     this.getName = userid
 
@@ -109,7 +109,7 @@ export default {
     //   console.error(err)
     // })
     const token = localStorage.getItem('jwt')
-    console.log(jwt_decode(token))
+    // console.log(jwt_decode(token))
     // const userid = jwt_decode(token).user_id
     const username = jwt_decode(token).username
     // this.currentId = userid

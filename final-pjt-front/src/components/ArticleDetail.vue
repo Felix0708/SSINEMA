@@ -128,7 +128,7 @@ export default {
         // console.log(jwt_decode(token))
         const userid = jwt_decode(token).user_id
         this.userId = userid
-        console.log(this.userId)
+        // console.log(this.userId)
       axios({
         method: 'post',
         url: `http://127.0.0.1:8000/api/v1/articles/${this.article_pk}/like/`,
@@ -137,7 +137,7 @@ export default {
         },
       })
         .then(function (response) {
-          console.log(response)
+          // console.log(response)
           const liked = response.data.liked
           const likeBtn = document.querySelector(`#like`)
           if (liked === true) {
@@ -156,7 +156,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('jwt')}`
               },
             }).then((res)=>{
-              console.log(res.data)
+              // console.log(res.data)
               this.articleWriterId = res.data.serializer.user
               this.articleLikeusers = res.data.like_people
               this.articleLike = res.data.serializer.like_users_count
@@ -164,8 +164,8 @@ export default {
               this.content = res.data.serializer.content
               this.created_at = res.data.serializer.created_at
               this.updated_at = res.data.serializer.updated_at
-              console.log(this.articleWriterId)
-              console.log(this.articleLikeusers)
+              // console.log(this.articleWriterId)
+              // console.log(this.articleLikeusers)
             }).catch((err)=>{
               console.error(err)
             })
@@ -202,8 +202,8 @@ export default {
           headers: {
             Authorization: `JWT ${localStorage.getItem('jwt')}`
           },
-        }).then((res)=>{
-          console.log(res.data)
+        }).then(()=>{
+          // console.log(res.data)
           axios({
             url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
             method: 'GET',
@@ -304,7 +304,7 @@ export default {
     this.articleWriter = this.writer
     // console.log(this.articleWriter)
     const article_pk = this.article_pk
-    console.log(this.articleLikeusers)
+    // console.log(this.articleLikeusers)
     axios({
       url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
       method: 'GET',
@@ -312,7 +312,7 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      console.log(res.data)
+      // console.log(res.data)
       this.articleWriterId = res.data.serializer.user
       this.articleLikeusers = res.data.like_people
       this.articleLike = res.data.serializer.like_users_count
@@ -321,7 +321,7 @@ export default {
       this.created_at = res.data.serializer.created_at
       this.updated_at = res.data.serializer.updated_at
       // console.log(this.articleWriterId)
-      console.log(this.articleLikeusers)
+      // console.log(this.articleLikeusers)
     }).catch((err)=>{
       console.error(err)
     })
@@ -344,11 +344,11 @@ export default {
     })
 
     const token = localStorage.getItem('jwt')
-    console.log(jwt_decode(token))
+    // console.log(jwt_decode(token))
     const userid = jwt_decode(token).user_id
     const username = jwt_decode(token).username
     this.userId = userid
-    console.log(this.userId)
+    // console.log(this.userId)
     this.currentName = username
 
   },

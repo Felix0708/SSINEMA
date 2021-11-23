@@ -133,7 +133,7 @@ export default {
             url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
             method: 'GET',
           }).then((res)=>{
-            console.log(res)
+            // console.log(res)
               const temp = []
               res.data.forEach((element)=>{
                 temp.push(element)
@@ -193,7 +193,7 @@ export default {
     const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
     const API_URL = 'https://www.googleapis.com/youtube/v3/search'
     const inputValue = `${this.title} trailer`
-    console.log(inputValue)
+    // console.log(inputValue)
     const params = {
       key: API_KEY,
       part: 'snippet',
@@ -204,11 +204,11 @@ export default {
       params,
     })
     .then((res) => {
-      console.log('이거',res.data.items)
+      // console.log('이거',res.data.items)
       const videoId = res.data.items[0].id.videoId
-      console.log('저거', videoId)
+      // console.log('저거', videoId)
       this.videoURI = `https://www.youtube.com/embed/${videoId}?rel=0&mute=1&autoplay=1&controls=0&frameborder=0`
-      console.log('비디오주소', this.videoURI)
+      // console.log('비디오주소', this.videoURI)
     })
     .catch((err) => {
       console.log(err)
@@ -216,13 +216,13 @@ export default {
   },
   created() {
 
-    console.log(this.movie_pk)
+    // console.log(this.movie_pk)
     const movie_pk = this.movie_pk
     axios({
       url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/`,
       method: 'GET',
     }).then((res)=>{
-      console.log(res.data)  
+      // console.log(res.data)  
       this.id = res.data.id
       this.poster_path = res.data.poster_path
       this.title = res.data.title

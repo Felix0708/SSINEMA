@@ -253,12 +253,12 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      console.log(res.data)
+      // console.log(res.data)
       // console.log(typeof(res.data.followings))
       this.followings = res.data.followings
       this.followers = res.data.followers
       this.followerList = res.data.follower_list
-      console.log(this.followerList)
+      // console.log(this.followerList)
     }).catch((err)=>{
       console.log(err)
     })
@@ -271,7 +271,7 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      console.log('찜한 영화',res.data)
+      // console.log('찜한 영화',res.data)
       const tmp = []
       res.data.serializer.forEach(function(element){
         tmp.push(element)

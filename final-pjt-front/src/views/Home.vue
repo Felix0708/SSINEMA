@@ -123,7 +123,7 @@ export default {
       url:'http://127.0.0.1:8000/api/v1/movies/category/foryou/',
       method: 'GET',
     }).then((res)=>{
-      console.log('취향 저격',res.data)
+      // console.log('취향 저격',res.data)
       const tmp = []
       res.data.foruser_movies.forEach(function(element){
         tmp.push(element)
@@ -140,7 +140,7 @@ export default {
       url:'http://127.0.0.1:8000/api/v1/movies/category/weather/',
       method: 'GET',
     }).then((res)=>{
-      console.log('오늘의',res.data)
+      // console.log('오늘의',res.data)
       const tmp = []
       res.data.weather_movies.forEach(function(element){
         tmp.push(element)
@@ -157,7 +157,7 @@ export default {
       url:'http://127.0.0.1:8000/api/v1/movies/category/latest/',
       method: 'GET',
     }).then((res)=>{
-      console.log('최근 개봉',res.data)
+      // console.log('최근 개봉',res.data)
       const tmp = []
       res.data.latest_movies.forEach(function(element){
         tmp.push(element)
@@ -174,7 +174,7 @@ export default {
       url:'http://127.0.0.1:8000/api/v1/movies/category/toprate/',
       method:'GET',
     }).then((res)=>{
-      console.log('평점 높은',res.data)
+      // console.log('평점 높은',res.data)
       const tmp=[]
       res.data.toprate_movies.forEach(function(element){
         tmp.push(element)
@@ -192,7 +192,7 @@ export default {
       url:'http://127.0.0.1:8000/api/v1/movies/category/mostpop/',
       method: 'GET',
     }).then((res)=>{
-      console.log('스테디 셀러',res.data)
+      // console.log('스테디 셀러',res.data)
       const tmp = []
       res.data.mostpop_movies.forEach(function(element){
         tmp.push(element)
