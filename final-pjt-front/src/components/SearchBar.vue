@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <div class="search-container">
     <form class="searchbox">
       <input type="search" placeholder="Search......" name="search" class="searchbox-input" 
       v-model="title"
       @keyup="buttonUp"
       @keypress.enter="searchMovies"
       required>
-      <input type="submit" class="searchbox-submit" value="GO">
+      <input type="submit" @click="searchMovies" class="searchbox-submit" value="GO">
       <span class="searchbox-icon" @click="submitClick" @mouseup="submitMouse"><i class="fa fa-search"></i></span>
     </form>
   </div>
@@ -49,7 +49,7 @@ export default {
       this.$store.dispatch('searchMovies')
       this.$router.push({ name: 'MovieList' })
     },
-    
+
     buttonUp: function() {
       var inputVal = document.querySelector('.searchbox-input').value;
       inputVal = inputVal.trim().length;
@@ -94,9 +94,10 @@ export default {
 </script>
 
 <style>
-.container{
+.search-container{
     width:600px;
-    margin:50px auto;
+    margin: auto 30px auto 0;
+    padding: 0;
 }
 
 .searchbox{
@@ -160,7 +161,7 @@ export default {
     line-height:50px;
     text-align:center;
     cursor:pointer;
-    color:#dcddd8;
+    color:#dcddd8 !important;
     background:#FF0558;
 }
 

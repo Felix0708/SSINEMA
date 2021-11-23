@@ -1,12 +1,12 @@
 <template>
   <swiper-slide>
-    <div class="card bgblack" style="width: 15rem;" @click=getMovieDetail()>
+    <div class="card bgblack card-box" style="width: 15rem;" @click=getMovieDetail()>
       <div class="card-img">
-        <img  :src="getImage" style="width: auto 0;" class="card-img-top" alt="poster">
+        <img  :src="getImage" class="card-img-top" alt="poster">
       </div>
       
       <div class="card-body">
-        <span class="card-title" v-for="(item,idx) in getTitle" :key="idx"><b>{{ item }}</b></span>
+        <div class="card-title" v-for="(item,idx) in getTitle" :key="idx">{{ item }}</div>
       </div>
       
       <b-modal
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     getImage: function() {
-      return 'http://image.tmdb.org/t/p/w185' + this.movie.poster_path
+      return 'http://image.tmdb.org/t/p/w500' + this.movie.poster_path
     },
     getTitle: function() {
       const t = this.movie.title
@@ -50,7 +50,7 @@ export default {
       let res = []
       let tp = ''
       for(let i = 0; i < temp.length; i++){
-        if(tp.length + temp[i].length < 12 ){ 
+        if(tp.length + temp[i].length < 28 ){ 
           tp += ' ' + temp[i]
         }else{
           res.push(tp)
@@ -84,16 +84,41 @@ export default {
 .modal_body {
   background-color: black;
 }
+
+.card-box {
+  /* position: absolute; */
+  height: 400px;
+  transition: all 0.8s linear;
+}
+
+.card-box:hover {
+  position: absolute;
+  /* top: 50%; */
+  z-index: 10;
+  height: 100%;
+  transform:scale(1.4);
+}
+
 </style>
 
 <style scoped>
-span {
+.card-body {
+  display: grid;
+  justify-content: center;
+  /* padding: 0; */
+}
+
+.card-body > div {
+  font-weight: bold;
+  margin: auto 3px;
+  text-align: center;
   color: white;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 img {
-  width: 250px;
-  height: 350px;
+  width: 235px;
+  height: 300px;
+  margin: 0;
 }
 </style>

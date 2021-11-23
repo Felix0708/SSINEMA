@@ -358,7 +358,7 @@ export default {
 <style>
   .articledetail {
     background-color: black;
-    height: 800px;
+    height: auto;
     color: white;
     border: 1px solid white;
     border-radius: 10px;

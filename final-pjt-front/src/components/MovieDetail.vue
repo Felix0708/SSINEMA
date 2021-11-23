@@ -1,9 +1,9 @@
 <template>
-  <div class="mb-3 bgblack text-white" style=" width: auto; border-radius: 10px; padding:10px">
+  <div class="mb-3 bgblack text-white" style=" width: auto; height:auto; border-radius: 10px; padding:10px">
     <div class="col-md-4 col-sm-6 col-xs-12" >
       <br>
       <img :src="getImage" alt="poster"
-      style = "margin: 1px 130px;">
+      style = "margin: 1px 130px; width: auto;">
     </div>
     <hr>
     <iframe 
@@ -190,29 +190,29 @@ export default {
     },
   },
   beforeUpdate(){
-    // const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
-    // const API_URL = 'https://www.googleapis.com/youtube/v3/search'
-    // const inputValue = `${this.title} trailer`
-    // console.log(inputValue)
-    // const params = {
-    //   key: API_KEY,
-    //   part: 'snippet',
-    //   q: inputValue,
-    //   type: 'video',
-    // }
-    // axios.get(API_URL, {
-    //   params,
-    // })
-    // .then((res) => {
-    //   console.log('이거',res.data.items)
-    //   const videoId = res.data.items[0].id.videoId
-    //   console.log('저거', videoId)
-    //   this.videoURI = `https://www.youtube.com/embed/${videoId}?rel=0&mute=1&autoplay=1&controls=0&frameborder=0`
-    //   console.log('비디오주소', this.videoURI)
-    // })
-    // .catch((err) => {
-    //   console.log(err)
-    // })
+    const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
+    const API_URL = 'https://www.googleapis.com/youtube/v3/search'
+    const inputValue = `${this.title} trailer`
+    console.log(inputValue)
+    const params = {
+      key: API_KEY,
+      part: 'snippet',
+      q: inputValue,
+      type: 'video',
+    }
+    axios.get(API_URL, {
+      params,
+    })
+    .then((res) => {
+      console.log('이거',res.data.items)
+      const videoId = res.data.items[0].id.videoId
+      console.log('저거', videoId)
+      this.videoURI = `https://www.youtube.com/embed/${videoId}?rel=0&mute=1&autoplay=1&controls=0&frameborder=0`
+      console.log('비디오주소', this.videoURI)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   },
   created() {
 
@@ -247,32 +247,6 @@ export default {
     const token = localStorage.getItem('jwt')
     const username = jwt_decode(token).username
     this.currentName = username
-
-
-
-    const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
-    const API_URL = 'https://www.googleapis.com/youtube/v3/search'
-    const inputValue = `${this.title} trailer`
-    console.log(inputValue)
-    const params = {
-      key: API_KEY,
-      part: 'snippet',
-      q: inputValue,
-      type: 'video',
-    }
-    axios.get(API_URL, {
-      params,
-    })
-    .then((res) => {
-      console.log('이거',res.data.items)
-      const videoId = res.data.items[0].id.videoId
-      console.log('저거', videoId)
-      this.videoURI = `https://www.youtube.com/embed/${videoId}?rel=0&mute=1&autoplay=1&controls=0&frameborder=0`
-      console.log('비디오주소', this.videoURI)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
 
   },     
 }

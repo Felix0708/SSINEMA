@@ -3,9 +3,6 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from "vuex-persistedstate"
 
-
-
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -29,16 +26,16 @@ export default new Vuex.Store({
     // },
 
     // 범용화된 mutations
-    updateState (state, payload) {
-      Object.keys(payload).forEach(key => {
-        state[key] = payload[key]
-      })
-      console.log(state.movies)
-    },
-    // pushIntoMovies (state, movies) {
-    //   // ...: 전개연산자, item단위로 끊어준다
-    //   state.movies.push(...movies)
+    // updateState (state, payload) {
+    //   Object.keys(payload).forEach(key => {
+    //     state[key] = payload[key]
+    //   })
+    //   console.log(state.movies)
     // },
+    pushIntoMovies (state, movies) {
+      // ...: 전개연산자, item단위로 끊어준다
+      state.movies = movies
+    },
     searchMovie (state, title) {
       state.title = title
       console.log(state.title)
@@ -57,9 +54,12 @@ export default new Vuex.Store({
       // const res = await axios.get(back_url + state.title + '/')
       axios.get(back_url + state.title + '/')
       .then((res) => {
-        commit('updateState', {
-          movies: res.data,
-        })
+        // if (res.data.length != 0) {
+          commit('pushIntoMovies', res.data,)
+        // } else {
+        //   alert('검색한 결과가 없습니다.')
+        //   this.$router.push({ name: 'Home' })
+        // }
       })
       .catch((err) => {
         console.log(err)
