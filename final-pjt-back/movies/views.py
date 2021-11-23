@@ -15,6 +15,15 @@ from django.db.models import Q
 from collections import Counter
 
 # Create your views here.
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def movie_all(request, movie_title):
+    movies = Movie.objects.filter(title__icontains=movie_title)
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def moviedetail(request,movie_id):
