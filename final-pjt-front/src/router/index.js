@@ -9,6 +9,7 @@ import Community from '@/views/Community'
 import CreateArticle from '@/views/CreateArticle'
 import UpdateArticle from '@/views/UpdateArticle'
 import OtherProfile from '@/views/OtherProfile'
+import MovieList from '@/views/MovieList'
 
 Vue.use(VueRouter)
 
@@ -58,6 +59,12 @@ const routes = [
     path: '/otherprofile',
     name: 'OtherProfile',
     component: OtherProfile,
+    // props: true,
+  },
+  {
+    path: '/movieList',
+    name: 'MovieList',
+    component: MovieList,
     // props: true,
   },
 ]
