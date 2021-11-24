@@ -68,11 +68,10 @@ def profile_detail_or_update_or_delete(request, username):
         return Response(context)
 
     def profile_update():
-        image = request.data.get('image')
         if person == me:
             serializer = UserDetailSerializer(me, data=request.data)
             if serializer.is_valid(raise_exception=True):
-                serializer.save(image=image)
+                serializer.save()
                 return Response(serializer.data)
 
     def profile_delete():

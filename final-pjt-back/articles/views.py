@@ -27,7 +27,7 @@ def article_index(request):
 def create_article(request):
     serializer = ArticleSerializer(data=request.data)            
     if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user, image=request.data.get('image'))
+        serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -51,10 +51,9 @@ def article_detail_or_update_or_delete(request, article_pk):
         return Response(context)
 
     def update_article():
-        image = request.data.get('image')
         serializer = ArticleSerializer(instance=article, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user = request.user, image=image)
+            serializer.save(user = request.user,)
             return Response(serializer.data)
     
     def delete_article():
