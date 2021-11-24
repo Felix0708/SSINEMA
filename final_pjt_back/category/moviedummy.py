@@ -13,7 +13,7 @@ class TMDBHelper:
 
     def create_movies(self):
         URL = f"https://api.themoviedb.org/3/movie/popular?api_key={self.api_key}&language=ko-KR&page="
-        for pageNum in range(1, 21):
+        for pageNum in range(1, 101):
         # for pageNum in range(1, 2):
             res = requests.get(URL + str(pageNum)).json()
 
