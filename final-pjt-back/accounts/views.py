@@ -108,7 +108,7 @@ def my_movie(request, user_pk):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def my_article(request, user_pk):
-    articles = Article.objects.filter(user=user_pk)
+    articles = Article.objects.filter(user=user_pk).order_by('-created_at')
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
 
@@ -116,7 +116,7 @@ def my_article(request, user_pk):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def my_comment(request, user_pk):
-    comments = Comment.objects.filter(user=user_pk)
+    comments = Comment.objects.filter(user=user_pk).order_by('-pk')
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
 
