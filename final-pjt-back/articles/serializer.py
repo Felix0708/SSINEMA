@@ -42,6 +42,7 @@ class ArticleCommentSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserDetailSerializer(read_only=True)
     article = ArticleCommentSerializer(read_only=True)
 
     class Meta:

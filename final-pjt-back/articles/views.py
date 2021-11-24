@@ -101,9 +101,9 @@ def like_article(request, article_pk):
 @permission_classes([AllowAny])
 def comment_list_or_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-
+    
     def comment_list():
-        comments = get_list_or_404(Comment, article=article)
+        comments = get_list_or_404(Comment.objects.filter(article=article).order_by('-pk'))
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
     
