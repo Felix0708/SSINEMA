@@ -190,7 +190,7 @@ export default {
     },
   },
   beforeUpdate(){
-    const API_KEY = 'AIzaSyCPB-2OMju1VEyuzhwArA773ig4Ln0EgfE'
+    const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
     const API_URL = 'https://www.googleapis.com/youtube/v3/search'
     const inputValue = `${this.title} trailer`
     // console.log(inputValue)

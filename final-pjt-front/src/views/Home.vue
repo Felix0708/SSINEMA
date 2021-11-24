@@ -211,7 +211,7 @@ export default {
     //     method: 'GET',
     // }).then((res) => {
     //   console.log(res.data.title_list)
-    //   const API_KEY = 'AIzaSyCSuYF6TkPO5Lb5osPYMo7W6AWP9pYHS-0'
+    //   const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
     //   const API_URL = 'https://www.googleapis.com/youtube/v3/search'
     //   const titleList = res.data.title_list
     //   const inputValue = titleList[Math.floor(Math.random()*titleList.length)] + ' trailer'
