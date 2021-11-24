@@ -30,6 +30,7 @@ export default {
 
 <style scoped>
 .bg-main {
+  margin-top: 70px;
   width: 100%;
   /* height: 800px; */
   position: relative;

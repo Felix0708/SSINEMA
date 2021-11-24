@@ -31,7 +31,8 @@
         </button>
         <br>
         <br>
-        <b-modal 
+        <b-modal
+        :data-key="idx"
         ref="detail" 
         size="lg" 
         class="bg-black" 
@@ -94,6 +95,10 @@
     <br>
     <hr style="background-color:white">
     <br>
+    <br>
+    <div>
+      <button class="deleteAccount btn btn-danger" @click="deleteAccount">회원탈퇴</button>
+    </div>
   </div>
 </template>
 
@@ -109,9 +114,13 @@ export default {
     ArticleDetail,
     ProfileSliders,
   },
+  props: {
+
+  },
   data: function () {
     
     return {
+      // login: false,
       buttonOn : true,
       userId: '',
       username: '',
@@ -140,6 +149,36 @@ export default {
     }
   },
   methods:{
+    // logout: function () {
+    //   localStorage.removeItem('jwt')
+    //   this.login = false
+    //   this.$router.push({ name: 'MainPage' })
+    // },
+    deleteAccount () {
+      if (confirm('정말 탈퇴하시겠습니까?') == true) {
+        
+        axios({
+          method: 'delete',
+          url: `http://127.0.0.1:8000/api/v1/accounts/${this.username}/`,
+          headers: {
+            Authorization: `JWT ${localStorage.getItem('jwt')}`
+          },
+        })
+          .then(() => {
+            // console.log(res)
+            // this.logout()
+            localStorage.removeItem('jwt')
+            // history.go(0)
+            location.href="/"
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }else{
+        return false;
+      }
+    },
+
     btnOn(){
       this.buttonOn = true
     },
@@ -161,7 +200,10 @@ export default {
 
 
     getArticleDetail(idx) {
-      this.$refs.detail[idx].show()
+      const detail = this.$refs['detail'].find(
+        el => el.$attrs['data-key'] === idx
+      );
+      detail.show()
     },
     nextPage () {
       this.pageNum += 1;

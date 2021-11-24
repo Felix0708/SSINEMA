@@ -156,7 +156,7 @@ a {
 }
 
 .loginText {
-  margin: 1.5px 0 0 0 ;
+  margin: 0 0 0 0 ;
 }
 
 img {

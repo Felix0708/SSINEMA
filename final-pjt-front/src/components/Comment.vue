@@ -23,7 +23,7 @@ import jwt_decode from 'jwt-decode'
 export default {
   data() {
     return {
-      getName: '',
+      // userName: '',
       currentName: '',
     }
   },
@@ -34,6 +34,10 @@ export default {
   computed: {
     getComment() {
       return this.comment.content
+    },
+    getName() {
+      console.log(this.comment)
+      return this.comment.user.username
     }
   },
   methods: {
@@ -54,20 +58,20 @@ export default {
     }
   },
   created() {
-    const userid = this.comment.user
+    // const userid = this.comment.user
     // console.log(this.comment)
-    axios({
-      url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
-      method: 'GET',
-      headers: {
-        Authorization: `JWT ${localStorage.getItem('jwt')}`
-      },
-    }).then((res)=>{
-      // console.log(res)
-      this.getName = res.data.username
-    }).catch((err)=>{
-      console.error(err)
-    })
+    // axios({
+    //   url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: `JWT ${localStorage.getItem('jwt')}`
+    //   },
+    // }).then((res)=>{
+    //   console.log(res)
+    //   this.getName = res.data.username
+    // }).catch((err)=>{
+    //   console.error(err)
+    // })
     const token = localStorage.getItem('jwt')
     // console.log(jwt_decode(token))
     const username = jwt_decode(token).username

@@ -46,7 +46,8 @@
         </button>
         <br>
         <br>
-        <b-modal 
+        <b-modal
+        :data-key="idx"
         ref="detail" 
         size="lg" 
         class="bg-black" 
@@ -169,7 +170,10 @@ export default {
     },
 
     getArticleDetail(idx) {
-      this.$refs.detail[idx].show()
+      const detail = this.$refs['detail'].find(
+        el => el.$attrs['data-key'] === idx
+      );
+      detail.show()
     },
     nextPage () {
       this.pageNum += 1;
