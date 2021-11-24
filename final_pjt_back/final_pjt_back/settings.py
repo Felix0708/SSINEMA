@@ -22,7 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 secret_file = os.path.join(BASE_DIR, 'secrets.json')  # secrets.json 파일 위치를 명시
-SECRET_KEY = 'django-insecure-*%64p&p4ykr6d74-y5@87bra^-rqfle2*ghyqp3%6tm2ohuvqp'
 with open(secret_file) as f:
     secrets = json.loads(f.read())
 def get_secret(setting):
