@@ -1,54 +1,64 @@
 <template>
-  <div id="movieContainer">
-    <ul id="movieUi">
-      <v-row
-        id="movieRow"
-        v-masonry
-        item-selector=".item">
-        <v-col
-          v-for="(movie, index) in movies"
-          :key="movie.id"
-          v-masonry-tile
-          id="movieCol"
-          class="item"
-          cols="12"
-          lg="3"
-          md="3"
-          sm="6">
-          <v-card @click=getMovieDetail(index) id="movieBox">
-            <v-img
-              id="movieImg"
-              :src="posterSrc(movie.poster_path)"
-              :alt="movie.title"
-              >
-              <template v-slot:placeholder>
-                <div style="background: lightgray; height: 100%;"></div>  
-              </template>  
-            </v-img>
-            <v-card-title id="movieTitle">
-              {{ movie.title }}
-            </v-card-title>
-            <v-card-subtitle id="movieDate">
-              {{ movie.release_date }}
-            </v-card-subtitle>
-          </v-card>
+  <div>
+    <div v-if="this.$store.state.movies.length > 0" id="movieContainer">
+      <ul id="movieUi">
+        <v-row
+          id="movieRow"
+          v-masonry
+          item-selector=".item">
+          <v-col
+            v-for="(movie, index) in movies"
+            :key="movie.id"
+            v-masonry-tile
+            id="movieCol"
+            class="item"
+            cols="12"
+            lg="3"
+            md="3"
+            sm="6">
+            <v-card @click=getMovieDetail(index) id="movieBox">
+              <v-img
+                id="movieImg"
+                :src="posterSrc(movie.poster_path)"
+                :alt="movie.title"
+                >
+                <template v-slot:placeholder>
+                  <div style="background: lightgray; height: 100%;"></div>  
+                </template>  
+              </v-img>
+              <v-card-title id="movieTitle">
+                {{ movie.title }}
+              </v-card-title>
+              <v-card-subtitle id="movieDate">
+                {{ movie.release_date }}
+              </v-card-subtitle>
+            </v-card>
 
-          <b-modal
-          ref="detail"
-          :data-key="index"
-          size="lg" 
-          class="bg-black"
-          :header-bg-variant="black"
-          :footer-bg-variant="black"
-          hide-footer hide-header>
-            <MovieDetail
-              :movie_pk = movie.movie_id
-            />
-          </b-modal>
+            <b-modal
+            ref="detail"
+            :data-key="index"
+            size="lg" 
+            class="bg-black"
+            :header-bg-variant="black"
+            :footer-bg-variant="black"
+            hide-footer hide-header>
+              <MovieDetail
+                :movie_pk = movie.movie_id
+              />
+            </b-modal>
 
-        </v-col>
-      </v-row>
-    </ul>
+          </v-col>
+        </v-row>
+      </ul>
+    </div>
+    <div v-else class="nosearch">
+      <img src="@/assets/nosearchresult.jpg" alt="noresult">
+      <h2 class="backtext">검색하신 키워드에 대한 영화 정보가 없습니다</h2>
+      <br><br><br>
+      <router-link :to="{ name: 'MainPage' }">
+        <button class="back backtext">홈으로 돌아가기</button>  
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -72,9 +82,6 @@ export default {
     posterSrc (poster_path) {
       return poster_path === null ? '' : `https://image.tmdb.org/t/p/w500${poster_path}`
     },
-    // posterHeight (poster_path) {
-    //   return poster_path === null ? 100 : 300
-    // },
     getMovieDetail(index) {
       const detail = this.$refs['detail'].find(
         el => el.$attrs['data-key'] === index
@@ -85,16 +92,13 @@ export default {
   created: function() {
     // const movies_list = this.$store.state.movies 
     // this.movies = movies_list
-    console.log(this.$store.state.movies)
+    console.log(this.$store.state.movies.length)
 
   },
 }
 </script>
 
 <style>
-#movieContainer{
-
-}
 #movieUi {
   margin: auto 0;
   padding: 10px;
@@ -139,7 +143,24 @@ export default {
   display: block; 
   margin: 0px auto;
 }
-#movieDate {
 
+.back {
+  margin: auto 0;
+  padding: 2px 10px 2px 10px;
+  text-decoration: none;
+  border: 1px solid #FF0558;
+  border-radius: 16px;
+  background-color: #FF0558;
+  color: white;
+  font-size: 20px;
+}
+
+.backtext {
+  margin: 1.5px 0 0 0 ;
+  color: white;
+}
+
+.nosearch{
+  margin-top: 150px;
 }
 </style>

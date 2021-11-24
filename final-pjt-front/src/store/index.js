@@ -54,14 +54,15 @@ export default new Vuex.Store({
       // const res = await axios.get(back_url + state.title + '/')
       axios.get(back_url + state.title + '/')
       .then((res) => {
-        // if (res.data.length != 0) {
+        if (res.data.length != 0) {
           commit('pushIntoMovies', res.data,)
         //   this.$router.push({ name: 'MovieList' })
-        // } else {
+        } else {
+          commit('pushIntoMovies', [])
         //   console.log(res.data.length)
         //   alert('검색한 결과가 없습니다.')
         //   this.$router.push({ name: 'Home' })
-        // }
+        }
       })
       .catch((err) => {
         console.log(err)

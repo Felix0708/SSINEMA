@@ -74,7 +74,7 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Hahmlet', sans-serif, Avenir, Helvetica, Arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -118,10 +118,10 @@ export default {
   margin: auto 0;
   padding: 2px 10px 2px 10px;
   text-decoration: none;
-  border: 1px solid white;
+  border: 1px solid #FF0558;
   border-radius: 16px;
-  background-color: white;
-  color: black;
+  color:#dcddd8;
+  background:#FF0558;
 }
 
 .loginLink {
@@ -152,7 +152,7 @@ a {
 }
 
 .logoutText {
-  margin: 1.5px 0 0 0 ;
+  padding-bottom: 3px;
 }
 
 .loginText {

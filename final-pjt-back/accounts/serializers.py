@@ -10,7 +10,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
     
     class Meta:
         model = get_user_model()
