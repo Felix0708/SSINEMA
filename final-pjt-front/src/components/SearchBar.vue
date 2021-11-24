@@ -47,6 +47,7 @@ export default {
     searchMovies() {
       this.$store.dispatch('searchMovie', this.title)
       this.$store.dispatch('searchMovies')
+      // event.preventDefault()
       this.$router.push({ name: 'MovieList' })
     },
 

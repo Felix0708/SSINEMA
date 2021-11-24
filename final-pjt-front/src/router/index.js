@@ -65,7 +65,7 @@ const routes = [
     path: '/movieList',
     name: 'MovieList',
     component: MovieList,
-    // props: true,
+    props: true,
   },
 ]
 

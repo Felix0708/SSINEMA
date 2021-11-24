@@ -2,7 +2,6 @@
   <div class="container profilediv">
     <br>
     <br>
-    <ProfileImage />
     <h2 style="color:white">{{ username }}의 프로필</h2>
     <br>
     <br>
@@ -103,14 +102,12 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import ArticleDetail from '../components/ArticleDetail'
 import ProfileSliders from '../components/ProfileSliders'
-import ProfileImage from '../components/ProfileImage.vue'
 
 export default {
   name: 'Profile',
   components:{
     ArticleDetail,
     ProfileSliders,
-    ProfileImage,
   },
   data: function () {
     

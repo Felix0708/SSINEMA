@@ -45,7 +45,7 @@ export default new Vuex.Store({
     searchMovie({ commit }, title) {
       commit('searchMovie', title)
     },
-    async searchMovies ({ state, commit }) {
+    searchMovies ({ state, commit }) {
       // actions에서 state, 즉 데이터부분에 바로 값을 할당하는 것은 불가능하다
       // 따라서 state의 값을 갱신하려면 mutations를 사용해야한다
       // state.loading = true
@@ -56,7 +56,9 @@ export default new Vuex.Store({
       .then((res) => {
         // if (res.data.length != 0) {
           commit('pushIntoMovies', res.data,)
+        //   this.$router.push({ name: 'MovieList' })
         // } else {
+        //   console.log(res.data.length)
         //   alert('검색한 결과가 없습니다.')
         //   this.$router.push({ name: 'Home' })
         // }
