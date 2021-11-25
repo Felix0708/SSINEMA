@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
+# from imagekit.models import ProcessedImageField
+# from imagekit.processors import ResizeToFill
 
 # Create your models here.
 class Article(models.Model):
