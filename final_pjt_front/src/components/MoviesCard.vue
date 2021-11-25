@@ -92,9 +92,9 @@ export default {
 }
 
 .card-box:hover {
-  position: absolute;
+  /* position: absolute; */
   /* top: 50%; */
-  z-index: 10;
+  /* z-index: 10; */
   height: 100%;
   transform:scale(1.4);
 }

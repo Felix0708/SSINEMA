@@ -10,6 +10,7 @@ import CreateArticle from '@/views/CreateArticle'
 import UpdateArticle from '@/views/UpdateArticle'
 import OtherProfile from '@/views/OtherProfile'
 import MovieList from '@/views/MovieList'
+import Page_404 from '@/views/Page_404'
 
 Vue.use(VueRouter)
 
@@ -66,6 +67,15 @@ const routes = [
     name: 'MovieList',
     component: MovieList,
     props: true,
+  },
+  {
+    path: '/404',
+    name: 'Page_404',
+    component: Page_404,
+  },
+  {
+    path: '*',
+    redirect: '/404'
   },
 ]
 

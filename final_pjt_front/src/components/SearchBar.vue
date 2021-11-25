@@ -16,6 +16,7 @@
 // import { mapActions } from 'vuex'
 // const API_KEY = process.env.VUE_APP_TMDB_API_KEY
 // const API_URL = `https://api.themoviedb.org/3/search/movie?api_key=${ API_KEY }&language=ko&query=`
+import { mapState } from "vuex";
 
 export default {
   name: 'SearchBar',
@@ -43,13 +44,27 @@ export default {
   //     },
   //   },
   // },
+  computed: {
+    ...mapState(["movies"])
+  },
   methods:{
     searchMovies() {
       this.$store.dispatch('searchMovie', this.title)
       this.$store.dispatch('searchMovies')
-      // event.preventDefault()
+      console.log(this.$store.state.movies)
       this.$router.push({ name: 'MovieList' })
     },
+    // async searchMovies() {
+    //   await this.$store.dispatch('searchMovie', this.title)
+    //   await this.$store.dispatch('searchMovies')
+    //   console.log(this.$store.state.movies)
+    //   if (this.$store.state.movies.length > 0) {
+    //   await this.$router.push({ name: 'MovieList' })
+    //   //   event.preventDefault()
+    //   } else {
+    //     this.$router.push({ name: 'Page_404' })
+    //   }
+    // },
 
     buttonUp: function() {
       var inputVal = document.querySelector('.searchbox-input').value;

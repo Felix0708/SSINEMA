@@ -38,6 +38,7 @@ class TMDBHelper:
                         VIDEO_URL = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={self.api_key}&append_to_response=videos"
                         video_res = requests.get(VIDEO_URL).json()
                         video_result = video_res["videos"]["results"]
+                        video_path = None
                         if video_result:
                             video_path = video_result[0]['key']
 

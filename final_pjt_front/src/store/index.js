@@ -58,9 +58,10 @@ export default new Vuex.Store({
           commit('pushIntoMovies', res.data,)
         //   this.$router.push({ name: 'MovieList' })
         } else {
+          alert('검색한 결과가 없습니다.')
           commit('pushIntoMovies', [])
+          // this.$router.push({ name: 'Page_404' })
         //   console.log(res.data.length)
-        //   alert('검색한 결과가 없습니다.')
         //   this.$router.push({ name: 'Home' })
         }
       })

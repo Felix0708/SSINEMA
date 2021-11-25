@@ -51,14 +51,14 @@
         </v-row>
       </ul>
     </div>
-    <div v-else class="nosearch">
+    <!-- <div v-else class="nosearch">
       <img src="@/assets/nosearchresult.jpg" alt="noresult">
       <h2 class="backtext">검색하신 키워드에 대한 영화 정보가 없습니다</h2>
       <br><br><br>
       <router-link :to="{ name: 'MainPage' }">
         <button class="back backtext">홈으로 돌아가기</button>  
       </router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -92,7 +92,7 @@ export default {
   created: function() {
     // const movies_list = this.$store.state.movies 
     // this.movies = movies_list
-    console.log(this.$store.state.movies.length)
+    // console.log(this.$store.state.movies.length)
 
   },
 }
