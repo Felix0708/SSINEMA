@@ -27,6 +27,12 @@
 
 
 
+## 배포 주소
+
+> ssinema.net
+
+
+
 ## **개발 기간**
 
 - 2021.11.16 ~ 2021.11.26
@@ -101,6 +107,8 @@
 - JavaScript
 - Vue.js
 - Vuex
+- AWS
+- Netlify
 
 
 
