@@ -57,14 +57,14 @@ def profile_detail_or_update_or_delete(request, username):
         serializer = UserDetailSerializer(person)
         follow_people = get_list_or_404(
             get_user_model().objects.filter(username=username).values_list('followers', flat=True))
-        print(follow_people)
+        # print(follow_people)
         context = {
             'serializer': serializer.data,
             'follower_list': follow_people,
             'followers': person.followers.count(),
             'followings': person.followings.count(),
         }
-        print(context)
+        # print(context)
         return Response(context)
 
     def profile_update():
