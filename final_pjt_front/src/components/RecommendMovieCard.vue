@@ -85,6 +85,10 @@ export default {
   background-color: black;
 }
 
+
+</style>
+
+<style scoped>
 .card-box {
   /* position: absolute; */
   height: 400px;
@@ -98,10 +102,6 @@ export default {
   height: 100%;
   transform:scale(1.4);
 }
-
-</style>
-
-<style scoped>
 .card-body {
   display: grid;
   justify-content: center;

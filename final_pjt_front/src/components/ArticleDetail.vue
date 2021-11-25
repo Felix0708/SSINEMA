@@ -131,7 +131,7 @@ export default {
         // console.log(this.userId)
       axios({
         method: 'post',
-        url: `https://ssinema.click/api/v1/articles/${this.article_pk}/like/`,
+        url: `http://127.0.0.1:8000/api/v1/articles/${this.article_pk}/like/`,
         headers: {
           Authorization: `JWT ${localStorage.getItem('jwt')}`
         },
@@ -150,7 +150,7 @@ export default {
         }) .then(() => {
             const article_pk = this.article_pk
             axios({
-              url: `https://ssinema.click/api/v1/articles/${article_pk}/`,
+              url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
               method: 'GET',
               headers: {
                 Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -192,7 +192,7 @@ export default {
         const user = jwt_decode(token).user_id
         // console.log(user)
         axios({
-          url: `https://ssinema.click/api/v1/articles/${article_pk}/comments/`,
+          url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
           method: 'POST',
           data: {
             user: user,
@@ -205,7 +205,7 @@ export default {
         }).then(()=>{
           // console.log(res.data)
           axios({
-            url: `https://ssinema.click/api/v1/articles/${article_pk}/comments/`,
+            url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
             method: 'GET',
             headers: {
               Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -230,7 +230,7 @@ export default {
     onParentDeleteComment: function() {
       const article_pk = this.article_pk
       axios({
-        url: `https://ssinema.click/api/v1/articles/${article_pk}/comments/`,
+        url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
         method: 'GET',
         headers: {
           Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -252,7 +252,7 @@ export default {
       const article_pk = this.article_pk
       this.articleId = article_pk
       axios({
-        url: `https://ssinema.click/api/v1/articles/${article_pk}/`,
+        url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
         method: 'DELETE',
         headers: {
           Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -306,7 +306,7 @@ export default {
     const article_pk = this.article_pk
     // console.log(this.articleLikeusers)
     axios({
-      url: `https://ssinema.click/api/v1/articles/${article_pk}/`,
+      url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -327,7 +327,7 @@ export default {
     })
 
     axios({
-      url: `https://ssinema.click/api/v1/articles/${article_pk}/comments/`,
+      url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/comments/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`

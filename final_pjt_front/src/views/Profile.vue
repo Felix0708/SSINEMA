@@ -159,7 +159,7 @@ export default {
         
         axios({
           method: 'delete',
-          url: `https://ssinema.click/api/v1/accounts/${this.username}/`,
+          url: `http://127.0.0.1:8000/api/v1/accounts/${this.username}/`,
           headers: {
             Authorization: `JWT ${localStorage.getItem('jwt')}`
           },
@@ -253,11 +253,13 @@ export default {
     // console.log(decoded)
     this.username = decoded['username']
     this.userId = decoded['user_id']
-    // console.log(userId)
+    console.log(this.userId)
+    console.log(this.username)
+    console.log(typeof(this.username))
 
     // 유저 articles
     axios({
-      url: 'https://ssinema.click/api/v1/accounts/' + this.userId+ '/myArticle/',
+      url: 'http://127.0.0.1:8000/api/v1/accounts/' + this.userId+ '/myArticle/',
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -271,7 +273,7 @@ export default {
     
     // 유저 comments
     axios({
-      url: 'https://ssinema.click/api/v1/accounts/' + this.userId + '/myComment/',
+      url: 'http://127.0.0.1:8000/api/v1/accounts/' + this.userId + '/myComment/',
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -285,7 +287,7 @@ export default {
 
     //유저 movies
     axios({
-      url:`https://ssinema.click/api/v1/accounts/${this.userId}/myMovie/`,
+      url:`http://127.0.0.1:8000/api/v1/accounts/${this.userId}/myMovie/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -304,13 +306,13 @@ export default {
 
     //유저 프로필
     axios({
-      url:`https://ssinema.click/api/v1/accounts/${this.username}/`,
+      url:`http://127.0.0.1:8000/api/v1/accounts/${this.username}/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      // console.log(res.data)
+      console.log(res.data)
       // console.log(typeof(res.data.followings))
       this.followings = res.data.followings
       this.followers = res.data.followers
@@ -324,6 +326,6 @@ export default {
 <style scoped>
 
   .profilediv {
-    margin-bottom: 500px;
+    margin-bottom: auto;
   }
 </style>

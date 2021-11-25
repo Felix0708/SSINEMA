@@ -120,10 +120,11 @@ export default {
   },
   methods:{
     followed (event) {
+      console.log(this.$route.query.articleWriter)
       event.preventDefault()
       axios({
         method: 'post',
-        url: `https://ssinema.click/api/v1/accounts/follow/${this.$route.query.articleWriter}/`,
+        url: `http://127.0.0.1:8000/api/v1/accounts/follow/${this.$route.query.articleWriter}/`,
         headers: {
           Authorization: `JWT ${localStorage.getItem('jwt')}`
         },
@@ -146,7 +147,7 @@ export default {
           }
         }).then(() => {
             axios({
-              url:`https://ssinema.click/api/v1/accounts/${this.articlesUser}/`,
+              url:`http://127.0.0.1:8000/api/v1/accounts/${this.articlesUser}/`,
               method: 'GET',
               headers: {
                 Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -237,7 +238,7 @@ export default {
 
     // 유저 articles
     axios({
-      url: `https://ssinema.click/api/v1/accounts/${this.articlesUserId}/myArticle/`,
+      url: `http://127.0.0.1:8000/api/v1/accounts/${this.articlesUserId}/myArticle/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -251,7 +252,7 @@ export default {
 
     //유저 프로필 정보
     axios({
-      url:`https://ssinema.click/api/v1/accounts/${this.articlesUser}/`,
+      url:`http://127.0.0.1:8000/api/v1/accounts/${this.articlesUser}/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -269,7 +270,7 @@ export default {
 
     //유저 movies
     axios({
-      url:`https://ssinema.click/api/v1/accounts/${this.articlesUserId}/myMovie/`,
+      url:`http://127.0.0.1:8000/api/v1/accounts/${this.articlesUserId}/myMovie/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`

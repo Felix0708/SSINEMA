@@ -30,7 +30,7 @@ export default {
       event.preventDefault()
       if (this.title.length <= 100) {
         axios({
-          url: 'https://ssinema.click/api/v1/articles/create/',
+          url: 'http://127.0.0.1:8000/api/v1/articles/create/',
           method: 'POST',
           data: {
             title: this.title,

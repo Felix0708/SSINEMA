@@ -80,7 +80,7 @@ export default {
     
       const review_pk = this.comment.id
       axios({
-        url: `https://ssinema.click/api/v1/movies/${this.movie_pk}/review/${review_pk}/` ,
+        url: `http://127.0.0.1:8000/api/v1/movies/${this.movie_pk}/review/${review_pk}/` ,
         method: 'DELETE',
         headers: {
           Authorization: `JWT ${localStorage.getItem('jwt')}`

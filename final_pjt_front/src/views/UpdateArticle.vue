@@ -44,7 +44,7 @@ export default {
       if (this.title.length <= 100) {
         const article_pk = this.article_pk
         axios({
-          url: `https://ssinema.click/api/v1/articles/${article_pk}/`,
+          url: `http://127.0.0.1:8000/api/v1/articles/${article_pk}/`,
           method: 'PUT',
           data: {
             title: this.title,

@@ -118,7 +118,7 @@ export default {
         const user = jwt_decode(token).user_id
 
         axios({
-          url: `https://ssinema.click/api/v1/movies/${movie_pk}/review/`,
+          url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
           method: 'POST',
           data: {
             user: user,
@@ -130,7 +130,7 @@ export default {
           },
         }).then(()=>{
           axios({
-            url: `https://ssinema.click/api/v1/movies/${movie_pk}/review/`,
+            url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
             method: 'GET',
           }).then((res)=>{
             // console.log(res)
@@ -153,7 +153,7 @@ export default {
     onParentDeleteComment: function() {
       const movie_pk = this.movie_pk
       axios({
-        url: `https://ssinema.click/api/v1/movies/${movie_pk}/review/`,
+        url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
         method: 'GET',
       }).then((res)=>{
           const temp = []
@@ -219,7 +219,7 @@ export default {
     // console.log(this.movie_pk)
     const movie_pk = this.movie_pk
     axios({
-      url: `https://ssinema.click/api/v1/movies/${movie_pk}/`,
+      url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/`,
       method: 'GET',
     }).then((res)=>{
       // console.log(res.data)  
@@ -233,7 +233,7 @@ export default {
       console.error(err)
     })
     axios({
-      url: `https://ssinema.click/api/v1/movies/${movie_pk}/review/`,
+      url: `http://127.0.0.1:8000/api/v1/movies/${movie_pk}/review/`,
       method: 'GET',
     }).then((res)=>{
         const temp = []
