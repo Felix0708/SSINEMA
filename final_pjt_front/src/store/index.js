@@ -38,7 +38,7 @@ export default new Vuex.Store({
     },
     searchMovie (state, title) {
       state.title = title
-      console.log(state.title)
+      // console.log(state.title)
     },
   },
   actions: {
@@ -58,7 +58,7 @@ export default new Vuex.Store({
           commit('pushIntoMovies', res.data,)
         //   this.$router.push({ name: 'MovieList' })
         } else {
-          alert('검색한 결과가 없습니다.')
+          // alert('검색한 결과가 없습니다.')
           commit('pushIntoMovies', [])
           // this.$router.push({ name: 'Page_404' })
         //   console.log(res.data.length)
