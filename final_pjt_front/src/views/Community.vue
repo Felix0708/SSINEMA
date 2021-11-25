@@ -115,7 +115,7 @@ export default {
       const temp = []
       if (this.selected === 'title') {
         this.articles.forEach((element)=>{
-          console.log(element.title)
+          // console.log(element.title)
           const title = element.title
           if (title.indexOf(keyword) !== -1) {
             temp.push(element)   
@@ -124,7 +124,7 @@ export default {
         })
       } else {
         this.articles.forEach((element)=>{
-          console.log(element.title)
+          // console.log(element.title)
           const userid = element.user
           axios({
             url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
@@ -133,7 +133,7 @@ export default {
               Authorization: `JWT ${localStorage.getItem('jwt')}`
             },
           }).then((res)=>{
-            console.log(res)
+            // console.log(res)
             const username = res.data.username
             if (username.indexOf(keyword) !== -1) {
               temp.push(element)       

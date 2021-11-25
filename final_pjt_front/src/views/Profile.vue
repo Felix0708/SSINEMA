@@ -253,9 +253,9 @@ export default {
     // console.log(decoded)
     this.username = decoded['username']
     this.userId = decoded['user_id']
-    console.log(this.userId)
-    console.log(this.username)
-    console.log(typeof(this.username))
+    // console.log(this.userId)
+    // console.log(this.username)
+    // console.log(typeof(this.username))
 
     // 유저 articles
     axios({
@@ -312,7 +312,7 @@ export default {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
       },
     }).then((res)=>{
-      console.log(res.data)
+      // console.log(res.data)
       // console.log(typeof(res.data.followings))
       this.followings = res.data.followings
       this.followers = res.data.followers

@@ -36,7 +36,7 @@ export default {
       return this.comment.content
     },
     getName() {
-      console.log(this.comment)
+      // console.log(this.comment)
       return this.comment.user.username
     }
   },

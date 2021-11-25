@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     getMovieDetail() {
-      console.log('영화 정보',this.movie.title)
+      // console.log('영화 정보',this.movie.title)
       this.$refs['detail'].show()
     },
   },

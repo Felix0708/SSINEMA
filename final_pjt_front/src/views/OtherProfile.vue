@@ -153,7 +153,7 @@ export default {
                 Authorization: `JWT ${localStorage.getItem('jwt')}`
               },
             }).then((res)=>{
-              console.log(res.data)
+              // console.log(res.data)
               // console.log(typeof(res.data.followings))
               this.followings = res.data.followings
               this.followers = res.data.followers

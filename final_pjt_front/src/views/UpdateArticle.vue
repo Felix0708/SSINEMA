@@ -64,7 +64,7 @@ export default {
     },
   },
   created() {
-    console.log(this.$route.params.data)
+    // console.log(this.$route.params.data)
     this.title = this.currentTitle
     this.content = this.currentContent
   },
