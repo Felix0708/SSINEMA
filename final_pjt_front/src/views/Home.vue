@@ -120,7 +120,7 @@ export default {
     //foruser
     // await axios({
     axios({
-      url:'http://127.0.0.1:8000/api/v1/movies/category/foryou/',
+      url:'https://ssinema.click/api/v1/movies/category/foryou/',
       method: 'GET',
     }).then((res)=>{
       // console.log('취향 저격',res.data)
@@ -137,7 +137,7 @@ export default {
     //Today
     // await axios({
     axios({
-      url:'http://127.0.0.1:8000/api/v1/movies/category/weather/',
+      url:'https://ssinema.click/api/v1/movies/category/weather/',
       method: 'GET',
     }).then((res)=>{
       // console.log('오늘의',res.data)
@@ -154,7 +154,7 @@ export default {
     //최근 개봉한 영화
     // await axios({
     axios({
-      url:'http://127.0.0.1:8000/api/v1/movies/category/latest/',
+      url:'https://ssinema.click/api/v1/movies/category/latest/',
       method: 'GET',
     }).then((res)=>{
       // console.log('최근 개봉',res.data)
@@ -171,7 +171,7 @@ export default {
     //평점 높은 영화  toprated
     // await axios({
     axios({
-      url:'http://127.0.0.1:8000/api/v1/movies/category/toprate/',
+      url:'https://ssinema.click/api/v1/movies/category/toprate/',
       method:'GET',
     }).then((res)=>{
       // console.log('평점 높은',res.data)
@@ -189,7 +189,7 @@ export default {
     //mostpop
     // await axios({
     axios({
-      url:'http://127.0.0.1:8000/api/v1/movies/category/mostpop/',
+      url:'https://ssinema.click/api/v1/movies/category/mostpop/',
       method: 'GET',
     }).then((res)=>{
       // console.log('스테디 셀러',res.data)

@@ -127,7 +127,7 @@ export default {
           // console.log(element.title)+
           const userid = element.user
           axios({
-            url: `http://127.0.0.1:8000/api/v1/accounts/${userid}/`,
+            url: `https://ssinema.click/api/v1/accounts/${userid}/`,
             method: 'GET',
             headers: {
               Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -189,7 +189,7 @@ export default {
   created() {
     if (localStorage.getItem('jwt')) {
       const config = this.setToken()
-      axios.get('http://127.0.0.1:8000/api/v1/articles/', config)
+      axios.get('https://ssinema.click/api/v1/articles/', config)
         .then((res)=> {
           const temp = []
           res.data.forEach((element)=>{

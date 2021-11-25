@@ -55,7 +55,7 @@ export default {
     login: function () {
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/api/v1/accounts/login/',
+        url: 'https://ssinema.click/api/v1/accounts/login/',
         data: this.credentials,
       })
         .then(res => {

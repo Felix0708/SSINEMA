@@ -159,7 +159,7 @@ export default {
         
         axios({
           method: 'delete',
-          url: `http://127.0.0.1:8000/api/v1/accounts/${this.username}/`,
+          url: `https://ssinema.click/api/v1/accounts/${this.username}/`,
           headers: {
             Authorization: `JWT ${localStorage.getItem('jwt')}`
           },
@@ -257,7 +257,7 @@ export default {
 
     // 유저 articles
     axios({
-      url: 'http://127.0.0.1:8000/api/v1/accounts/' + this.userId+ '/myArticle/',
+      url: 'https://ssinema.click/api/v1/accounts/' + this.userId+ '/myArticle/',
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -271,7 +271,7 @@ export default {
     
     // 유저 comments
     axios({
-      url: 'http://127.0.0.1:8000/api/v1/accounts/' + this.userId + '/myComment/',
+      url: 'https://ssinema.click/api/v1/accounts/' + this.userId + '/myComment/',
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -285,7 +285,7 @@ export default {
 
     //유저 movies
     axios({
-      url:`http://127.0.0.1:8000/api/v1/accounts/${this.userId}/myMovie/`,
+      url:`https://ssinema.click/api/v1/accounts/${this.userId}/myMovie/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
@@ -304,7 +304,7 @@ export default {
 
     //유저 프로필
     axios({
-      url:`http://127.0.0.1:8000/api/v1/accounts/${this.username}/`,
+      url:`https://ssinema.click/api/v1/accounts/${this.username}/`,
       method: 'GET',
       headers: {
         Authorization: `JWT ${localStorage.getItem('jwt')}`
