@@ -95,6 +95,7 @@
 
 - Python
 - Django
+- SQLite
 - HTML
 - CSS
 - JavaScript
@@ -246,27 +247,194 @@ OTT 서비스 이용자 수의 증가에 따라서, 해당 서비스를 이용�
 
 
 
-#### 1. final_pjt_back
+#### 1. TMDB API를 활용한 DB 구축
+
+```python
+class TMDBHelper:
+    """API 요청에 필요한 기능들을 제공합니다.
+    """
+
+    def __init__(self):
+        self.api_key = config('API_KEY')
+
+
+    def create_movies(self):
+        URL = f"https://api.themoviedb.org/3/movie/popular?api_key={self.api_key}&language=ko-KR&page="
+        for pageNum in range(1, 101):
+        # for pageNum in range(1, 2):
+            res = requests.get(URL + str(pageNum)).json()
+
+            movie_list = res['results']
+            for movie in movie_list:
+                movie_id = movie['id']
+
+                if Movie.objects.filter(movie_id=movie_id).exists():
+                    continue
+
+                else:
+                    title = movie['title']
+                    vote_average = movie['vote_average']
+                    vote_count = movie['vote_count']
+                    popularity = movie['popularity']      
+                    overview = movie["overview"]
+                    poster_path = movie["poster_path"]
+                    genre_ids_list = movie["genre_ids"]
+
+                    try:
+                        release_date = datetime.datetime.strptime(movie["release_date"], "%Y-%m-%d").date()
+                        VIDEO_URL = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={self.api_key}&append_to_response=videos"
+                        video_res = requests.get(VIDEO_URL).json()
+                        video_result = video_res["videos"]["results"]
+                        video_path = None
+                        if video_result:
+                            video_path = video_result[0]['key']
+
+                    except:
+                        continue
+
+                    movie = Movie.objects.create(
+                        movie_id = movie_id,
+                        title = title,
+                        vote_average = vote_average,
+                        vote_count = vote_count,
+                        popularity = popularity,
+                        release_date = release_date,
+                        overview = overview,
+                        poster_path = poster_path,
+                        video_path = video_path
+                    )
+
+                    for genre in genre_ids_list:
+                        genre_object = Genre.objects.get(genre_id=genre)
+                        movie.genres.add(genre_object)
+
+        return print('complete_movie_saved')
+```
+
+- `TMDBHelper` 클래스와 `create_movies` 함수를 통해 TMDB에 존재하는 영화 데이터 약 1,000개를 가져와 `for`문을 통해 각각의 정보를 순회하며 필드명을 변수명으로 지정한 후 데이터들을 할당
+- `Model.objects.create`를 사용하여 각 영화당 객체를 생성하여 DB에 저장
+- 장르들을 담은 `genre_list`를 `for`문을 통해 순회하며 각각의 장르와 `Genre`테이블의 `genre_id`필드와 일치하는 객체를 변수에 담아 `변수.중개모델manage.add(모델)`로 중개모델 데이터 추가
+- `TMDB API`의 기능 중 `append_to_response=videos`를 사용하여 `video_key`를 저장한 후 이를 `YouTube API` 사용시 `video_id`로 할당하여 영화 예고편 재생 구현
 
 
 
-#### 2. accounts
+#### 2. 추천 알고리즘
+
+1. 사용자의 영화 리뷰 데이터를 기반으로 각각의 영화에 부과한 별점으로 장르에 가중치를 두어 최적의 장르를 뽑아내고 이를 가진 영화들을 추출하여 사용자에게 추천
+
+   ```python
+   def create_review():
+           rating = int(request.data['rank'])
+   
+           # 리뷰 저장
+           if not Review.objects.filter(movie=movie, user=request.user).exists():
+               serializer = ReviewSerializer(data=request.data)
+               if serializer.is_valid(raise_exception=True):
+                   serializer.save(movie=movie, user=request.user)
+           else:
+               return Response('이미 데이터 리뷰가 존재합니다.')
+   
+           # like_users 저장
+           if rating >= 7:
+               movie.like_users.add(request.user)
+           return Response(serializer.data, status=status.HTTP_201_CREATED)
+   
+       if request.method == 'GET':
+           return review_list()
+       elif request.method == 'POST':
+           return create_review()
+   ```
+
+   - 사용자는 1개의 영화 당 1개의 리뷰만을 작성할 수 있으며 7점 이상의 별점을 준다면 `변수.중개모델manage.add(모델)`로 `Movie`테이블과 `User`테이블 사이의 중개모델 데이터 추가
+
+   
+
+   ```python
+   @api_view(['GET'])
+   @permission_classes([AllowAny])
+   def foruser_movies(request):
+   
+       like_movies = Movie.objects.filter(like_users=request.user.pk)
+   
+       if like_movies:
+           genre_list = []
+           for movie in like_movies:
+               genre_list += Movie.objects.filter(pk=movie.pk).values_list('genres', flat=True)
+           best_genre_pk = Counter(genre_list).most_common(1)[0][0]
+           second_genre_pk = Counter(genre_list).most_common(2)[0][0]
+   
+           foruser_genres = Genre.objects.filter(Q(id=best_genre_pk) | Q(id=second_genre_pk))
+   
+           foruser_movies = Movie.objects.filter(genres__in=foruser_genres).order_by('?')[:50]
+           foruser_serializer = MovieSerializer(foruser_movies, many=True)
+   
+           return Response({"foruser_movies": foruser_serializer.data})
+       
+       else:
+           return redirect('category:mostpop_movies')
+   ```
+
+   - `movies_movie_like_users`테이블에서 요청을 보낸 사용자에 해당하는 정보를 필터링하여 중개모델 조회
+
+   - 생성된 객체에 해당 사용자가 존재한다면, `for`문을 통해 사용자가 좋아하는 영화들을 순회하며 각각의 영화에 해당하는 `Genre`들을 `genre_list`에 추가
+
+   - `Counter`를 사용하여 가장 많이 조회된 장르 두개를 뽑아 `genres__in=장르`를 사용하여 해당 장르들이 속한 영화들을 랜덤으로 50개 추출
 
 
 
-#### 3. articles
+2. 날씨에 따른 사람들의 영화 및 장르 선호도를 기반으로 이에 해당하는 영화들을 추출하여 그날의 날씨, 계절에 따라 사용자에게 추천
 
+   ```python
+   class weatherHelper:
+       def __init__(self):
+           self.worldId = config('WORLD_ID')
+   
+       def movieRecommendByWeather(self):
+   
+           weather_url = f"https://www.metaweather.com/api/location/{self.worldId}/"
+   
+           response = requests.get(weather_url).json()
+           data = response['consolidated_weather'][1]
+           weather_type = data['weather_state_abbr']
+           month = data['applicable_date'].split("-")[1]
+           
+           summer = ['6', '7', '8', '9']
+           winter = ['11', '12', '1', '2']
+           genre_winter = [3, 4, 8, 9, 14]
+           winter_random = random.sample(genre_winter, 2)
+   
+           weather_nice = ['c', 'lc', 'hc']
+           genre_nice = [1, 2, 4, 5, 9, 15]
+           nice_random = random.sample(genre_nice, 2)
+   
+           weather_rain = ['h', 't', 'hr', 'lr', 's']
+           genre_rain = [1, 11, 13, 14, 17]
+           rain_random = random.sample(genre_rain, 2)
+   
+           if month in winter:
+               return Movie.objects.filter(
+                   (Q(release_date__month=11) | Q(release_date__month=12) | Q(release_date__month=1) | Q(release_date__month=2)) & 
+                   (Q(genres=winter_random[0]) | Q(genres=winter_random[1]))).order_by('?')[:50]
+   
+           elif month in summer:
+               return Movie.objects.filter(
+                   (Q(release_date__month='06') | Q(release_date__month='07') | Q(release_date__month='08') | Q(release_date__month='09')) & 
+                   (Q(genres=rain_random[0]) | Q(genres=rain_random[1]))).order_by('?')[:50]
+   
+           elif weather_type in weather_nice:
+               return Movie.objects.filter(
+                   Q(genres=nice_random[0]) | Q(genres=nice_random[1])).order_by('?')[:50]
+   
+           elif weather_type in weather_rain:
+               return Movie.objects.filter(
+                   Q(genres=rain_random[0]) | Q(genres=rain_random[1])).order_by('?')[:50]
+   ```
 
+   - `weatherHelper` 클래스와 `movieRecommendByWeather` 함수를 통해 `MetaWeather API`를 사용하여 그 날의 날씨와 계절(월) 정보를 해당 변수에 할당 
 
-#### 4.movies
+   - 날씨와 계절에 따라 선호하는 장르들을 설정하고 `random.sample(list)`를 사용하여 랜덤으로 장르 2개를 선택
 
-
-
-#### 5. dummy
-
-
-
-
+   - `if`조건문을 통해 날씨와 계절 조건에 해당하는 조건문을 시행하고 `filter(Q(date__month=월) & Q(genres=랜덤장르))`로 영화 정보 객체를 가져와 랜덤으로 50개 추출
 
 
 
@@ -435,3 +603,13 @@ OTT 서비스 이용자 수의 증가에 따라서, 해당 서비스를 이용�
 
 - Vuex도 사용하고 기본적인 Vue의 Life Cycle를 이용한 설계도 사용했지만, 아직도 Vue에 대한 이해가 부족했던 것 같습니다. Console를 이용해 오류를 찾으려 했지만 해결하지 못하고 오류를 감춰버리거나, 해당 기능 구현을 포기하는 상황도 맞이했습니다. 또한 같은 값을 가르키는 변수를 여러번 사용해서 코드의 깔끔함도 부족하다. Vuex를 통해 처리하는 방법, Vue의 Life Cycle, 코드 정리를 연습하고, 다음 프로젝트 전에는 Vue에 대한 세세한 공부가 필요해보인다.
 - 이미지 첨부, 지도맵 활용을 해내지 못했다. 순수한 자바스크립트 혹은 장고로만 개발했을 때는 해당 기능들을 잘 사용했지만, Vue를 이용해서 변환을 하려했는데 실패했다.
+
+#### 2. Query의 중요성
+
+- 작성한 `Query`문에 따라 생성되는 객체 데이터가 다르다. 단순하게 하나의 조건을 추가하는 것으로는 원하는 데이터를 얻기 힘들었다. 이번 프로젝트를 진행하며 `ORM`에 대한 복습과 공식문서를 참조하여 최적의 데이터를 생성하는 `Query`문을 작성하였다. 
+- 가장 중요한 이유는 `Back-end`에서 적절한 데이터를 생성해야 `Front-end`로 `API`를 넘겨줬을 때 문제없이 유저의 니즈를 충족시킬 수 있는 발전된 서비스를 제공할 수 있다는 것이다.
+
+#### 3. 설계의 중요성
+
+- 이전에 진행했던 프로젝트에서 설계의 중요성에 대해 배웠다. 본격적으로 프로젝트 개발에 들어가기 전에 `KakaoOven`을 사용하여 `UI 프로토콜`을 설계하였다. 사용자의 입장에서 원하는 서비스가 뭘지 고민하고 예상되는 화면을 구상해 나가면서 프로젝트의 목표를 구체화할 수 있었다.
+- 웹사이트의 DB에 대한 ERD를 설계하였다. `Django`의 `models.py`를 무작정 작성하는 것이 아닌 체계적으로 필요한 테이블을 생성하고 필드를 추가해 나가며 각각의 테이블 사이의 관계를 설정해나갔다. 설계된 ERD를 바탕으로 `Django`에서 필요한 필드만 사용하여 모델링을 진행할 수 있었고 필드를 추가하고 삭제하는 등의 모델링 수정을 번복하지 않았다.
