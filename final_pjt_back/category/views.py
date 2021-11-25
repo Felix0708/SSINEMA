@@ -45,8 +45,9 @@ def random_movie(request):
 def latest_movies(request):
     # DB 업데이트
     TMDBHelper().create_movies()
-
-    latest_movies = Movie.objects.order_by('release_date').reverse()[:50]
+    latest_movies_list = Movie.objects.order_by('release_date').reverse().values_list('pk', flat=True)[:50]
+    # latest_movies = Movie.objects.order_by('release_date').reverse()[:50]
+    latest_movies = Movie.objects.filter(pk__in=latest_movies_list).order_by('?')
     latest_serializer = MovieSerializer(latest_movies, many=True)
 
     return Response({"latest_movies": latest_serializer.data})
@@ -54,7 +55,8 @@ def latest_movies(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def toprate_movies(request):
-    toprate_movies = Movie.objects.order_by('vote_average').reverse()[:50]
+    toprate_movies_list = Movie.objects.order_by('vote_average').reverse().values_list('pk', flat=True)[:50]
+    toprate_movies = Movie.objects.filter(pk__in=toprate_movies_list).order_by('?')
     toprate_serializer = MovieSerializer(toprate_movies, many=True)
 
     return Response({"toprate_movies": toprate_serializer.data})
@@ -63,7 +65,9 @@ def toprate_movies(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def mostpop_movies(request):
-    mostpop_movies = Movie.objects.order_by('popularity').reverse()[:50]
+    mostpop_movies_list = Movie.objects.order_by('popularity').reverse().values_list('pk', flat=True)[:50]
+    # mostpop_movies = Movie.objects.order_by('popularity').reverse()[:50]
+    mostpop_movies = Movie.objects.filter(pk__in=mostpop_movies_list).order_by('?')
     mostpop_serializer = MovieSerializer(mostpop_movies, many=True)
 
     return Response({"mostpop_movies": mostpop_serializer.data,})
