@@ -9,5 +9,5 @@ urlpatterns = [
     path('mostpop/', views.mostpop_movies, name='mostpop_movies'),
     path('foryou/', views.foruser_movies, name='foruser_movies'),
     path('weather/', views.weather_movies, name='weather_movies'),
-
+    path('dbupdate/', views.db_update, name='db_update')
 ]

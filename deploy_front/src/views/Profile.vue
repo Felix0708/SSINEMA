@@ -9,6 +9,12 @@
       <div id="follow-count" style="color: white;">팔로잉 수 &nbsp; : &nbsp; {{followings}} &nbsp; | &nbsp; 팔로워 수 &nbsp; : &nbsp; {{followers}}</div>
     </div>
     <br>
+    <div>
+      <div v-if=" username === 'admin'">
+        <button class="btn btn-primary" @click="DBupadte">DB Update</button>
+      </div>
+    </div>
+    <br>
     <hr style="background-color:white">
     <br>
     <h2 class="text-left" style="color:white">내가 찜한 영화</h2>

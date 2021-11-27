@@ -18,6 +18,13 @@ from collections import Counter
 # Create your views here.
 @api_view(['GET'])
 @permission_classes([AllowAny])
+def db_update(requst):
+    TMDBHelper().create_movies()
+    return Response(status= status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def random_movie(request):
     like_movies = Movie.objects.filter(like_users=request.user.pk)
     with_video = Movie.objects.exclude(Q(video_path__isnull=True) | Q(video_path__exact=''))
@@ -44,7 +51,7 @@ def random_movie(request):
 @permission_classes([AllowAny])
 def latest_movies(request):
     # DB 업데이트
-    TMDBHelper().create_movies()
+    # TMDBHelper().create_movies()
     latest_movies_list = Movie.objects.order_by('release_date').reverse().values_list('pk', flat=True)[:50]
     # latest_movies = Movie.objects.order_by('release_date').reverse()[:50]
     latest_movies = Movie.objects.filter(pk__in=latest_movies_list).order_by('?')

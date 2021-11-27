@@ -2,13 +2,19 @@
   <div class="container profilediv">
     <br>
     <br>
-    <h2 style="color:white">{{ username }}의 프로필</h2>
+    <h2 style="color:white">{{ this.username }}의 프로필</h2>
     <br>
     <br>
     <div>
       <div id="follow-count" style="color: white;">팔로잉 수 &nbsp; : &nbsp; {{followings}} &nbsp; | &nbsp; 팔로워 수 &nbsp; : &nbsp; {{followers}}</div>
     </div>
     <br>
+    <br>
+    <div>
+      <div v-if=" username === 'admin'">
+        <button class="btn btn-primary" @click="DBupadte">DB Update</button>
+      </div>
+    </div>
     <hr style="background-color:white">
     <br>
     <h2 class="text-left" style="color:white">내가 찜한 영화</h2>
@@ -149,6 +155,20 @@ export default {
     }
   },
   methods:{
+    DBupadte () {
+      axios({
+        method: 'get',
+        url: `http://127.0.0.1:8000/api/v1/movies/category/dbupdate`,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`
+        },
+      }).then((res) => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     // logout: function () {
     //   localStorage.removeItem('jwt')
     //   this.login = false
