@@ -10,7 +10,7 @@
     </div>
     <br>
     <div>
-      <div v-if=" username === 'admin'">
+      <div v-if=" this.username === 'admin'">
         <button class="btn btn-primary" @click="DBupadte">DB Update</button>
       </div>
     </div>
@@ -155,6 +155,20 @@ export default {
     }
   },
   methods:{
+    DBupadte () {
+      axios({
+        method: 'get',
+        url: `https://ssinema.click/api/v1/movies/category/dbupdate`,
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('jwt')}`
+        },
+      }).then((res) => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     // logout: function () {
     //   localStorage.removeItem('jwt')
     //   this.login = false

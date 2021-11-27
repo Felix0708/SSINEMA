@@ -11,7 +11,7 @@
     <br>
     <br>
     <div>
-      <div v-if=" username === 'admin'">
+      <div v-if=" this.username === 'admin'">
         <button class="btn btn-primary" @click="DBupadte">DB Update</button>
       </div>
     </div>
