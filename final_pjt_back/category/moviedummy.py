@@ -2,7 +2,11 @@ import requests
 from movies.models import Movie, Genre
 from decouple import config
 import datetime
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 class TMDBHelper:
     """API 요청에 필요한 기능들을 제공합니다.
     """
